@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تم اختراقك 😈</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding: 50px;
+        }
+        #countdown {
+            font-size: 48px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>😈 فريق المتمرد يراك</h1>
+    <p>📡 تم اختراق جهازك بنجاح...</p>
+    <p>🧠 يتم الآن تفنيش حسابك خلال:</p>
+    <div id="countdown">10</div>
+
+    <script>
+        // كشف معلومات الزائر
+        const userAgent = navigator.userAgent;
+        const cookies = document.cookie;
+        const ip = "جارٍ التتبع...";
+
+        alert("📱 جهازك: " + userAgent + "\n🍪 كوكيزك: " + cookies + "\n🕵️‍♂️ IP: " + ip + "\n\nتم اختراقك بنجاح... جاري تفنيش الحساب 😈");
+
+        // عداد تنازلي
+        let timeLeft = 10;
+        const countdown = document.getElementById("countdown");
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdown.textContent = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                countdown.textContent = "💀 تم التفنيش!";
+                alert("💀 تم تفنيش حسابك... راجع نفسك قبل أن تُمحى من الوجود الرقمي 😈");
+            }
+        }, 1000);
+
+        // منع مغادرة الصفحة
+        window.onbeforeunload = function() {
+            return "😈 لا يمكنك الهروب الآن... التفنيش جارٍ!";
+        };
+
+        // منع الإغلاق بزر Esc أو F5
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape" || e.key === "F5") {
+                e.preventDefault();
+                alert("😈 الهروب ممنوع... المواجهة مستمرة!");
+            }
+        });
+    </script>
+</body>
+</html>
