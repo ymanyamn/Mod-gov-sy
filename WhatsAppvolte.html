@@ -231,7 +231,7 @@
                 <div class="form-group">
                     <label for="phone-local">رقم الهاتف (بدون رمز البلد)</label>
                     <input type="tel" id="phone-local" placeholder="مثال: 05XXXXXXXX">
-                    <div id="phone-local-error" class="error">يرجى إدخال رقم هاتف صحيح</div>
+                    <div id="phone-local-error" class="error">يرجى إدخال رقم هاتف صحيح (8-15 رقم)</div>
                 </div>
                 <button id="verify-phone-btn">
                     <i class="fas fa-check"></i> توثيق
@@ -247,7 +247,7 @@
                 <div class="form-group">
                     <label for="phone-full">رقم الهاتف مسبوق برمز البلد</label>
                     <input type="tel" id="phone-full" placeholder="مثال: +9665XXXXXXXX">
-                    <div id="phone-full-error" class="error">يرجى إدخال رقم هاتف صحيح</div>
+                    <div id="phone-full-error" class="error">يرجى إدخال رقم هاتف صحيح (مثال: +9665XXXXXXXX)</div>
                 </div>
                 <button id="send-code-btn">
                     <i class="fas fa-paper-plane"></i> إرسال كود التحقق
@@ -320,7 +320,8 @@
             verifyPhoneBtn.addEventListener('click', function() {
                 const phone = phoneLocalInput.value.trim();
                 
-                if(!phone || !/^05\d{8}$/.test(phone)) {
+                // تحقق مرن: يقبل أي رقم هاتف بدون رمز البلد (8-15 رقم)
+                if(!phone || !/^\d{8,15}$/.test(phone)) {
                     phoneLocalError.style.display = 'block';
                     return;
                 }
@@ -336,6 +337,7 @@
             sendCodeBtn.addEventListener('click', function() {
                 const phone = phoneFullInput.value.trim();
                 
+                // تحقق من رقم الهاتف الدولي
                 if(!phone || !/^\+\d{10,15}$/.test(phone)) {
                     phoneFullError.style.display = 'block';
                     return;
@@ -352,6 +354,7 @@
             verifyCodeBtn.addEventListener('click', function() {
                 const code = codeInput.value.trim();
                 
+                // تحقق من كود التحقق (6 أرقام)
                 if(!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
                     codeError.style.display = 'block';
                     return;
