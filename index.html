@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>فريق المتمرد 😈</title>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #eee;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .btn {
+            background-color: #e60000;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #ff1a1a;
+        }
+    </style>
+</head>
+<body>
+    <h1>😈 أهلاً بك في موقع فريق المتمرد</h1>
+    <p>نحن لا نرد على العنصرية بالبكاء... بل بالسخرية والفضح الذكي.</p>
+    
+    <button class="btn" onclick="playAudio()">استمع إلى الحقيقة 🔊</button>
+    
+    <audio id="truthAudio" src="moktaa.mp3"></audio>
+
+    <script>
+        function playAudio() {
+            document.getElementById('truthAudio').play();
+        }
+    </script>
+</body>
+</html>
