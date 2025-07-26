@@ -21,7 +21,7 @@
       box-shadow: 0 0 10px #000;
     }
 
-    input, button, select {
+    input, button, select, textarea {
       padding: 10px;
       margin: 5px;
       border: none;
@@ -29,7 +29,7 @@
       font-size: 16px;
     }
 
-    input, select {
+    input, select, textarea {
       width: 80%;
     }
 
@@ -89,7 +89,7 @@
       <div id="message"></div>
     </form>
 
-    <div id="dashboard">
+    <div id="dashboard" style="display:none;">
       <h2>🔥 مرحبًا بك يا mhmd</h2>
       <p>أنت الآن داخل نظام التمرد لإدارة الصرافة.</p>
 
@@ -97,31 +97,26 @@
         <button onclick="showSection('clients')">👥 العملاء</button>
         <button onclick="showSection('transfers')">💸 الحوالات</button>
         <button onclick="showSection('balance')">📊 كشف الحساب</button>
+        <button onclick="showSection('email')">✉️ إرسال إيميل</button>
+        <button onclick="showSection('currency')">💵 حساب الدولار</button>
         <button onclick="showSection('print')">🖨️ طباعة</button>
         <button onclick="logout()">🚪 تسجيل الخروج</button>
       </div>
 
-      <!-- العملاء -->
       <div id="clients" class="section">
         <h3>👥 إدارة العملاء</h3>
         <input type="text" id="clientName" placeholder="اسم العميل">
         <input type="text" id="clientPhone" placeholder="رقم الهاتف">
         <input type="text" id="clientCity" placeholder="المدينة">
         <button onclick="addClient()">➕ إضافة عميل</button>
-
         <table>
           <thead>
-            <tr>
-              <th>الاسم</th>
-              <th>الهاتف</th>
-              <th>المدينة</th>
-            </tr>
+            <tr><th>الاسم</th><th>الهاتف</th><th>المدينة</th></tr>
           </thead>
           <tbody id="clientTable"></tbody>
         </table>
       </div>
 
-      <!-- الحوالات -->
       <div id="transfers" class="section">
         <h3>💸 إدارة الحوالات</h3>
         <input type="text" id="sender" placeholder="اسم المرسل">
@@ -130,29 +125,40 @@
         <input type="text" id="country" placeholder="الدولة">
         <input type="text" id="transferCode" placeholder="رقم الحوالة">
         <button onclick="addTransfer()">➕ تسجيل حوالة</button>
-
         <table>
           <thead>
-            <tr>
-              <th>المرسل</th>
-              <th>المستلم</th>
-              <th>المبلغ</th>
-              <th>الدولة</th>
-              <th>رقم الحوالة</th>
-            </tr>
+            <tr><th>المرسل</th><th>المستلم</th><th>المبلغ</th><th>الدولة</th><th>رقم الحوالة</th></tr>
           </thead>
           <tbody id="transferTable"></tbody>
         </table>
       </div>
 
-      <!-- كشف الحساب -->
       <div id="balance" class="section">
         <h3>📊 كشف الحساب</h3>
         <p>عدد العملاء: <span id="clientCount">0</span></p>
         <p>عدد الحوالات: <span id="transferCount">0</span></p>
       </div>
 
-      <!-- الطباعة -->
+      <div id="email" class="section">
+        <h3>✉️ إرسال إيميل</h3>
+        <input type="email" id="emailTo" placeholder="البريد الإلكتروني">
+        <textarea id="emailMessage" rows="4" placeholder="اكتب الرسالة هنا..."></textarea>
+        <button onclick="sendEmail()">📤 إرسال</button>
+        <p id="emailStatus"></p>
+      </div>
+
+      <div id="currency" class="section">
+        <h3>💵 حساب الدولار بيع / شراء</h3>
+        <input type="number" id="usdAmount" placeholder="أدخل المبلغ بالدولار">
+        <select id="operationType">
+          <option value="buy">شراء</option>
+          <option value="sell">بيع</option>
+        </select>
+        <input type="number" id="exchangeRate" placeholder="سعر الصرف">
+        <button onclick="calculateExchange()">📊 حساب</button>
+        <p id="exchangeResult"></p>
+      </div>
+
       <div id="print" class="section">
         <h3>🖨️ الطباعة</h3>
         <p>اضغط هنا لطباعة كشف الحساب أو إيصالات الحوالات.</p>
@@ -232,6 +238,38 @@
       const transferCount = document.querySelectorAll("#transferTable tr").length;
       document.getElementById("clientCount").textContent = clientCount;
       document.getElementById("transferCount").textContent = transferCount;
+    }
+
+    function sendEmail() {
+      const email = document.getElementById("emailTo").value.trim();
+      const message = document.getElementById("emailMessage").value.trim();
+
+      if (email && message) {
+        document.getElementById("emailStatus").textContent = `✅ تم إرسال الرسالة إلى ${email} (وهميًا 😈)`;
+        document.getElementById("emailTo").value = "";
+        document.getElementById("emailMessage").value = "";
+      } else {
+        document.getElementById("emailStatus").textContent = "❌ يرجى إدخال البريد والرسالة";
+      }
+    }
+
+    function calculateExchange() {
+      const amount = parseFloat(document.getElementById("usdAmount").value);
+      const rate = parseFloat(document.getElementById("exchangeRate").value);
+      const type = document.getElementById("operationType").value;
+
+      if (!isNaN(amount) && !isNaN(rate)) {
+        let result = 0;
+        if (type === "buy") {
+          result = amount * rate;
+          document.getElementById("exchangeResult").textContent = `💰 المبلغ المطلوب للدفع: ${result.toFixed(2)} ل.س`;
+        } else {
+          result = amount * rate;
+          document.getElementById("exchangeResult").textContent = `💵 المبلغ المستلم: ${result.toFixed(2)} ل.س`;
+        }
+      } else {
+        document.getElementById("exchangeResult").textContent = "❌ أدخل المبلغ وسعر الصرف بشكل صحيح";
+      }
     }
   </script>
 </body>
