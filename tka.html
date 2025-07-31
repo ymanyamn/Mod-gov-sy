@@ -1,182 +1,647 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>تكة دلفري</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to left, #43cea2, #185a9d);
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-      direction: rtl;
-    }
-    h1, h2 {
-      font-size: 34px;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px #000;
-    }
-    .page {
-      display: none;
-      max-width: 550px;
-      margin: auto;
-    }
-    .active {
-      display: block;
-    }
-    form {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.4);
-    }
-    input {
-      width: 90%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      background-color: rgba(255,255,255,0.8);
-      color: #000;
-    }
-    button {
-      background-color: #ff6f61;
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #e85c50;
-    }
-    .nav-btn {
-      margin-top: 15px;
-      background-color: #00c9ff;
-    }
-    #ordersList {
-      text-align: right;
-      padding: 10px;
-    }
-    pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تكة دلفري - توصيل طلبات سريع</title>
+    <style>
+        :root {
+            --primary: #FF6B00;
+            --secondary: #FFA726;
+            --dark: #333;
+            --light: #fff;
+            --success: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--light);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .logo span {
+            color: var(--light);
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .slogan {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            background: var(--light);
+            border-radius: 50px;
+            padding: 5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 700;
+        }
+        
+        .tab.active {
+            background: var(--primary);
+            color: var(--light);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title i {
+            margin-left: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--light);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            margin-top: 10px;
+        }
+        
+        .order-list {
+            list-style: none;
+        }
+        
+        .order-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-info {
+            flex: 1;
+        }
+        
+        .order-actions button {
+            margin-right: 10px;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .status-pending {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+        
+        .status-delivered {
+            background: #E8F5E9;
+            color: var(--success);
+        }
+        
+        .status-in-progress {
+            background: #E3F2FD;
+            color: #1976D2;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+        
+        .stat-title {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification i {
+            margin-left: 10px;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                border-radius: 15px;
+            }
+            
+            .tab {
+                border-radius: 0;
+            }
+            
+            .tab:first-child {
+                border-radius: 15px 15px 0 0;
+            }
+            
+            .tab:last-child {
+                border-radius: 0 0 15px 15px;
+            }
+            
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                transform: translateY(-150%);
+            }
+            
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationText"></span>
+    </div>
+    
+    <header>
+        <div class="container">
+            <div class="logo">تكة <span>دلفري</span></div>
+            <div class="slogan">توصيل طلبات بسرعة البرق ⚡</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" data-tab="customer">زبون</div>
+            <div class="tab" data-tab="driver">سائق</div>
+            <div class="tab" data-tab="admin">مشرف</div>
+        </div>
+        
+        <!-- صفحة الزبون -->
+        <div class="tab-content active" id="customer">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-user"></i> معلومات الزبون</h2>
+                <form id="customerForm">
+                    <div class="form-group">
+                        <label for="customerName">اسم الزبون</label>
+                        <input type="text" id="customerName" required placeholder="أدخل اسمك الكامل">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPhone">رقم الهاتف</label>
+                        <input type="tel" id="customerPhone" required placeholder="أدخل رقم هاتفك">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerAddress">العنوان</label>
+                        <textarea id="customerAddress" rows="3" required placeholder="أدخل عنوانك بالتفصيل"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderType">نوع الطلب</label>
+                        <select id="orderType" required>
+                            <option value="" disabled selected>اختر نوع الطلب</option>
+                            <option value="food">طعام</option>
+                            <option value="pharmacy">صيدلية</option>
+                            <option value="grocery">بقالة</option>
+                            <option value="electronics">إلكترونيات</option>
+                            <option value="other">أخرى</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderTime">ساعة الطلب</label>
+                        <input type="time" id="orderTime" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deliveryTime">الموعد المراد للتوصيل</label>
+                        <input type="datetime-local" id="deliveryTime" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderNotes">ملاحظات إضافية</label>
+                        <textarea id="orderNotes" rows="2" placeholder="أي ملاحظات إضافية عن الطلب"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-block">تأكيد الطلب <i class="fas fa-paper-plane"></i></button>
+                    <button type="button" id="whatsappBtn" class="btn btn-block btn-whatsapp">إرسال عبر واتساب <i class="fab fa-whatsapp"></i></button>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-history"></i> طلباتي السابقة</h2>
+                <ul class="order-list">
+                    <li class="order-item">
+                        <div class="order-info">
+                            <strong>طلب #1254</strong>
+                            <div>طعام - 15/08/2023</div>
+                            <span class="status status-delivered">تم التوصيل</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn">تفاصيل</button>
+                        </div>
+                    </li>
+                    <li class="order-item">
+                        <div class="order-info">
+                            <strong>طلب #1198</strong>
+                            <div>صيدلية - 10/08/2023</div>
+                            <span class="status status-delivered">تم التوصيل</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn">تفاصيل</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- صفحة السائق -->
+        <div class="tab-content" id="driver">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-id-card"></i> معلومات السائق</h2>
+                <form id="driverForm">
+                    <div class="form-group">
+                        <label for="driverName">اسم السائق</label>
+                        <input type="text" id="driverName" value="أحمد محمد" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="driverPhone">رقم الهاتف</label>
+                        <input type="tel" id="driverPhone" value="+966501234567" readonly>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-tasks"></i> الطلبات الموكلة</h2>
+                <ul class="order-list">
+                    <li class="order-item">
+                        <div class="order-info">
+                            <strong>طلب #1260</strong>
+                            <div>بقالة - محمد علي - 0501234567</div>
+                            <div>ساعة الطلب: 14:30</div>
+                            <span class="status status-in-progress">قيد التوصيل</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn">تم التوصيل</button>
+                        </div>
+                    </li>
+                    <li class="order-item">
+                        <div class="order-info">
+                            <strong>طلب #1258</strong>
+                            <div>طعام - سعيد أحمد - 0507654321</div>
+                            <div>ساعة الطلب: 13:15 - ساعة التوصيل: 13:45</div>
+                            <span class="status status-delivered">تم التوصيل</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn">تفاصيل</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- صفحة المشرف -->
+        <div class="tab-content" id="admin">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-title">الطلبات اليوم</div>
+                    <div class="stat-number">47</div>
+                    <div class="stat-title">طلب</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">طلبات قيد التوصيل</div>
+                    <div class="stat-number">12</div>
+                    <div class="stat-title">طلب</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">طلبات مكتملة</div>
+                    <div class="stat-number">35</div>
+                    <div class="stat-title">طلب</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">السائقون النشطون</div>
+                    <div class="stat-number">8</div>
+                    <div class="stat-title">سائق</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-chart-line"></i> نظرة عامة على الطلبات</h2>
+                <div style="height: 300px; background: #f5f5f5; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
+                    [رسم بياني يظهر إحصائيات الطلبات]
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-list-ol"></i> أحدث الطلبات</h2>
+                <ul class="order-list">
+                    <li class="order-item">
+                        <div class="order-info">
+                            <strong>طلب #1260</strong>
+                            <div>زبون: محمد علي - 0501234567</div>
+                            <div>سائق: أحمد محمد - 0501112222</div>
+                            <div>نوع الطلب: بقالة - ساعة الطلب: 14:30</div>
+                            <span class="status status-in-progress">قيد التوصيل</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn">تفاصيل</button>
+                            <button class="btn">تعديل</button>
+                        </div>
+                    </li>
+                    <li class="order-item">
+                        <div class="order-info">
+                            <strong>طلب #1259</strong>
+                            <div>زبون: فاطمة خالد - 0503334444</div>
+                            <div>سائق: علي سعيد - 0505556666</div>
+                            <div>نوع الطلب: صيدلية - ساعة الطلب: 14:15</div>
+                            <span class="status status-pending">بانتظار السائق</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn">تعيين سائق</button>
+                            <button class="btn">تفاصيل</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // تبديل بين التبويبات
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // إزالة النشاط من جميع التبويبات والمحتويات
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // إضافة النشاط للتبويب والمحتوى المحدد
+                tab.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // عرض الإشعارات
+        function showNotification(message, duration = 3000) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+        
+        // معالجة نموذج الزبون
+        const customerForm = document.getElementById('customerForm');
+        customerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // جمع بيانات الطلب
+            const orderData = {
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                address: document.getElementById('customerAddress').value,
+                type: document.getElementById('orderType').value,
+                orderTime: document.getElementById('orderTime').value,
+                deliveryTime: document.getElementById('deliveryTime').value,
+                notes: document.getElementById('orderNotes').value,
+                date: new Date().toLocaleString()
+            };
+            
+            // عرض إشعار
+            showNotification('تم استلام طلبك بنجاح! سنقوم بتوصيله في الوقت المحدد.');
+            
+            // حفظ الطلب في localStorage (يمكن استبدالها بربط مع قاعدة بيانات)
+            saveOrder(orderData);
+            
+            // إعادة تعيين النموذج
+            customerForm.reset();
+        });
+        
+        // زر إرسال عبر واتساب
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        whatsappBtn.addEventListener('click', () => {
+            // جمع بيانات الطلب
+            const name = document.getElementById('customerName').value || 'غير محدد';
+            const phone = document.getElementById('customerPhone').value || 'غير محدد';
+            const address = document.getElementById('customerAddress').value || 'غير محدد';
+            const type = document.getElementById('orderType').value || 'غير محدد';
+            const orderTime = document.getElementById('orderTime').value || 'غير محدد';
+            const deliveryTime = document.getElementById('deliveryTime').value || 'غير محدد';
+            const notes = document.getElementById('orderNotes').value || 'لا يوجد';
+            
+            // التحقق من وجود بيانات أساسية
+            if (!name || !phone || !address) {
+                showNotification('الرجاء إدخال البيانات الأساسية أولاً (الاسم، الهاتف، العنوان)', 4000);
+                return;
+            }
+            
+            // إنشاء رسالة واتساب
+            const whatsappNumber = '963943820819';
+            const message = `طلب جديد من تكة دلفري:
+            
+الزبون: ${name}
+الهاتف: ${phone}
+العنوان: ${address}
+نوع الطلب: ${type}
+ساعة الطلب: ${orderTime}
+موعد التوصيل: ${deliveryTime}
+ملاحظات: ${notes}
 
-  <h1>تكة دلفري</h1>
-
-  <!-- صفحة الزبون -->
-  <div id="customerPage" class="page active">
-    <form id="customerForm">
-      <input type="text" id="custName" placeholder="اسم الزبون" required>
-      <input type="text" id="custPhone" placeholder="رقم الهاتف" required>
-      <input type="text" id="custOrder" placeholder="نوع الطلب" required>
-      <input type="text" id="custAddress" placeholder="العنوان" required>
-      <button type="submit">إرسال الطلب</button>
-    </form>
-    <button class="nav-btn" onclick="switchPage('driverPage')">🚚 إلى صفحة عامل التوصيل</button>
-    <button class="nav-btn" onclick="switchPage('adminPage')">👨‍💼 لوحة المشرف</button>
-  </div>
-
-  <!-- صفحة عامل التوصيل -->
-  <div id="driverPage" class="page">
-    <form id="driverForm">
-      <input type="text" id="customerName" placeholder="اسم الزبون" required>
-      <input type="text" id="phone" placeholder="رقم الهاتف" required>
-      <input type="text" id="orderTime" placeholder="ساعة الطلب" required>
-      <input type="text" id="driverName" placeholder="اسم السائق" required>
-      <input type="text" id="deliveryHour" placeholder="ساعة التوصيل" required>
-      <input type="text" id="date" placeholder="تاريخ التوصيل" required>
-      <input type="text" id="orderType" placeholder="نوع الطلب" required>
-      <button type="submit">إرسال إلى واتساب</button>
-    </form>
-    <button class="nav-btn" onclick="switchPage('customerPage')">🔁 الرجوع للواجهة</button>
-    <button class="nav-btn" onclick="switchPage('adminPage')">👨‍💼 لوحة المشرف</button>
-  </div>
-
-  <!-- صفحة المشرف -->
-  <div id="adminPage" class="page">
-    <h2>📋 لوحة المشرف</h2>
-    <div id="ordersList"></div>
-    <button class="nav-btn" onclick="clearOrders()">🗑️ حذف كل الطلبات</button>
-    <button class="nav-btn" onclick="switchPage('customerPage')">🔁 الرجوع للواجهة</button>
-  </div>
-
-  <script>
-    function switchPage(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-      if (pageId === "adminPage") displayOrders();
-    }
-
-    function saveOrder(type, data) {
-      let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-      orders.push({ type, data, time: new Date().toLocaleString() });
-      localStorage.setItem("orders", JSON.stringify(orders));
-    }
-
-    function displayOrders() {
-      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-      const container = document.getElementById("ordersList");
-      container.innerHTML = "";
-      if (orders.length === 0) {
-        container.innerHTML = "<p>لا توجد طلبات محفوظة.</p>";
-        return;
-      }
-      orders.forEach((order, i) => {
-        container.innerHTML += `
-          <div style="background:#fff;color:#000;padding:10px;margin:10px;border-radius:8px;">
-            <strong>نوع الطلب:</strong> ${order.type}<br>
-            <strong>الوقت:</strong> ${order.time}<br>
-            <pre>${order.data}</pre>
-          </div>
-        `;
-      });
-    }
-
-    function clearOrders() {
-      localStorage.removeItem("orders");
-      displayOrders();
-    }
-
-    document.getElementById("customerForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const name = document.getElementById("custName").value;
-      const phone = document.getElementById("custPhone").value;
-      const order = document.getElementById("custOrder").value;
-      const address = document.getElementById("custAddress").value;
-
-      const message = `🛒 طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n🍽️ الطلب: ${order}\n📍 العنوان: ${address}`;
-      saveOrder("طلب زبون", message);
-      const phoneNumber = "963943820819";
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
-    });
-
-    document.getElementById("driverForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const customerName = document.getElementById("customerName").value;
-      const phone = document.getElementById("phone").value;
-      const orderTime = document.getElementById("orderTime").value;
-      const driverName = document.getElementById("driverName").value;
-      const deliveryHour = document.getElementById("deliveryHour").value;
-      const date = document.getElementById("date").value;
-      const orderType = document.getElementById("orderType").value;
-
-      const message = `📦 تفاصيل التوصيل:\nاسم الزبون: ${customerName}\n📞 رقم الهاتف: ${phone}\n🕒 ساعة الطلب: ${orderTime}\n🚚 اسم السائق: ${driverName}\n🕓 ساعة التوصيل: ${deliveryHour}\n📅 التاريخ: ${date}\n🍽️ نوع الطلب: ${orderType}`;
-      saveOrder("توصيل سائق", message);
-      const phoneNumber = "963943820819";
-      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-      window.open(url, "_blank");
-    });
-  </script>
-
+شكراً لاستخدامكم تكة دلفري!`;
+            
+            // تشفير الرسالة
+            const encodedMessage = encodeURIComponent(message);
+            
+            // فتح واتساب
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+            
+            // إشعار تأكيد
+            showNotification('جارٍ فتح واتساب لإرسال تفاصيل الطلب...');
+        });
+        
+        // حفظ الطلب في localStorage (لأغراض العرض)
+        function saveOrder(orderData) {
+            let orders = JSON.parse(localStorage.getItem('deliveryOrders')) || [];
+            orders.push(orderData);
+            localStorage.setItem('deliveryOrders', JSON.stringify(orders));
+        }
+        
+        // معالجة نموذج السائق
+        const driverForm = document.getElementById('driverForm');
+        driverForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification('تم تحديث حالة الطلب بنجاح!');
+        });
+    </script>
 </body>
 </html>
