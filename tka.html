@@ -11,6 +11,9 @@
             --dark: #333;
             --light: #fff;
             --success: #4CAF50;
+            --danger: #F44336;
+            --warning: #FFC107;
+            --info: #2196F3;
         }
         
         * {
@@ -181,6 +184,22 @@
             margin-top: 10px;
         }
         
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #2E7D32);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #C62828);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #FF8F00);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, var(--info), #1565C0);
+        }
+        
         .order-list {
             list-style: none;
         }
@@ -191,6 +210,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
         
         .order-item:last-child {
@@ -199,10 +219,18 @@
         
         .order-info {
             flex: 1;
+            min-width: 250px;
+            margin-bottom: 10px;
+        }
+        
+        .order-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .order-actions button {
-            margin-right: 10px;
+            margin: 0;
         }
         
         .status {
@@ -226,6 +254,11 @@
         .status-in-progress {
             background: #E3F2FD;
             color: #1976D2;
+        }
+        
+        .status-cancelled {
+            background: #FFEBEE;
+            color: var(--danger);
         }
         
         .stats {
@@ -269,15 +302,42 @@
             align-items: center;
             transform: translateX(150%);
             transition: transform 0.3s ease;
+            opacity: 0;
         }
         
         .notification.show {
             transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .notification.error {
+            background: var(--danger);
+        }
+        
+        .notification.warning {
+            background: var(--warning);
+            color: var(--dark);
+        }
+        
+        .notification.info {
+            background: var(--info);
         }
         
         .notification i {
             margin-left: 10px;
             font-size: 1.2rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ddd;
         }
         
         @media (max-width: 768px) {
@@ -311,6 +371,11 @@
             
             .notification.show {
                 transform: translateY(0);
+            }
+            
+            .order-actions {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -361,11 +426,11 @@
                         <label for="orderType">نوع الطلب</label>
                         <select id="orderType" required>
                             <option value="" disabled selected>اختر نوع الطلب</option>
-                            <option value="food">طعام</option>
-                            <option value="pharmacy">صيدلية</option>
-                            <option value="grocery">بقالة</option>
-                            <option value="electronics">إلكترونيات</option>
-                            <option value="other">أخرى</option>
+                            <option value="طعام">طعام</option>
+                            <option value="صيدلية">صيدلية</option>
+                            <option value="بقالة">بقالة</option>
+                            <option value="إلكترونيات">إلكترونيات</option>
+                            <option value="أخرى">أخرى</option>
                         </select>
                     </div>
                     
@@ -391,27 +456,8 @@
             
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-history"></i> طلباتي السابقة</h2>
-                <ul class="order-list">
-                    <li class="order-item">
-                        <div class="order-info">
-                            <strong>طلب #1254</strong>
-                            <div>طعام - 15/08/2023</div>
-                            <span class="status status-delivered">تم التوصيل</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn">تفاصيل</button>
-                        </div>
-                    </li>
-                    <li class="order-item">
-                        <div class="order-info">
-                            <strong>طلب #1198</strong>
-                            <div>صيدلية - 10/08/2023</div>
-                            <span class="status status-delivered">تم التوصيل</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn">تفاصيل</button>
-                        </div>
-                    </li>
+                <ul class="order-list" id="customerOrdersList">
+                    <!-- سيتم ملؤها بالبيانات من localStorage -->
                 </ul>
             </div>
         </div>
@@ -423,41 +469,22 @@
                 <form id="driverForm">
                     <div class="form-group">
                         <label for="driverName">اسم السائق</label>
-                        <input type="text" id="driverName" value="أحمد محمد" readonly>
+                        <input type="text" id="driverName" required placeholder="أدخل اسم السائق">
                     </div>
                     
                     <div class="form-group">
                         <label for="driverPhone">رقم الهاتف</label>
-                        <input type="tel" id="driverPhone" value="+966501234567" readonly>
+                        <input type="tel" id="driverPhone" required placeholder="أدخل رقم هاتف السائق">
                     </div>
+                    
+                    <button type="submit" class="btn btn-block">حفظ المعلومات <i class="fas fa-save"></i></button>
                 </form>
             </div>
             
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-tasks"></i> الطلبات الموكلة</h2>
-                <ul class="order-list">
-                    <li class="order-item">
-                        <div class="order-info">
-                            <strong>طلب #1260</strong>
-                            <div>بقالة - محمد علي - 0501234567</div>
-                            <div>ساعة الطلب: 14:30</div>
-                            <span class="status status-in-progress">قيد التوصيل</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn">تم التوصيل</button>
-                        </div>
-                    </li>
-                    <li class="order-item">
-                        <div class="order-info">
-                            <strong>طلب #1258</strong>
-                            <div>طعام - سعيد أحمد - 0507654321</div>
-                            <div>ساعة الطلب: 13:15 - ساعة التوصيل: 13:45</div>
-                            <span class="status status-delivered">تم التوصيل</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn">تفاصيل</button>
-                        </div>
-                    </li>
+                <ul class="order-list" id="driverOrdersList">
+                    <!-- سيتم ملؤها بالبيانات من localStorage -->
                 </ul>
             </div>
         </div>
@@ -467,72 +494,94 @@
             <div class="stats">
                 <div class="stat-card">
                     <div class="stat-title">الطلبات اليوم</div>
-                    <div class="stat-number">47</div>
+                    <div class="stat-number" id="totalOrders">0</div>
                     <div class="stat-title">طلب</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">طلبات قيد التوصيل</div>
-                    <div class="stat-number">12</div>
+                    <div class="stat-number" id="inProgressOrders">0</div>
                     <div class="stat-title">طلب</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-title">طلبات مكتملة</div>
-                    <div class="stat-number">35</div>
+                    <div class="stat-number" id="deliveredOrders">0</div>
                     <div class="stat-title">طلب</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">السائقون النشطون</div>
-                    <div class="stat-number">8</div>
-                    <div class="stat-title">سائق</div>
+                    <div class="stat-title">طلبات ملغاة</div>
+                    <div class="stat-number" id="cancelledOrders">0</div>
+                    <div class="stat-title">طلب</div>
                 </div>
             </div>
             
             <div class="card">
-                <h2 class="card-title"><i class="fas fa-chart-line"></i> نظرة عامة على الطلبات</h2>
-                <div style="height: 300px; background: #f5f5f5; border-radius: 10px; display: flex; justify-content: center; align-items: center;">
-                    [رسم بياني يظهر إحصائيات الطلبات]
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2 class="card-title"><i class="fas fa-list-ol"></i> أحدث الطلبات</h2>
-                <ul class="order-list">
-                    <li class="order-item">
-                        <div class="order-info">
-                            <strong>طلب #1260</strong>
-                            <div>زبون: محمد علي - 0501234567</div>
-                            <div>سائق: أحمد محمد - 0501112222</div>
-                            <div>نوع الطلب: بقالة - ساعة الطلب: 14:30</div>
-                            <span class="status status-in-progress">قيد التوصيل</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn">تفاصيل</button>
-                            <button class="btn">تعديل</button>
-                        </div>
-                    </li>
-                    <li class="order-item">
-                        <div class="order-info">
-                            <strong>طلب #1259</strong>
-                            <div>زبون: فاطمة خالد - 0503334444</div>
-                            <div>سائق: علي سعيد - 0505556666</div>
-                            <div>نوع الطلب: صيدلية - ساعة الطلب: 14:15</div>
-                            <span class="status status-pending">بانتظار السائق</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn">تعيين سائق</button>
-                            <button class="btn">تفاصيل</button>
-                        </div>
-                    </li>
+                <h2 class="card-title"><i class="fas fa-list-ol"></i> جميع الطلبات</h2>
+                <ul class="order-list" id="adminOrdersList">
+                    <!-- سيتم ملؤها بالبيانات من localStorage -->
                 </ul>
             </div>
         </div>
     </div>
     
     <script>
-        // تبديل بين التبويبات
+        // متغيرات التطبيق
+        let orders = JSON.parse(localStorage.getItem('deliveryOrders')) || [];
+        let currentDriver = JSON.parse(localStorage.getItem('currentDriver')) || null;
+        
+        // DOM Elements
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
         const tabs = document.querySelectorAll('.tab');
         const tabContents = document.querySelectorAll('.tab-content');
+        const customerForm = document.getElementById('customerForm');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        const driverForm = document.getElementById('driverForm');
+        const driverNameInput = document.getElementById('driverName');
+        const driverPhoneInput = document.getElementById('driverPhone');
+        const customerOrdersList = document.getElementById('customerOrdersList');
+        const driverOrdersList = document.getElementById('driverOrdersList');
+        const adminOrdersList = document.getElementById('adminOrdersList');
+        const totalOrdersEl = document.getElementById('totalOrders');
+        const inProgressOrdersEl = document.getElementById('inProgressOrders');
+        const deliveredOrdersEl = document.getElementById('deliveredOrders');
+        const cancelledOrdersEl = document.getElementById('cancelledOrders');
         
+        // تهيئة التطبيق عند التحميل
+        document.addEventListener('DOMContentLoaded', () => {
+            // تحميل بيانات السائق إذا وجدت
+            if (currentDriver) {
+                driverNameInput.value = currentDriver.name || '';
+                driverPhoneInput.value = currentDriver.phone || '';
+            }
+            
+            // تحديث القوائم
+            updateOrdersLists();
+            updateStats();
+            
+            // إضافة طلب وهمي إذا لم يكن هناك طلبات (لأغراض العرض)
+            if (orders.length === 0) {
+                const sampleOrder = {
+                    id: generateId(),
+                    customerName: 'زبون جديد',
+                    customerPhone: '0501234567',
+                    customerAddress: 'عنوان الزبون',
+                    orderType: 'طعام',
+                    orderTime: '12:00',
+                    deliveryTime: '2023-08-20T12:30',
+                    notes: 'لا توجد ملاحظات',
+                    status: 'pending',
+                    date: new Date().toLocaleString(),
+                    driverName: '',
+                    driverPhone: ''
+                };
+                orders.push(sampleOrder);
+                saveOrders();
+                updateOrdersLists();
+                updateStats();
+            }
+        });
+        
+        // تبديل بين التبويبات
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.getAttribute('data-tab');
@@ -544,16 +593,18 @@
                 // إضافة النشاط للتبويب والمحتوى المحدد
                 tab.classList.add('active');
                 document.getElementById(tabId).classList.add('active');
+                
+                // تحديث القوائم عند تبديل التبويبات
+                updateOrdersLists();
+                updateStats();
             });
         });
         
         // عرض الإشعارات
-        function showNotification(message, duration = 3000) {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            
+        function showNotification(message, type = 'success', duration = 3000) {
             notificationText.textContent = message;
-            notification.classList.add('show');
+            notification.className = 'notification';
+            notification.classList.add('show', type);
             
             setTimeout(() => {
                 notification.classList.remove('show');
@@ -561,34 +612,41 @@
         }
         
         // معالجة نموذج الزبون
-        const customerForm = document.getElementById('customerForm');
         customerForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
             // جمع بيانات الطلب
             const orderData = {
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                address: document.getElementById('customerAddress').value,
-                type: document.getElementById('orderType').value,
+                id: generateId(),
+                customerName: document.getElementById('customerName').value,
+                customerPhone: document.getElementById('customerPhone').value,
+                customerAddress: document.getElementById('customerAddress').value,
+                orderType: document.getElementById('orderType').value,
                 orderTime: document.getElementById('orderTime').value,
                 deliveryTime: document.getElementById('deliveryTime').value,
                 notes: document.getElementById('orderNotes').value,
-                date: new Date().toLocaleString()
+                status: 'pending',
+                date: new Date().toLocaleString(),
+                driverName: '',
+                driverPhone: ''
             };
+            
+            // حفظ الطلب
+            orders.push(orderData);
+            saveOrders();
             
             // عرض إشعار
             showNotification('تم استلام طلبك بنجاح! سنقوم بتوصيله في الوقت المحدد.');
             
-            // حفظ الطلب في localStorage (يمكن استبدالها بربط مع قاعدة بيانات)
-            saveOrder(orderData);
-            
             // إعادة تعيين النموذج
             customerForm.reset();
+            
+            // تحديث القوائم
+            updateOrdersLists();
+            updateStats();
         });
         
         // زر إرسال عبر واتساب
-        const whatsappBtn = document.getElementById('whatsappBtn');
         whatsappBtn.addEventListener('click', () => {
             // جمع بيانات الطلب
             const name = document.getElementById('customerName').value || 'غير محدد';
@@ -601,7 +659,7 @@
             
             // التحقق من وجود بيانات أساسية
             if (!name || !phone || !address) {
-                showNotification('الرجاء إدخال البيانات الأساسية أولاً (الاسم، الهاتف، العنوان)', 4000);
+                showNotification('الرجاء إدخال البيانات الأساسية أولاً (الاسم، الهاتف، العنوان)', 'error', 4000);
                 return;
             }
             
@@ -626,22 +684,343 @@
             window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
             
             // إشعار تأكيد
-            showNotification('جارٍ فتح واتساب لإرسال تفاصيل الطلب...');
+            showNotification('جارٍ فتح واتساب لإرسال تفاصيل الطلب...', 'info');
+            
+            // التبديل إلى تبويب السائق بعد 3 ثواني
+            setTimeout(() => {
+                document.querySelector('.tab[data-tab="driver"]').click();
+            }, 3000);
         });
         
-        // حفظ الطلب في localStorage (لأغراض العرض)
-        function saveOrder(orderData) {
-            let orders = JSON.parse(localStorage.getItem('deliveryOrders')) || [];
-            orders.push(orderData);
+        // معالجة نموذج السائق
+        driverForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // حفظ بيانات السائق
+            currentDriver = {
+                name: driverNameInput.value,
+                phone: driverPhoneInput.value
+            };
+            
+            localStorage.setItem('currentDriver', JSON.stringify(currentDriver));
+            
+            showNotification('تم حفظ معلومات السائق بنجاح!');
+        });
+        
+        // تحديث قوائم الطلبات
+        function updateOrdersLists() {
+            // تحديث قائمة طلبات الزبون
+            updateCustomerOrdersList();
+            
+            // تحديث قائمة طلبات السائق
+            updateDriverOrdersList();
+            
+            // تحديث قائمة طلبات المشرف
+            updateAdminOrdersList();
+        }
+        
+        // تحديث قائمة طلبات الزبون
+        function updateCustomerOrdersList() {
+            customerOrdersList.innerHTML = '';
+            
+            const customerOrders = orders.filter(order => 
+                order.customerPhone && order.customerPhone === document.getElementById('customerPhone').value
+            );
+            
+            if (customerOrders.length === 0) {
+                customerOrdersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h3>لا توجد طلبات سابقة</h3>
+                        <p>قم بتسجيل طلب جديد لرؤيته هنا</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            customerOrders.forEach(order => {
+                const statusClass = getStatusClass(order.status);
+                const statusText = getStatusText(order.status);
+                
+                const li = document.createElement('li');
+                li.className = 'order-item';
+                li.innerHTML = `
+                    <div class="order-info">
+                        <strong>طلب #${order.id}</strong>
+                        <div>${order.orderType} - ${order.date}</div>
+                        <span class="status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn btn-info" onclick="showOrderDetails('${order.id}')">تفاصيل</button>
+                    </div>
+                `;
+                customerOrdersList.appendChild(li);
+            });
+        }
+        
+        // تحديث قائمة طلبات السائق
+        function updateDriverOrdersList() {
+            driverOrdersList.innerHTML = '';
+            
+            const driverOrders = orders.filter(order => 
+                order.status === 'pending' || 
+                (order.driverPhone && currentDriver && order.driverPhone === currentDriver.phone)
+            );
+            
+            if (driverOrders.length === 0) {
+                driverOrdersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-truck"></i>
+                        <h3>لا توجد طلبات موكلة</h3>
+                        <p>سيظهر هنا الطلبات الموكلة لك</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            driverOrders.forEach(order => {
+                const statusClass = getStatusClass(order.status);
+                const statusText = getStatusText(order.status);
+                
+                const li = document.createElement('li');
+                li.className = 'order-item';
+                
+                let actions = '';
+                if (order.status === 'pending') {
+                    actions = `
+                        <button class="btn btn-success" onclick="assignOrder('${order.id}')">استلام الطلب</button>
+                    `;
+                } else if (order.status === 'in-progress') {
+                    actions = `
+                        <button class="btn btn-success" onclick="completeOrder('${order.id}')">تم التوصيل</button>
+                        <button class="btn btn-danger" onclick="cancelOrder('${order.id}')">إلغاء الطلب</button>
+                    `;
+                }
+                
+                li.innerHTML = `
+                    <div class="order-info">
+                        <strong>طلب #${order.id}</strong>
+                        <div>${order.orderType} - ${order.customerName} - ${order.customerPhone}</div>
+                        <div>العنوان: ${order.customerAddress}</div>
+                        <div>ساعة الطلب: ${order.orderTime}</div>
+                        ${order.driverName ? `<div>مسؤول التوصيل: ${order.driverName}</div>` : ''}
+                        <span class="status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="order-actions">
+                        ${actions}
+                        <button class="btn btn-info" onclick="showOrderDetails('${order.id}')">تفاصيل</button>
+                    </div>
+                `;
+                driverOrdersList.appendChild(li);
+            });
+        }
+        
+        // تحديث قائمة طلبات المشرف
+        function updateAdminOrdersList() {
+            adminOrdersList.innerHTML = '';
+            
+            if (orders.length === 0) {
+                adminOrdersList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>لا توجد طلبات</h3>
+                        <p>سيظهر هنا جميع الطلبات عند تسجيلها</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            orders.forEach(order => {
+                const statusClass = getStatusClass(order.status);
+                const statusText = getStatusText(order.status);
+                
+                const li = document.createElement('li');
+                li.className = 'order-item';
+                
+                let actions = '';
+                if (order.status !== 'cancelled' && order.status !== 'delivered') {
+                    actions += `
+                        <button class="btn btn-danger" onclick="adminCancelOrder('${order.id}')">إلغاء الطلب</button>
+                    `;
+                }
+                
+                if (order.status === 'pending') {
+                    actions += `
+                        <button class="btn btn-warning" onclick="editOrder('${order.id}')">تعديل</button>
+                    `;
+                }
+                
+                li.innerHTML = `
+                    <div class="order-info">
+                        <strong>طلب #${order.id}</strong>
+                        <div>${order.orderType} - ${order.customerName} - ${order.customerPhone}</div>
+                        <div>العنوان: ${order.customerAddress}</div>
+                        <div>ساعة الطلب: ${order.orderTime}</div>
+                        <div>موعد التوصيل: ${order.deliveryTime}</div>
+                        ${order.driverName ? `<div>السائق: ${order.driverName} - ${order.driverPhone}</div>` : ''}
+                        ${order.notes ? `<div>ملاحظات: ${order.notes}</div>` : ''}
+                        <span class="status ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="order-actions">
+                        ${actions}
+                        <button class="btn btn-info" onclick="showOrderDetails('${order.id}')">تفاصيل</button>
+                        <button class="btn btn-danger" onclick="deleteOrder('${order.id}')">حذف</button>
+                    </div>
+                `;
+                adminOrdersList.appendChild(li);
+            });
+        }
+        
+        // تحديث الإحصائيات
+        function updateStats() {
+            const total = orders.length;
+            const inProgress = orders.filter(o => o.status === 'in-progress').length;
+            const delivered = orders.filter(o => o.status === 'delivered').length;
+            const cancelled = orders.filter(o => o.status === 'cancelled').length;
+            
+            totalOrdersEl.textContent = total;
+            inProgressOrdersEl.textContent = inProgress;
+            deliveredOrdersEl.textContent = delivered;
+            cancelledOrdersEl.textContent = cancelled;
+        }
+        
+        // استلام الطلب من قبل السائق
+        function assignOrder(orderId) {
+            if (!currentDriver || !currentDriver.name || !currentDriver.phone) {
+                showNotification('الرجاء إدخال معلومات السائق أولاً', 'error');
+                return;
+            }
+            
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'in-progress';
+                order.driverName = currentDriver.name;
+                order.driverPhone = currentDriver.phone;
+                saveOrders();
+                updateOrdersLists();
+                updateStats();
+                showNotification('تم استلام الطلب بنجاح!', 'success');
+            }
+        }
+        
+        // إكمال الطلب (توصيله)
+        function completeOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'delivered';
+                saveOrders();
+                updateOrdersLists();
+                updateStats();
+                showNotification('تم تأكيد توصيل الطلب بنجاح!', 'success');
+            }
+        }
+        
+        // إلغاء الطلب من قبل السائق
+        function cancelOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'cancelled';
+                saveOrders();
+                updateOrdersLists();
+                updateStats();
+                showNotification('تم إلغاء الطلب بنجاح', 'warning');
+            }
+        }
+        
+        // إلغاء الطلب من قبل المشرف
+        function adminCancelOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                order.status = 'cancelled';
+                saveOrders();
+                updateOrdersLists();
+                updateStats();
+                showNotification('تم إلغاء الطلب بنجاح', 'warning');
+            }
+        }
+        
+        // حذف الطلب (للمشرف فقط)
+        function deleteOrder(orderId) {
+            if (confirm('هل أنت متأكد من حذف هذا الطلب؟ لا يمكن التراجع عن هذه العملية.')) {
+                orders = orders.filter(o => o.id !== orderId);
+                saveOrders();
+                updateOrdersLists();
+                updateStats();
+                showNotification('تم حذف الطلب بنجاح', 'info');
+            }
+        }
+        
+        // تعديل الطلب (للمشرف فقط)
+        function editOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                // في تطبيق حقيقي، هنا ستفتح نموذج تعديل
+                showNotification('خاصية التعديل قيد التطوير', 'info');
+            }
+        }
+        
+        // عرض تفاصيل الطلب
+        function showOrderDetails(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                const statusText = getStatusText(order.status);
+                let details = `
+                    <h3>تفاصيل الطلب #${order.id}</h3>
+                    <p><strong>الزبون:</strong> ${order.customerName}</p>
+                    <p><strong>الهاتف:</strong> ${order.customerPhone}</p>
+                    <p><strong>العنوان:</strong> ${order.customerAddress}</p>
+                    <p><strong>نوع الطلب:</strong> ${order.orderType}</p>
+                    <p><strong>ساعة الطلب:</strong> ${order.orderTime}</p>
+                    <p><strong>موعد التوصيل:</strong> ${order.deliveryTime}</p>
+                    <p><strong>الحالة:</strong> ${statusText}</p>
+                `;
+                
+                if (order.driverName) {
+                    details += `
+                        <p><strong>السائق:</strong> ${order.driverName}</p>
+                        <p><strong>هاتف السائق:</strong> ${order.driverPhone}</p>
+                    `;
+                }
+                
+                if (order.notes) {
+                    details += `<p><strong>ملاحظات:</strong> ${order.notes}</p>`;
+                }
+                
+                alert(details);
+            }
+        }
+        
+        // حفظ الطلبات في localStorage
+        function saveOrders() {
             localStorage.setItem('deliveryOrders', JSON.stringify(orders));
         }
         
-        // معالجة نموذج السائق
-        const driverForm = document.getElementById('driverForm');
-        driverForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showNotification('تم تحديث حالة الطلب بنجاح!');
-        });
+        // توليد معرف فريد للطلب
+        function generateId() {
+            return Math.floor(1000 + Math.random() * 9000);
+        }
+        
+        // الحصول على كلاس الحالة
+        function getStatusClass(status) {
+            switch(status) {
+                case 'pending': return 'status-pending';
+                case 'in-progress': return 'status-in-progress';
+                case 'delivered': return 'status-delivered';
+                case 'cancelled': return 'status-cancelled';
+                default: return '';
+            }
+        }
+        
+        // الحصول على نص الحالة
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return 'بانتظار السائق';
+                case 'in-progress': return 'قيد التوصيل';
+                case 'delivered': return 'تم التوصيل';
+                case 'cancelled': return 'تم الإلغاء';
+                default: return '';
+            }
+        }
     </script>
 </body>
 </html>
