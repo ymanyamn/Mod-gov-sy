@@ -1,276 +1,78 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>برنامج محاسبة سريع ومتكامل 😈</title>
+  <title>تكة دلفري</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #111;
-      color: #eee;
+      background: linear-gradient(to right, #ff4e50, #f9d423);
+      color: #333;
       text-align: center;
       padding: 20px;
+      direction: rtl;
     }
-
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background-color: #222;
+    h1 {
+      font-size: 36px;
+      color: white;
+      text-shadow: 2px 2px #000;
+      margin-bottom: 30px;
+    }
+    form {
+      background: white;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px #000;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
-
-    input, button, select, textarea {
+    input {
+      width: 90%;
       padding: 10px;
-      margin: 5px;
-      border: none;
+      margin: 10px 0;
+      border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 16px;
     }
-
-    input, select, textarea {
-      width: 80%;
-    }
-
     button {
-      background-color: #444;
-      color: #fff;
+      background-color: #ff4e50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
       cursor: pointer;
     }
-
     button:hover {
-      background-color: #666;
-    }
-
-    .features button {
-      display: inline-block;
-      margin: 5px;
-    }
-
-    .section {
-      background-color: #333;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 5px;
-      display: none;
-    }
-
-    table {
-      width: 100%;
-      margin-top: 10px;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      border: 1px solid #555;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #444;
-    }
-
-    #message {
-      color: red;
-      margin-top: 10px;
+      background-color: #e03e3e;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>😈 برنامج صرافة </h1>
 
-    <form onsubmit="login(event)">
-      <input type="text" id="username" placeholder="اسم المستخدم"><br>
-      <input type="password" id="password" placeholder="كلمة المرور"><br>
-      <button type="submit">🔐 دخول</button>
-      <div id="message"></div>
-    </form>
+  <h1>تكة دلفري</h1>
 
-    <div id="dashboard" style="display:none;">
-      <h2>🔥 مرحبًا بك يا mhmd</h2>
-      <p>أنت الآن داخل نظام التمرد لإدارة الصرافة.</p>
-
-      <div class="features">
-        <button onclick="showSection('clients')">👥 العملاء</button>
-        <button onclick="showSection('transfers')">💸 الحوالات</button>
-        <button onclick="showSection('balance')">📊 كشف الحساب</button>
-        <button onclick="showSection('email')">✉️ إرسال إيميل</button>
-        <button onclick="showSection('currency')">💵 حساب الدولار</button>
-        <button onclick="showSection('print')">🖨️ طباعة</button>
-        <button onclick="logout()">🚪 تسجيل الخروج</button>
-      </div>
-
-      <div id="clients" class="section">
-        <h3>👥 إدارة العملاء</h3>
-        <input type="text" id="clientName" placeholder="اسم العميل">
-        <input type="text" id="clientPhone" placeholder="رقم الهاتف">
-        <input type="text" id="clientCity" placeholder="المدينة">
-        <button onclick="addClient()">➕ إضافة عميل</button>
-        <table>
-          <thead>
-            <tr><th>الاسم</th><th>الهاتف</th><th>المدينة</th></tr>
-          </thead>
-          <tbody id="clientTable"></tbody>
-        </table>
-      </div>
-
-      <div id="transfers" class="section">
-        <h3>💸 إدارة الحوالات</h3>
-        <input type="text" id="sender" placeholder="اسم المرسل">
-        <input type="text" id="receiver" placeholder="اسم المستلم">
-        <input type="number" id="amount" placeholder="المبلغ">
-        <input type="text" id="country" placeholder="الدولة">
-        <input type="text" id="transferCode" placeholder="رقم الحوالة">
-        <button onclick="addTransfer()">➕ تسجيل حوالة</button>
-        <table>
-          <thead>
-            <tr><th>المرسل</th><th>المستلم</th><th>المبلغ</th><th>الدولة</th><th>رقم الحوالة</th></tr>
-          </thead>
-          <tbody id="transferTable"></tbody>
-        </table>
-      </div>
-
-      <div id="balance" class="section">
-        <h3>📊 كشف الحساب</h3>
-        <p>عدد العملاء: <span id="clientCount">0</span></p>
-        <p>عدد الحوالات: <span id="transferCount">0</span></p>
-      </div>
-
-      <div id="email" class="section">
-        <h3>✉️ إرسال إيميل</h3>
-        <input type="email" id="emailTo" placeholder="البريد الإلكتروني">
-        <textarea id="emailMessage" rows="4" placeholder="اكتب الرسالة هنا..."></textarea>
-        <button onclick="sendEmail()">📤 إرسال</button>
-        <p id="emailStatus"></p>
-      </div>
-
-      <div id="currency" class="section">
-        <h3>💵 حساب الدولار بيع / شراء</h3>
-        <input type="number" id="usdAmount" placeholder="أدخل المبلغ بالدولار">
-        <select id="operationType">
-          <option value="buy">شراء</option>
-          <option value="sell">بيع</option>
-        </select>
-        <input type="number" id="exchangeRate" placeholder="سعر الصرف">
-        <button onclick="calculateExchange()">📊 حساب</button>
-        <p id="exchangeResult"></p>
-      </div>
-
-      <div id="print" class="section">
-        <h3>🖨️ الطباعة</h3>
-        <p>اضغط هنا لطباعة كشف الحساب أو إيصالات الحوالات.</p>
-        <button onclick="window.print()">🖨️ طباعة الصفحة</button>
-      </div>
-    </div>
-  </div>
+  <form id="whatsappForm">
+    <input type="text" id="name" placeholder="اسم الزبون" required>
+    <input type="text" id="order" placeholder="نوع الطلب" required>
+    <input type="text" id="time" placeholder="موعد الوصول" required>
+    <button type="submit">إرسال إلى واتساب</button>
+  </form>
 
   <script>
-    function login(event) {
-      event.preventDefault();
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
+    document.getElementById("whatsappForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const order = document.getElementById("order").value;
+      const time = document.getElementById("time").value;
 
-      if (username === "mhmd" && password === "mhmd") {
-        document.querySelector("form").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-      } else {
-        document.getElementById("message").textContent = "❌ بيانات غير صحيحة، حاول مرة أخرى";
-      }
-    }
+      const message = `طلب جديد من تكة دلفري:\nالاسم: ${name}\nالطلب: ${order}\nموعد الوصول: ${time}`;
+      const phone = "963943820819";
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 
-    function logout() {
-      document.querySelector("form").style.display = "block";
-      document.getElementById("dashboard").style.display = "none";
-      hideAllSections();
-      document.getElementById("message").textContent = "";
-    }
-
-    function showSection(id) {
-      hideAllSections();
-      document.getElementById(id).style.display = "block";
-      updateCounts();
-    }
-
-    function hideAllSections() {
-      const sections = document.querySelectorAll(".section");
-      sections.forEach(section => section.style.display = "none");
-    }
-
-    function addClient() {
-      const name = document.getElementById("clientName").value.trim();
-      const phone = document.getElementById("clientPhone").value.trim();
-      const city = document.getElementById("clientCity").value.trim();
-
-      if (name && phone && city) {
-        const row = `<tr><td>${name}</td><td>${phone}</td><td>${city}</td></tr>`;
-        document.getElementById("clientTable").innerHTML += row;
-        document.getElementById("clientName").value = "";
-        document.getElementById("clientPhone").value = "";
-        document.getElementById("clientCity").value = "";
-        updateCounts();
-      }
-    }
-
-    function addTransfer() {
-      const sender = document.getElementById("sender").value.trim();
-      const receiver = document.getElementById("receiver").value.trim();
-      const amount = document.getElementById("amount").value.trim();
-      const country = document.getElementById("country").value.trim();
-      const code = document.getElementById("transferCode").value.trim();
-
-      if (sender && receiver && amount && country && code) {
-        const row = `<tr><td>${sender}</td><td>${receiver}</td><td>${amount}</td><td>${country}</td><td>${code}</td></tr>`;
-        document.getElementById("transferTable").innerHTML += row;
-        document.getElementById("sender").value = "";
-        document.getElementById("receiver").value = "";
-        document.getElementById("amount").value = "";
-        document.getElementById("country").value = "";
-        document.getElementById("transferCode").value = "";
-        updateCounts();
-      }
-    }
-
-    function updateCounts() {
-      const clientCount = document.querySelectorAll("#clientTable tr").length;
-      const transferCount = document.querySelectorAll("#transferTable tr").length;
-      document.getElementById("clientCount").textContent = clientCount;
-      document.getElementById("transferCount").textContent = transferCount;
-    }
-
-    function sendEmail() {
-      const email = document.getElementById("emailTo").value.trim();
-      const message = document.getElementById("emailMessage").value.trim();
-
-      if (email && message) {
-        document.getElementById("emailStatus").textContent = `✅ تم إرسال الرسالة إلى ${email} (وهميًا 😈)`;
-        document.getElementById("emailTo").value = "";
-        document.getElementById("emailMessage").value = "";
-      } else {
-        document.getElementById("emailStatus").textContent = "❌ يرجى إدخال البريد والرسالة";
-      }
-    }
-
-    function calculateExchange() {
-      const amount = parseFloat(document.getElementById("usdAmount").value);
-      const rate = parseFloat(document.getElementById("exchangeRate").value);
-      const type = document.getElementById("operationType").value;
-
-      if (!isNaN(amount) && !isNaN(rate)) {
-        let result = 0;
-        if (type === "buy") {
-          result = amount * rate;
-          document.getElementById("exchangeResult").textContent = `💰 المبلغ المطلوب للدفع: ${result.toFixed(2)} ل.س`;
-        } else {
-          result = amount * rate;
-          document.getElementById("exchangeResult").textContent = `💵 المبلغ المستلم: ${result.toFixed(2)} ل.س`;
-        }
-      } else {
-        document.getElementById("exchangeResult").textContent = "❌ أدخل المبلغ وسعر الصرف بشكل صحيح";
-      }
-    }
+      window.open(url, "_blank");
+    });
   </script>
+
 </body>
 </html>
