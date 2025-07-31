@@ -6,45 +6,65 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(to right, #ff4e50, #f9d423);
-      color: #333;
+      background: linear-gradient(to left, #43cea2, #185a9d);
+      color: #fff;
       text-align: center;
       padding: 20px;
       direction: rtl;
     }
-    h1 {
-      font-size: 36px;
-      color: white;
+    h1, h2 {
+      font-size: 34px;
+      margin-bottom: 20px;
       text-shadow: 2px 2px #000;
-      margin-bottom: 30px;
+    }
+    .page {
+      display: none;
+      max-width: 550px;
+      margin: auto;
+    }
+    .active {
+      display: block;
     }
     form {
-      background: white;
+      background: rgba(255, 255, 255, 0.1);
       padding: 20px;
-      border-radius: 10px;
-      max-width: 500px;
-      margin: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
     }
     input {
       width: 90%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      border: none;
+      border-radius: 8px;
       font-size: 16px;
+      background-color: rgba(255,255,255,0.8);
+      color: #000;
     }
     button {
-      background-color: #ff4e50;
+      background-color: #ff6f61;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 25px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 18px;
       cursor: pointer;
+      margin-top: 10px;
     }
     button:hover {
-      background-color: #e03e3e;
+      background-color: #e85c50;
+    }
+    .nav-btn {
+      margin-top: 15px;
+      background-color: #00c9ff;
+    }
+    #ordersList {
+      text-align: right;
+      padding: 10px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -52,24 +72,108 @@
 
   <h1>تكة دلفري</h1>
 
-  <form id="whatsappForm">
-    <input type="text" id="name" placeholder="اسم الزبون" required>
-    <input type="text" id="order" placeholder="نوع الطلب" required>
-    <input type="text" id="time" placeholder="موعد الوصول" required>
-    <button type="submit">إرسال إلى واتساب</button>
-  </form>
+  <!-- صفحة الزبون -->
+  <div id="customerPage" class="page active">
+    <form id="customerForm">
+      <input type="text" id="custName" placeholder="اسم الزبون" required>
+      <input type="text" id="custPhone" placeholder="رقم الهاتف" required>
+      <input type="text" id="custOrder" placeholder="نوع الطلب" required>
+      <input type="text" id="custAddress" placeholder="العنوان" required>
+      <button type="submit">إرسال الطلب</button>
+    </form>
+    <button class="nav-btn" onclick="switchPage('driverPage')">🚚 إلى صفحة عامل التوصيل</button>
+    <button class="nav-btn" onclick="switchPage('adminPage')">👨‍💼 لوحة المشرف</button>
+  </div>
+
+  <!-- صفحة عامل التوصيل -->
+  <div id="driverPage" class="page">
+    <form id="driverForm">
+      <input type="text" id="customerName" placeholder="اسم الزبون" required>
+      <input type="text" id="phone" placeholder="رقم الهاتف" required>
+      <input type="text" id="orderTime" placeholder="ساعة الطلب" required>
+      <input type="text" id="driverName" placeholder="اسم السائق" required>
+      <input type="text" id="deliveryHour" placeholder="ساعة التوصيل" required>
+      <input type="text" id="date" placeholder="تاريخ التوصيل" required>
+      <input type="text" id="orderType" placeholder="نوع الطلب" required>
+      <button type="submit">إرسال إلى واتساب</button>
+    </form>
+    <button class="nav-btn" onclick="switchPage('customerPage')">🔁 الرجوع للواجهة</button>
+    <button class="nav-btn" onclick="switchPage('adminPage')">👨‍💼 لوحة المشرف</button>
+  </div>
+
+  <!-- صفحة المشرف -->
+  <div id="adminPage" class="page">
+    <h2>📋 لوحة المشرف</h2>
+    <div id="ordersList"></div>
+    <button class="nav-btn" onclick="clearOrders()">🗑️ حذف كل الطلبات</button>
+    <button class="nav-btn" onclick="switchPage('customerPage')">🔁 الرجوع للواجهة</button>
+  </div>
 
   <script>
-    document.getElementById("whatsappForm").addEventListener("submit", function(e) {
+    function switchPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      if (pageId === "adminPage") displayOrders();
+    }
+
+    function saveOrder(type, data) {
+      let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      orders.push({ type, data, time: new Date().toLocaleString() });
+      localStorage.setItem("orders", JSON.stringify(orders));
+    }
+
+    function displayOrders() {
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      const container = document.getElementById("ordersList");
+      container.innerHTML = "";
+      if (orders.length === 0) {
+        container.innerHTML = "<p>لا توجد طلبات محفوظة.</p>";
+        return;
+      }
+      orders.forEach((order, i) => {
+        container.innerHTML += `
+          <div style="background:#fff;color:#000;padding:10px;margin:10px;border-radius:8px;">
+            <strong>نوع الطلب:</strong> ${order.type}<br>
+            <strong>الوقت:</strong> ${order.time}<br>
+            <pre>${order.data}</pre>
+          </div>
+        `;
+      });
+    }
+
+    function clearOrders() {
+      localStorage.removeItem("orders");
+      displayOrders();
+    }
+
+    document.getElementById("customerForm").addEventListener("submit", function(e) {
       e.preventDefault();
-      const name = document.getElementById("name").value;
-      const order = document.getElementById("order").value;
-      const time = document.getElementById("time").value;
+      const name = document.getElementById("custName").value;
+      const phone = document.getElementById("custPhone").value;
+      const order = document.getElementById("custOrder").value;
+      const address = document.getElementById("custAddress").value;
 
-      const message = `طلب جديد من تكة دلفري:\nالاسم: ${name}\nالطلب: ${order}\nموعد الوصول: ${time}`;
-      const phone = "963943820819";
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      const message = `🛒 طلب جديد:\n👤 الاسم: ${name}\n📞 الهاتف: ${phone}\n🍽️ الطلب: ${order}\n📍 العنوان: ${address}`;
+      saveOrder("طلب زبون", message);
+      const phoneNumber = "963943820819";
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      window.open(url, "_blank");
+    });
 
+    document.getElementById("driverForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const customerName = document.getElementById("customerName").value;
+      const phone = document.getElementById("phone").value;
+      const orderTime = document.getElementById("orderTime").value;
+      const driverName = document.getElementById("driverName").value;
+      const deliveryHour = document.getElementById("deliveryHour").value;
+      const date = document.getElementById("date").value;
+      const orderType = document.getElementById("orderType").value;
+
+      const message = `📦 تفاصيل التوصيل:\nاسم الزبون: ${customerName}\n📞 رقم الهاتف: ${phone}\n🕒 ساعة الطلب: ${orderTime}\n🚚 اسم السائق: ${driverName}\n🕓 ساعة التوصيل: ${deliveryHour}\n📅 التاريخ: ${date}\n🍽️ نوع الطلب: ${orderType}`;
+      saveOrder("توصيل سائق", message);
+      const phoneNumber = "963943820819";
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
       window.open(url, "_blank");
     });
   </script>
