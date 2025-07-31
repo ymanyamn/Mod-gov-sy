@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#FF6B00">
     <meta name="description" content="تطبيق تكة دلفري لتوصيل الطلبات">
     <title>تكة دلفري - توصيل طلبات سريع</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary: #FF6B00;
@@ -23,14 +23,22 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background-color: #f9f9f9;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: var(--dark);
             min-height: 100vh;
             padding-bottom: 80px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         
         .container {
@@ -40,27 +48,30 @@
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: rgba(0, 0, 0, 0.7);
             color: var(--light);
             padding: 20px 0;
             text-align: center;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
         
         .logo {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             margin-bottom: 10px;
+            background: linear-gradient(to right, #FF6B00, #FFA726);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
         }
         
         .logo span {
-            color: var(--light);
             display: inline-block;
             animation: pulse 1.5s infinite;
         }
@@ -72,17 +83,19 @@
         }
         
         .slogan {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             opacity: 0.9;
+            color: #FFA726;
         }
         
         .tabs {
             display: flex;
             justify-content: center;
             margin-bottom: 30px;
-            background: var(--light);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50px;
             padding: 5px;
+            backdrop-filter: blur(5px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
@@ -92,11 +105,17 @@
             border-radius: 50px;
             transition: all 0.3s ease;
             font-weight: 700;
+            color: white;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
         
         .tab.active {
             background: var(--primary);
             color: var(--light);
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.5);
         }
         
         .tab-content {
@@ -114,20 +133,22 @@
         }
         
         .card {
-            background: var(--light);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
         
         .card-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 20px;
             color: var(--primary);
             border-bottom: 2px solid var(--secondary);
@@ -138,6 +159,7 @@
         
         .card-title i {
             margin-left: 10px;
+            font-size: 1.8rem;
         }
         
         .form-group {
@@ -148,38 +170,50 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 700;
+            color: #333;
         }
         
         input, select, textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 18px;
             border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 1rem;
-            transition: border 0.3s ease;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
         }
         
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
             outline: none;
+            box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
+            background: white;
         }
         
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: var(--light);
             border: none;
-            padding: 12px 25px;
+            padding: 14px 30px;
             border-radius: 50px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.6);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
         }
         
         .btn-block {
@@ -213,12 +247,21 @@
         }
         
         .order-item {
-            padding: 15px;
+            padding: 20px;
             border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .order-item:hover {
+            background: white;
+            transform: scale(1.01);
         }
         
         .order-item:last-child {
@@ -243,9 +286,9 @@
         
         .status {
             display: inline-block;
-            padding: 5px 10px;
+            padding: 6px 12px;
             border-radius: 50px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 700;
         }
         
@@ -277,23 +320,30 @@
         }
         
         .stat-card {
-            background: var(--light);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
         
         .stat-number {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 900;
             color: var(--primary);
             margin: 10px 0;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
         
         .stat-title {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
         }
         
         .notification {
@@ -304,7 +354,7 @@
             color: white;
             padding: 15px 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -333,17 +383,19 @@
         
         .notification i {
             margin-left: 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
         }
         
         .empty-state {
             text-align: center;
             padding: 40px 20px;
             color: #666;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
         }
         
         .empty-state i {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 20px;
             color: #ddd;
         }
@@ -360,7 +412,7 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
             transform: translateY(100%);
             transition: transform 0.5s ease;
         }
@@ -373,15 +425,52 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .install-banner button:hover {
+            background: #ff8c00;
+        }
+        
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .login-title {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .admin-actions {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .admin-section-title {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
         }
         
         @media (max-width: 768px) {
             .logo {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .tabs {
@@ -415,17 +504,59 @@
             .order-actions {
                 width: 100%;
                 justify-content: center;
+                margin-top: 15px;
             }
             
             .install-banner {
                 flex-direction: column;
                 text-align: center;
-                gap: 10px;
+                gap: 15px;
+            }
+            
+            .card {
+                padding: 20px;
             }
         }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 99;
+            animation: pulse 2s infinite;
+        }
+        
+        .order-id {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .fire-animation {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.5rem;
+            animation: fire 1s infinite alternate;
+        }
+        
+        @keyframes fire {
+            0% { transform: scale(1); color: #FF6B00; }
+            100% { transform: scale(1.2); color: #FF0000; }
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="notification" id="notification">
@@ -441,9 +572,13 @@
         <button id="installBtn">تثبيت التطبيق</button>
     </div>
     
+    <div class="floating-btn" id="installFloatBtn" title="تثبيت التطبيق">
+        <i class="fas fa-download"></i>
+    </div>
+    
     <header>
         <div class="container">
-            <div class="logo">تكة <span>دلفري</span></div>
+            <div class="logo">تكة <span>دلفري</span> <i class="fas fa-fire fire-animation"></i></div>
             <div class="slogan">توصيل طلبات بسرعة البرق ⚡</div>
         </div>
     </header>
@@ -544,34 +679,77 @@
         
         <!-- صفحة المشرف -->
         <div class="tab-content" id="admin">
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-title">الطلبات اليوم</div>
-                    <div class="stat-number" id="totalOrders">0</div>
-                    <div class="stat-title">طلب</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">طلبات قيد التوصيل</div>
-                    <div class="stat-number" id="inProgressOrders">0</div>
-                    <div class="stat-title">طلب</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">طلبات مكتملة</div>
-                    <div class="stat-number" id="deliveredOrders">0</div>
-                    <div class="stat-title">طلب</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">طلبات ملغاة</div>
-                    <div class="stat-number" id="cancelledOrders">0</div>
-                    <div class="stat-title">طلب</div>
+            <div id="loginSection">
+                <div class="login-container">
+                    <h2 class="login-title">تسجيل دخول المشرف</h2>
+                    <form id="adminLoginForm">
+                        <div class="form-group">
+                            <label for="adminUsername">اسم المستخدم</label>
+                            <input type="text" id="adminUsername" required placeholder="أدخل اسم المستخدم">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="adminPassword">كلمة المرور</label>
+                            <input type="password" id="adminPassword" required placeholder="أدخل كلمة المرور">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-block">تسجيل الدخول <i class="fas fa-lock"></i></button>
+                    </form>
                 </div>
             </div>
             
-            <div class="card">
-                <h2 class="card-title"><i class="fas fa-list-ol"></i> جميع الطلبات</h2>
-                <ul class="order-list" id="adminOrdersList">
-                    <!-- سيتم ملؤها بالبيانات من localStorage -->
-                </ul>
+            <div id="adminContent" style="display: none;">
+                <div class="admin-actions">
+                    <h3 class="admin-section-title"><i class="fas fa-cog"></i> إدارة الحساب</h3>
+                    <form id="adminSettingsForm">
+                        <div class="form-group">
+                            <label for="newUsername">اسم المستخدم الجديد</label>
+                            <input type="text" id="newUsername" placeholder="أدخل اسم مستخدم جديد">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newPassword">كلمة المرور الجديدة</label>
+                            <input type="password" id="newPassword" placeholder="أدخل كلمة مرور جديدة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">تأكيد كلمة المرور</label>
+                            <input type="password" id="confirmPassword" placeholder="أعد إدخال كلمة المرور">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-warning">تحديث الحساب <i class="fas fa-sync-alt"></i></button>
+                    </form>
+                </div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-title">الطلبات اليوم</div>
+                        <div class="stat-number" id="totalOrders">0</div>
+                        <div class="stat-title">طلب</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">طلبات قيد التوصيل</div>
+                        <div class="stat-number" id="inProgressOrders">0</div>
+                        <div class="stat-title">طلب</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">طلبات مكتملة</div>
+                        <div class="stat-number" id="deliveredOrders">0</div>
+                        <div class="stat-title">طلب</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">طلبات ملغاة</div>
+                        <div class="stat-number" id="cancelledOrders">0</div>
+                        <div class="stat-title">طلب</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-list-ol"></i> جميع الطلبات</h2>
+                    <ul class="order-list" id="adminOrdersList">
+                        <!-- سيتم ملؤها بالبيانات من localStorage -->
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -580,6 +758,7 @@
         // متغيرات التطبيق
         let orders = JSON.parse(localStorage.getItem('deliveryOrders')) || [];
         let currentDriver = JSON.parse(localStorage.getItem('currentDriver')) || null;
+        let adminCredentials = JSON.parse(localStorage.getItem('adminCredentials')) || { username: "mhmd", password: "mhmd" };
         let deferredPrompt;
         
         // DOM Elements
@@ -601,6 +780,11 @@
         const cancelledOrdersEl = document.getElementById('cancelledOrders');
         const installBanner = document.getElementById('installBanner');
         const installBtn = document.getElementById('installBtn');
+        const installFloatBtn = document.getElementById('installFloatBtn');
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        const adminSettingsForm = document.getElementById('adminSettingsForm');
+        const loginSection = document.getElementById('loginSection');
+        const adminContent = document.getElementById('adminContent');
         
         // تهيئة التطبيق عند التحميل
         document.addEventListener('DOMContentLoaded', () => {
@@ -609,6 +793,9 @@
                 driverNameInput.value = currentDriver.name || '';
                 driverPhoneInput.value = currentDriver.phone || '';
             }
+            
+            // تحميل بيانات الزبون إذا وجدت
+            loadCustomerData();
             
             // تحديث القوائم
             updateOrdersLists();
@@ -636,7 +823,20 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
+                if (outcome === 'accepted') {
+                    showNotification('تم تثبيت التطبيق بنجاح!', 'success');
+                }
+                deferredPrompt = null;
+            }
+        });
+        
+        installFloatBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    showNotification('تم تثبيت التطبيق بنجاح!', 'success');
+                }
                 deferredPrompt = null;
             }
         });
@@ -645,7 +845,7 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            showInstallBanner();
+            installFloatBtn.style.display = 'flex';
         });
         
         // تبديل بين التبويبات
@@ -702,11 +902,11 @@
             orders.push(orderData);
             saveOrders();
             
+            // حفظ بيانات الزبون
+            saveCustomerData();
+            
             // عرض إشعار
             showNotification('تم استلام طلبك بنجاح! سنقوم بتوصيله في الوقت المحدد.', 'success');
-            
-            // إعادة تعيين النموذج
-            customerForm.reset();
             
             // تحديث القوائم
             updateOrdersLists();
@@ -814,7 +1014,7 @@
                 li.className = 'order-item';
                 li.innerHTML = `
                     <div class="order-info">
-                        <strong>طلب #${order.id}</strong>
+                        <div class="order-id">طلب #${order.id}</div>
                         <div>${order.orderType} - ${order.date}</div>
                         <span class="status ${statusClass}">${statusText}</span>
                     </div>
@@ -867,7 +1067,7 @@
                 
                 li.innerHTML = `
                     <div class="order-info">
-                        <strong>طلب #${order.id}</strong>
+                        <div class="order-id">طلب #${order.id}</div>
                         <div>${order.orderType} - ${order.customerName} - ${order.customerPhone}</div>
                         <div>العنوان: ${order.customerAddress}</div>
                         <div>ساعة الطلب: ${order.orderTime}</div>
@@ -920,7 +1120,7 @@
                 
                 li.innerHTML = `
                     <div class="order-info">
-                        <strong>طلب #${order.id}</strong>
+                        <div class="order-id">طلب #${order.id}</div>
                         <div>${order.orderType} - ${order.customerName} - ${order.customerPhone}</div>
                         <div>العنوان: ${order.customerAddress}</div>
                         <div>ساعة الطلب: ${order.orderTime}</div>
@@ -1055,6 +1255,77 @@
                 }
                 
                 alert(details);
+            }
+        }
+        
+        // تسجيل دخول المشرف
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                loginSection.style.display = 'none';
+                adminContent.style.display = 'block';
+                showNotification('تم تسجيل الدخول بنجاح!', 'success');
+            } else {
+                showNotification('اسم المستخدم أو كلمة المرور غير صحيحة', 'error');
+            }
+        });
+        
+        // تحديث بيانات المشرف
+        adminSettingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newUsername = document.getElementById('newUsername').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword && newPassword !== confirmPassword) {
+                showNotification('كلمتا المرور غير متطابقتين', 'error');
+                return;
+            }
+            
+            if (newUsername) {
+                adminCredentials.username = newUsername;
+            }
+            
+            if (newPassword) {
+                adminCredentials.password = newPassword;
+            }
+            
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            
+            showNotification('تم تحديث بيانات المشرف بنجاح!', 'success');
+            document.getElementById('adminSettingsForm').reset();
+        });
+        
+        // حفظ بيانات الزبون
+        function saveCustomerData() {
+            const customerData = {
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                address: document.getElementById('customerAddress').value
+            };
+            
+            localStorage.setItem('customerData', JSON.stringify(customerData));
+        }
+        
+        // تحميل بيانات الزبون
+        function loadCustomerData() {
+            const customerData = JSON.parse(localStorage.getItem('customerData')) || {};
+            
+            if (customerData.name) {
+                document.getElementById('customerName').value = customerData.name;
+            }
+            
+            if (customerData.phone) {
+                document.getElementById('customerPhone').value = customerData.phone;
+            }
+            
+            if (customerData.address) {
+                document.getElementById('customerAddress').value = customerData.address;
             }
         }
         
