@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FF6B00">
+    <meta name="description" content="تطبيق تكة دلفري لتوصيل الطلبات">
     <title>تكة دلفري - توصيل طلبات سريع</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --primary: #FF6B00;
@@ -26,6 +29,8 @@
         body {
             background-color: #f9f9f9;
             color: var(--dark);
+            min-height: 100vh;
+            padding-bottom: 80px;
         }
         
         .container {
@@ -42,10 +47,13 @@
             border-radius: 0 0 20px 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
         .logo {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 900;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             margin-bottom: 10px;
@@ -64,7 +72,7 @@
         }
         
         .slogan {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             opacity: 0.9;
         }
         
@@ -119,7 +127,7 @@
         }
         
         .card-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 20px;
             color: var(--primary);
             border-bottom: 2px solid var(--secondary);
@@ -277,7 +285,7 @@
         }
         
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 900;
             color: var(--primary);
             margin: 10px 0;
@@ -300,9 +308,9 @@
             z-index: 1000;
             display: flex;
             align-items: center;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
             opacity: 0;
+            transform: translateX(150%);
+            transition: all 0.5s ease;
         }
         
         .notification.show {
@@ -338,6 +346,37 @@
             font-size: 3rem;
             margin-bottom: 20px;
             color: #ddd;
+        }
+        
+        .install-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #333, #000);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .install-banner.show {
+            transform: translateY(0);
+        }
+        
+        .install-banner button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
         }
         
         @media (max-width: 768px) {
@@ -377,6 +416,12 @@
                 width: 100%;
                 justify-content: center;
             }
+            
+            .install-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -386,6 +431,14 @@
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText"></span>
+    </div>
+    
+    <div class="install-banner" id="installBanner">
+        <div>
+            <i class="fas fa-mobile-alt"></i>
+            تثبيت تطبيق تكة دلفري على شاشتك الرئيسية لتجربة أفضل!
+        </div>
+        <button id="installBtn">تثبيت التطبيق</button>
     </div>
     
     <header>
@@ -527,6 +580,7 @@
         // متغيرات التطبيق
         let orders = JSON.parse(localStorage.getItem('deliveryOrders')) || [];
         let currentDriver = JSON.parse(localStorage.getItem('currentDriver')) || null;
+        let deferredPrompt;
         
         // DOM Elements
         const notification = document.getElementById('notification');
@@ -545,6 +599,8 @@
         const inProgressOrdersEl = document.getElementById('inProgressOrders');
         const deliveredOrdersEl = document.getElementById('deliveredOrders');
         const cancelledOrdersEl = document.getElementById('cancelledOrders');
+        const installBanner = document.getElementById('installBanner');
+        const installBtn = document.getElementById('installBtn');
         
         // تهيئة التطبيق عند التحميل
         document.addEventListener('DOMContentLoaded', () => {
@@ -558,27 +614,38 @@
             updateOrdersLists();
             updateStats();
             
-            // إضافة طلب وهمي إذا لم يكن هناك طلبات (لأغراض العرض)
-            if (orders.length === 0) {
-                const sampleOrder = {
-                    id: generateId(),
-                    customerName: 'زبون جديد',
-                    customerPhone: '0501234567',
-                    customerAddress: 'عنوان الزبون',
-                    orderType: 'طعام',
-                    orderTime: '12:00',
-                    deliveryTime: '2023-08-20T12:30',
-                    notes: 'لا توجد ملاحظات',
-                    status: 'pending',
-                    date: new Date().toLocaleString(),
-                    driverName: '',
-                    driverPhone: ''
-                };
-                orders.push(sampleOrder);
-                saveOrders();
-                updateOrdersLists();
-                updateStats();
+            // إظهار الإشعار التثبيت بعد 10 ثواني
+            setTimeout(() => {
+                showInstallBanner();
+            }, 10000);
+        });
+        
+        // عرض إشعار التثبيت
+        function showInstallBanner() {
+            installBanner.classList.add('show');
+        }
+        
+        // إخفاء إشعار التثبيت
+        function hideInstallBanner() {
+            installBanner.classList.remove('show');
+        }
+        
+        // تثبيت التطبيق
+        installBtn.addEventListener('click', async () => {
+            hideInstallBanner();
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
             }
+        });
+        
+        // حدث عرض التثبيت
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallBanner();
         });
         
         // تبديل بين التبويبات
@@ -626,7 +693,7 @@
                 deliveryTime: document.getElementById('deliveryTime').value,
                 notes: document.getElementById('orderNotes').value,
                 status: 'pending',
-                date: new Date().toLocaleString(),
+                date: new Date().toLocaleString('ar-SA'),
                 driverName: '',
                 driverPhone: ''
             };
@@ -636,7 +703,7 @@
             saveOrders();
             
             // عرض إشعار
-            showNotification('تم استلام طلبك بنجاح! سنقوم بتوصيله في الوقت المحدد.');
+            showNotification('تم استلام طلبك بنجاح! سنقوم بتوصيله في الوقت المحدد.', 'success');
             
             // إعادة تعيين النموذج
             customerForm.reset();
@@ -704,7 +771,7 @@
             
             localStorage.setItem('currentDriver', JSON.stringify(currentDriver));
             
-            showNotification('تم حفظ معلومات السائق بنجاح!');
+            showNotification('تم حفظ معلومات السائق بنجاح!', 'success');
         });
         
         // تحديث قوائم الطلبات
@@ -723,8 +790,9 @@
         function updateCustomerOrdersList() {
             customerOrdersList.innerHTML = '';
             
+            const customerPhone = document.getElementById('customerPhone').value;
             const customerOrders = orders.filter(order => 
-                order.customerPhone && order.customerPhone === document.getElementById('customerPhone').value
+                order.customerPhone && order.customerPhone === customerPhone
             );
             
             if (customerOrders.length === 0) {
@@ -1021,6 +1089,15 @@
                 default: return '';
             }
         }
+        
+        // جعل الدوال متاحة عالمياً
+        window.assignOrder = assignOrder;
+        window.completeOrder = completeOrder;
+        window.cancelOrder = cancelOrder;
+        window.adminCancelOrder = adminCancelOrder;
+        window.deleteOrder = deleteOrder;
+        window.editOrder = editOrder;
+        window.showOrderDetails = showOrderDetails;
     </script>
 </body>
 </html>
