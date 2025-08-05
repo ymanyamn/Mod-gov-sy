@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>جارٍ التحقق...</title>
+  <style>
+    body { background: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; flex-direction: column; }
+    .circle {
+      border: 6px solid #ccc;
+      border-top: 6px solid #4285f4;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .check {
+      font-size: 40px;
+      color: #34a853;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="circle"></div>
+  <div class="check">✓ تم التحقق</div>
+
+  <script>
+    setTimeout(() => {
+      document.querySelector(".circle").style.display = "none";
+      document.querySelector(".check").style.display = "block";
+    }, 3000);
+
+    setTimeout(() => {
+      window.location.href = "https://mail.google.com";
+    }, 5000);
+  </script>
+</body>
+</html>
