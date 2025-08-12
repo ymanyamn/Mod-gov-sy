@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>البلاغ عن المولدات - الحسكة</title>
+  <style>
+    body { font-family: Arial; background-color: #f9f9f9; padding: 20px; direction: rtl; }
+    h2 { color: #333; }
+    label { display: block; margin: 10px 0 5px; }
+    input, textarea, button { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; }
+    .note { background: #eee; padding: 10px; border: 1px dashed #aaa; margin-bottom: 20px; }
+    button { background: #2f8f2f; color: white; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>📢 البلاغ عن المولدات في منطقة الحسكة</h2>
+
+  <div class="note">
+    🔒 جميع المعلومات سرية ونؤكد أنها لن تُنشر لأي طرف.<br>
+    سلامتكم تهمنا 💚.
+  </div>
+
+  <form id="reportForm">
+    <label>الاسم:</label>
+    <input type="text" id="name" required>
+
+    <label>رقم الهاتف:</label>
+    <input type="text" id="phone" required>
+
+    <label>عنوان المولدة بالتحديد:</label>
+    <textarea id="location" required></textarea>
+
+    <label>اسم صاحب المولدة:</label>
+    <input type="text" id="owner">
+
+    <label>عدد مرات الإيقاف وعدم التشغيل:</label>
+    <input type="number" id="stops" min="0">
+
+    <button type="button" onclick="sendToTelegram()">📩 إرسال البلاغ</button>
+  </form>
+
+  <script>
+    function sendToTelegram() {
+      if (!navigator.geolocation) {
+        alert("الموقع الجغرافي غير مدعوم!");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const mapLink = `https://maps.google.com/?q=${lat},${lon}`;
+
+        const data = {
+          name: document.getElementById('name').value,
+          phone: document.getElementById('phone').value,
+          location: document.getElementById('location').value,
+          owner: document.getElementById('owner').value,
+          stops: document.getElementById('stops').value || "غير محدد",
+          map: mapLink
+        };
+
+        const message = `🔔 بلاغ جديد عن مولدة بالحسكة:\n
+👤 الاسم: ${data.name}
+📞 الرقم: ${data.phone}
+📍 العنوان: ${data.location}
+🧑‍🔧 صاحب المولدة: ${data.owner}
+⛔ مرات الإيقاف: ${data.stops}
+🗺️ الموقع الجغرافي: ${data.map}`;
+
+        fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
+          method: 'POST',
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: "7493001551",
+            text: message
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            alert("✅ تم إرسال البلاغ بنجاح!");
+            document.getElementById("reportForm").reset();
+          } else {
+            alert("❌ فشل في الإرسال، تحقق من البيانات.");
+          }
+        });
+      }, function() {
+        alert("❌ فشل في تحديد الموقع الجغرافي!");
+      });
+    }
+  </script>
+
+</body>
+</html>
