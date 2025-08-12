@@ -3,90 +3,139 @@
 <head>
   <meta charset="UTF-8">
   <title>البلاغ عن المولدات - الحسكة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: Arial; background-color: #f9f9f9; padding: 20px; direction: rtl; }
-    h2 { color: #333; }
-    label { display: block; margin: 10px 0 5px; }
-    input, textarea, button { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; }
-    .note { background: #eee; padding: 10px; border: 1px dashed #aaa; margin-bottom: 20px; }
-    button { background: #2f8f2f; color: white; cursor: pointer; }
+    body {
+      background: linear-gradient(to right, #ecf0f3, #f9f9f9);
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      color: #333;
+      direction: rtl;
+    }
+    .container {
+      max-width: 550px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      color: #3b5998;
+      margin-bottom: 20px;
+    }
+    label {
+      margin-top: 12px;
+      display: block;
+      font-weight: bold;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      background: #3b5998;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #2a4373;
+    }
+    .note {
+      background: #dfe9f3;
+      border: 1px dashed #3b5998;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
   </style>
 </head>
 <body>
 
-  <h2>📢 البلاغ عن المولدات في منطقة الحسكة</h2>
+  <div class="container">
+    <h2>📢 البلاغ عن المولدات في منطقة الحسكة</h2>
 
-  <div class="note">
-    🔒 جميع المعلومات سرية ونؤكد أنها لن تُنشر لأي طرف.<br>
-    سلامتكم تهمنا 💚.
+    <div class="note">
+      🔐 جميع المعلومات سرية ونؤكد أنها لن تُنشر لأي طرف.<br>
+      سلامتكم تهمنا 💚.
+    </div>
+
+    <form id="reportForm">
+      <label>الاسم:</label>
+      <input type="text" id="name" required>
+
+      <label>رقم الهاتف:</label>
+      <input type="text" id="phone" required>
+
+      <label>عنوان المولدة بالتحديد:</label>
+      <textarea id="location" required></textarea>
+
+      <label>اسم صاحب المولدة:</label>
+      <input type="text" id="owner">
+
+      <label>عدد مرات الإيقاف وعدم التشغيل:</label>
+      <input type="number" id="stops" min="0">
+
+      <button type="button" onclick="sendToTelegram()">📩 إرسال البلاغ</button>
+    </form>
+
+    <div class="footer">🚨 تم إعداد النموذج لأغراض خدمة المجتمع ورفع الجودة العامة</div>
   </div>
-
-  <form id="reportForm">
-    <label>الاسم:</label>
-    <input type="text" id="name" required>
-
-    <label>رقم الهاتف:</label>
-    <input type="text" id="phone" required>
-
-    <label>عنوان المولدة بالتحديد:</label>
-    <textarea id="location" required></textarea>
-
-    <label>اسم صاحب المولدة:</label>
-    <input type="text" id="owner">
-
-    <label>عدد مرات الإيقاف وعدم التشغيل:</label>
-    <input type="number" id="stops" min="0">
-
-    <button type="button" onclick="sendToTelegram()">📩 إرسال البلاغ</button>
-  </form>
 
   <script>
     function sendToTelegram() {
       if (!navigator.geolocation) {
-        alert("الموقع الجغرافي غير مدعوم!");
+        alert("🌍 الموقع الجغرافي غير مدعوم.");
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(function(position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
         const mapLink = `https://maps.google.com/?q=${lat},${lon}`;
 
-        const data = {
-          name: document.getElementById('name').value,
-          phone: document.getElementById('phone').value,
-          location: document.getElementById('location').value,
-          owner: document.getElementById('owner').value,
-          stops: document.getElementById('stops').value || "غير محدد",
-          map: mapLink
-        };
+        const msg = `📢 بلاغ جديد عن مولدة:
+👤 الاسم: ${document.getElementById('name').value}
+📞 الرقم: ${document.getElementById('phone').value}
+📍 العنوان: ${document.getElementById('location').value}
+🧑‍🔧 صاحب المولدة: ${document.getElementById('owner').value}
+⛔ عدد مرات الإيقاف: ${document.getElementById('stops').value || "غير محدد"}
+🗺️ الموقع الجغرافي: ${mapLink}`;
 
-        const message = `🔔 بلاغ جديد عن مولدة بالحسكة:\n
-👤 الاسم: ${data.name}
-📞 الرقم: ${data.phone}
-📍 العنوان: ${data.location}
-🧑‍🔧 صاحب المولدة: ${data.owner}
-⛔ مرات الإيقاف: ${data.stops}
-🗺️ الموقع الجغرافي: ${data.map}`;
-
-        fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
-          method: 'POST',
+        fetch("https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage", {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: "7493001551",
-            text: message
+            text: msg
           })
-        })
-        .then(response => {
-          if (response.ok) {
+        }).then(res => {
+          if (res.ok) {
             alert("✅ تم إرسال البلاغ بنجاح!");
             document.getElementById("reportForm").reset();
           } else {
-            alert("❌ فشل في الإرسال، تحقق من البيانات.");
+            alert("❌ تعذّر إرسال البلاغ.");
           }
         });
       }, function() {
-        alert("❌ فشل في تحديد الموقع الجغرافي!");
+        alert("❌ فشل تحديد الموقع الجغرافي!");
       });
     }
   </script>
