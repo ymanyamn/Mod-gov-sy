@@ -1,0 +1,295 @@
+p<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام النتائج المدرسية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        h2 {
+            color: #2980b9;
+        }
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .result-info {
+            margin-bottom: 20px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            font-weight: bold;
+            min-width: 150px;
+        }
+        .status {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            margin: 15px 0;
+            color: #e74c3c;
+        }
+        .message {
+            text-align: center;
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+        .divider {
+            border-top: 1px dashed #aaa;
+            margin: 20px 0;
+        }
+        .appeal-notice {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>نظام النتائج المدرسية</h1>
+        <h2>مديرية الامتحانات - وزارة التربية السورية</h2>
+        
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="openTab('search')">البحث عن النتائج</button>
+            <button class="tab-btn" onclick="openTab('entry')">إدخال النتائج</button>
+        </div>
+        
+        <!-- صفحة البحث -->
+        <div id="search" class="tab-content active">
+            <form id="searchForm">
+                <div class="form-group">
+                    <label for="searchYear">السنة الدراسية</label>
+                    <select id="searchYear" required>
+                        <option value="">اختر السنة</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchCertificate">نوع الشهادة</label>
+                    <select id="searchCertificate" required>
+                        <option value="">اختر نوع الشهادة</option>
+                        <option value="basic">التعليم الأساسي - عام - منهاج دمشق</option>
+                        <option value="secondary">التعليم الثانوي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchEnrollment">رقم الاكتتاب</label>
+                    <input type="number" id="searchEnrollment" required>
+                </div>
+                
+                <button type="submit">بحث</button>
+            </form>
+            
+            <div id="searchResults" style="display: none;">
+                <div class="result-info">
+                    <div class="info-row">
+                        <span class="info-label">الاسم الثلاثي:</span>
+                        <span id="resultName"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">رقم الاكتتاب:</span>
+                        <span id="resultEnrollment"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">الشهادة:</span>
+                        <span id="resultCertificate"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">اللغة:</span>
+                        <span id="resultLanguage"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">الديانة:</span>
+                        <span id="resultReligion"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">المركز:</span>
+                        <span id="resultCenter"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">القاعة:</span>
+                        <span id="resultHall"></span>
+                    </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="status" id="resultStatus"></div>
+                <div class="message" id="resultMessage"></div>
+                
+                <!-- إضافة إشعار طلب الاعتراض هنا -->
+                <div class="appeal-notice" id="appealNotice" style="display: none;">
+                    ملاحظة: تم تقديم طلب اعتراض بتاريخ 14/8/2025<br>
+                    لم يتم قبول الطلب لأنه لا يوجد تعديل على النتيجة
+                </div>
+                
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>المادة</th>
+                            <th>الدرجة</th>
+                            <th>الدرجة العظمى والدنيا</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- صفحة إدخال النتائج -->
+        <div id="entry" class="tab-content">
+            <form id="entryForm">
+                <!-- ... (نفس محتوى صفحة الإدخال السابق) ... -->
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ... (نفس الدوال السابقة مع التعديلات التالية) ...
+
+        // معالجة إرسال نموذج البحث
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const enrollment = document.getElementById('searchEnrollment').value;
+            const results = document.getElementById('searchResults');
+            const appealNotice = document.getElementById('appealNotice');
+            const student = getStudent(enrollment);
+            
+            if (student) {
+                // تعبئة بيانات الطالب
+                document.getElementById('resultName').textContent = student.name;
+                document.getElementById('resultEnrollment').textContent = student.enrollment;
+                document.getElementById('resultCertificate').textContent = getCertificateName(student.certificate);
+                document.getElementById('resultLanguage').textContent = student.language;
+                document.getElementById('resultReligion').textContent = student.religion;
+                document.getElementById('resultCenter').textContent = student.center;
+                document.getElementById('resultHall').textContent = student.hall;
+                document.getElementById('resultStatus').textContent = student.status;
+                document.getElementById('resultMessage').textContent = student.message;
+                
+                // تعبئة جدول المواد
+                const tbody = document.querySelector('#resultsTable tbody');
+                tbody.innerHTML = '';
+                
+                student.subjects.forEach(subject => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${subject.name}</td>
+                        <td>${subject.grade}</td>
+                        <td>${subject.maxMin}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+                
+                // إظهار إشعار الاعتراض إذا كان الطالب راسب
+                if (student.status === 'راسب') {
+                    appealNotice.style.display = 'block';
+                } else {
+                    appealNotice.style.display = 'none';
+                }
+                
+                results.style.display = 'block';
+            } else {
+                alert('لا توجد نتائج مسجلة لهذا الرقم');
+            }
+        });
+
+        // ... (بقية الدوال كما هي) ...
+    </script>
+</body>
+</html>
