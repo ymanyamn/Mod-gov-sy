@@ -3,134 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام النتائج المدرسية</title>
+    <title>نظام نتائج الاعتراضات - وزارة التربية</title>
     <style>
+        :root {
+            --primary-color: #2e8b57;
+            --primary-light: #3cb371;
+            --primary-dark: #1f6140;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333333;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            font-family: 'Tajawal', Arial, sans-serif;
+            background-color: var(--light-gray);
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: var(--dark-gray);
+            line-height: 1.6;
         }
+        
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
         }
-        h1 {
-            color: #2c3e50;
+        
+        h1, h2, h3 {
+            color: var(--primary-dark);
             text-align: center;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
-            margin-top: 0;
         }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+            position: relative;
+        }
+        
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background-color: var(--primary-dark);
+        }
+        
         h2 {
-            color: #2980b9;
+            font-size: 22px;
+            margin-top: 0;
+            color: var(--primary-color);
         }
+        
+        .notice {
+            background-color: #fff8e1;
+            border-right: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
         .tab-buttons {
             display: flex;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--primary-light);
         }
+        
         .tab-btn {
-            padding: 10px 20px;
-            background-color: #f1f1f1;
+            padding: 12px 25px;
+            background-color: var(--light-gray);
             border: none;
             cursor: pointer;
             font-size: 16px;
-            transition: 0.3s;
+            font-weight: bold;
+            transition: all 0.3s ease;
             border-radius: 5px 5px 0 0;
-            margin-right: 5px;
+            margin-left: 5px;
+            color: var(--dark-gray);
         }
+        
         .tab-btn.active {
-            background-color: #3498db;
-            color: white;
+            background-color: var(--primary-color);
+            color: var(--white);
         }
+        
+        .tab-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--white);
+        }
+        
         .tab-content {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         .tab-content.active {
             display: block;
         }
+        
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
+        
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: bold;
+            color: var(--primary-dark);
         }
+        
         input, select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
             box-sizing: border-box;
+            font-size: 16px;
+            transition: border 0.3s ease;
+            background-color: var(--white);
         }
+        
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.2);
+        }
+        
         button {
-            background-color: #3498db;
-            color: white;
+            background-color: var(--primary-color);
+            color: var(--white);
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            padding: 12px 25px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            width: 100%;
         }
+        
         button:hover {
-            background-color: #2980b9;
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
+        
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+        
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
             text-align: center;
         }
+        
         th {
-            background-color: #f2f2f2;
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: bold;
         }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
         .result-info {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
         }
+        
         .info-row {
             display: flex;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
+        
         .info-label {
             font-weight: bold;
             min-width: 150px;
+            color: var(--primary-dark);
         }
+        
         .status {
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             text-align: center;
-            margin: 15px 0;
+            margin: 20px 0;
             color: #e74c3c;
+            padding: 10px;
+            background-color: #fdeaea;
+            border-radius: 5px;
         }
+        
         .message {
             text-align: center;
             font-style: italic;
-            color: #7f8c8d;
-            margin-bottom: 20px;
+            color: #666;
+            margin-bottom: 25px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border-radius: 5px;
         }
+        
         .divider {
-            border-top: 1px dashed #aaa;
+            border-top: 2px dashed var(--primary-light);
+            margin: 30px 0;
+        }
+        
+        .appeal-notice {
+            background-color: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+            padding: 15px;
             margin: 20px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* تأثيرات إضافية */
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                margin-bottom: 5px;
+                margin-left: 0;
+                border-radius: 5px;
+            }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>نظام النتائج طلبات الاعتراض</h1>
+        <h1>نظام نتائج طلبات الاعتراض</h1>
         <h2>مديرية الامتحانات - وزارة التربية السورية</h2>
-        <h1>اعزائنا الطلبة اللذي تم تعديل نتيجته سوف يظهر واذا لم تتغير النتيجة فهذا يعني انه لم يطرئ تعديل على النتائج </h1>
+        
+        <div class="notice">
+            أعزائنا الطلاب، الذي تم تعديل نتيجته سوف تظهر له النتيجة المعدلة.<br>
+            إذا لم تتغير النتيجة فهذا يعني أنه لم يطرأ أي تعديل على النتائج.
+        </div>
+        
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="openTab('search')">البحث عن النتائج</button>
             <button class="tab-btn" onclick="openTab('entry')">إدخال النتائج</button>
@@ -139,30 +297,36 @@
         <!-- صفحة البحث -->
         <div id="search" class="tab-content active">
             <form id="searchForm">
-                <div class="form-group">
-                    <label for="searchYear">السنة الدراسية</label>
-                    <select id="searchYear" required>
-                        <option value="">اختر السنة</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="searchCertificate">نوع الشهادة</label>
-                    <select id="searchCertificate" required>
-                        <option value="">اختر نوع الشهادة</option>
-                        <option value="basic">التعليم الأساسي - عام - منهاج دمشق</option>
-                        <option value="secondary">التعليم الثانوي</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="searchYear">السنة الدراسية</label>
+                            <select id="searchYear" required>
+                                <option value="">اختر السنة</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="searchCertificate">نوع الشهادة</label>
+                            <select id="searchCertificate" required>
+                                <option value="">اختر نوع الشهادة</option>
+                                <option value="basic">التعليم الأساسي - عام - منهاج دمشق</option>
+                                <option value="secondary">التعليم الثانوي</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="searchEnrollment">رقم الاكتتاب</label>
-                    <input type="number" id="searchEnrollment" required>
+                    <input type="number" id="searchEnrollment" placeholder="أدخل رقم الاكتتاب هنا" required>
                 </div>
                 
-                <button type="submit">بحث</button>
+                <button type="submit">بحث عن النتيجة</button>
             </form>
             
             <div id="searchResults" style="display: none;">
@@ -202,6 +366,11 @@
                 <div class="status" id="resultStatus"></div>
                 <div class="message" id="resultMessage"></div>
                 
+                <div class="appeal-notice" id="appealNotice" style="display: none;">
+                    ملاحظة: تم تقديم طلب اعتراض بتاريخ 14/8/2025<br>
+                    لم يتم قبول الطلب لأنه لا يوجد تعديل على النتيجة
+                </div>
+                
                 <table id="resultsTable">
                     <thead>
                         <tr>
@@ -218,107 +387,163 @@
         <!-- صفحة إدخال النتائج -->
         <div id="entry" class="tab-content">
             <form id="entryForm">
-                <div class="form-group">
-                    <label for="entryYear">السنة الدراسية</label>
-                    <select id="entryYear" required>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryYear">السنة الدراسية</label>
+                            <select id="entryYear" required>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryCertificate">نوع الشهادة</label>
+                            <select id="entryCertificate" required>
+                                <option value="basic">التعليم الأساسي - عام - منهاج دمشق</option>
+                                <option value="secondary">التعليم الثانوي</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryCertificate">نوع الشهادة</label>
-                    <select id="entryCertificate" required>
-                        <option value="basic">التعليم الأساسي - عام - منهاج دمشق</option>
-                        <option value="secondary">التعليم الثانوي</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryEnrollment">رقم الاكتتاب</label>
+                            <input type="number" id="entryEnrollment" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryName">الاسم الثلاثي</label>
+                            <input type="text" id="entryName" required>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryEnrollment">رقم الاكتتاب</label>
-                    <input type="number" id="entryEnrollment" required>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryLanguage">اللغة</label>
+                            <input type="text" id="entryLanguage" value="لغة فرنسية">
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryReligion">الديانة</label>
+                            <input type="text" id="entryReligion" value="مسلم">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryName">الاسم الثلاثي</label>
-                    <input type="text" id="entryName" required>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryCenter">المركز</label>
+                            <input type="text" id="entryCenter" value="ش جان حجار">
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryHall">القاعة</label>
+                            <input type="text" id="entryHall" value="A001 - رقم الجلوس 11">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryLanguage">اللغة</label>
-                    <input type="text" id="entryLanguage" value="لغة فرنسية">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryStatus">حالة النتيجة</label>
+                            <select id="entryStatus">
+                                <option value="ناجح">ناجح</option>
+                                <option value="راسب">راسب</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryMessage">رسالة النتيجة</label>
+                            <input type="text" id="entryMessage" value="لا تياس أمامك فرصة أخرى">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryReligion">الديانة</label>
-                    <input type="text" id="entryReligion" value="مسلم">
+                <h3 style="color: var(--primary-dark); border-bottom: 2px solid var(--primary-light); padding-bottom: 8px;">الدرجات:</h3>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryFrench">اللغة الفرنسية</label>
+                            <input type="number" id="entryFrench" placeholder="الدرجة">
+                            <input type="text" id="entryFrenchMax" placeholder="الدرجة العظمى/الدنيا" value="300" style="margin-top: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryArabic">اللغة العربية</label>
+                            <input type="number" id="entryArabic" placeholder="الدرجة">
+                            <input type="text" id="entryArabicMax" placeholder="الدرجة العظمى/الدنيا" value="120" style="margin-top: 8px;">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryCenter">المركز</label>
-                    <input type="text" id="entryCenter" value="ش جان حجار">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryEnglish">اللغة الإنجليزية</label>
+                            <input type="number" id="entryEnglish" placeholder="الدرجة">
+                            <input type="text" id="entryEnglishMax" placeholder="الدرجة العظمى/الدنيا" value="600" style="margin-top: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryMath">الرياضيات</label>
+                            <input type="number" id="entryMath" placeholder="الدرجة">
+                            <input type="text" id="entryMathMax" placeholder="الدرجة العظمى/الدنيا" value="300" style="margin-top: 8px;">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryHall">القاعة</label>
-                    <input type="text" id="entryHall" value="A001 - رقم الجلوس 11">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryReligionSub">التربية الدينية</label>
+                            <input type="number" id="entryReligionSub" placeholder="الدرجة">
+                            <input type="text" id="entryReligionSubMax" placeholder="الدرجة العظمى/الدنيا" value="400" style="margin-top: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entrySocial">الاجتماعيات</label>
+                            <input type="number" id="entrySocial" placeholder="الدرجة">
+                            <input type="text" id="entrySocialMax" placeholder="الدرجة العظمى/الدنيا" value="160" style="margin-top: 8px;">
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="entryStatus">حالة النتيجة</label>
-                    <select id="entryStatus">
-                        <option value="ناجح">ناجح</option>
-                        <option value="راسب">راسب</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="entryMessage">رسالة النتيجة</label>
-                    <input type="text" id="entryMessage" value="لا تياس أمامك فرصة أخرى">
-                </div>
-                
-                <h3>الدرجات:</h3>
-                
-                <div class="form-group">
-                    <label for="entryFrench">اللغة الفرنسية</label>
-                    <input type="number" id="entryFrench" placeholder="الدرجة">
-                    <input type="text" id="entryFrenchMax" placeholder="الدرجة العظمى/الدنيا" value="300">
-                </div>
-                
-                <div class="form-group">
-                    <label for="entryArabic">اللغة العربية</label>
-                    <input type="number" id="entryArabic" placeholder="الدرجة">
-                    <input type="text" id="entryArabicMax" placeholder="الدرجة العظمى/الدنيا" value="120">
-                </div>
-                
-                <div class="form-group">
-                    <label for="entryEnglish">اللغة الإنجليزية</label>
-                    <input type="number" id="entryEnglish" placeholder="الدرجة">
-                    <input type="text" id="entryEnglishMax" placeholder="الدرجة العظمى/الدنيا" value="600">
-                </div>
-                
-                <div class="form-group">
-                    <label for="entryMath">الرياضيات</label>
-                    <input type="number" id="entryMath" placeholder="الدرجة">
-                    <input type="text" id="entryMathMax" placeholder="الدرجة العظمى/الدنيا" value="300">
-                </div>
-                
-                <div class="form-group">
-                    <label for="entryReligionSub">التربية الدينية</label>
-                    <input type="number" id="entryReligionSub" placeholder="الدرجة">
-                    <input type="text" id="entryReligionSubMax" placeholder="الدرجة العظمى/الدنيا" value="400">
-                </div>
-                
-                <div class="form-group">
-                    <label for="entrySocial">الاجتماعيات</label>
-                    <input type="number" id="entrySocial" placeholder="الدرجة">
-                    <input type="text" id="entrySocialMax" placeholder="الدرجة العظمى/الدنيا" value="160">
-                </div>
-                
-                <div class="form-group">
-                    <label for="entryScience">العلوم العامة والصحة</label>
-                    <input type="number" id="entryScience" placeholder="الدرجة">
-                    <input type="text" id="entryScienceMax" placeholder="الدرجة العظمى/الدنيا" value="200">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="entryScience">العلوم العامة والصحة</label>
+                            <input type="number" id="entryScience" placeholder="الدرجة">
+                            <input type="text" id="entryScienceMax" placeholder="الدرجة العظمى/الدنيا" value="200" style="margin-top: 8px;">
+                        </div>
+                    </div>
+                    
+                    <div class="form-col">
+                        <!-- عمود فارغ للموازنة -->
+                    </div>
                 </div>
                 
                 <button type="submit">حفظ النتيجة</button>
@@ -349,6 +574,7 @@
             
             const enrollment = document.getElementById('searchEnrollment').value;
             const results = document.getElementById('searchResults');
+            const appealNotice = document.getElementById('appealNotice');
             const student = getStudent(enrollment);
             
             if (student) {
@@ -375,7 +601,16 @@
                     tbody.appendChild(row);
                 });
                 
+                if (student.status === 'راسب') {
+                    appealNotice.style.display = 'block';
+                } else {
+                    appealNotice.style.display = 'none';
+                }
+                
                 results.style.display = 'block';
+                
+                // Scroll to results
+                results.scrollIntoView({ behavior: 'smooth' });
             } else {
                 alert('لا توجد نتائج مسجلة لهذا الرقم');
             }
@@ -410,6 +645,9 @@
             saveStudent(student);
             alert('تم حفظ النتيجة بنجاح');
             this.reset();
+            
+            // العودة إلى تبويب البحث
+            openTab('search');
         });
 
         // دالة للحصول على اسم الشهادة
@@ -429,6 +667,11 @@
             const students = JSON.parse(localStorage.getItem('students')) || {};
             return students[enrollment];
         }
+
+        // تهيئة الصفحة عند التحميل
+        window.onload = function() {
+            // يمكنك إضافة أي تهيئة إضافية هنا
+        };
     </script>
 </body>
 </html>
