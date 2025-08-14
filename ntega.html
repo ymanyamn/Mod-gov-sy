@@ -124,15 +124,6 @@
             border-top: 1px dashed #aaa;
             margin: 20px 0;
         }
-        .appeal-notice {
-            background-color: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
@@ -211,12 +202,6 @@
                 <div class="status" id="resultStatus"></div>
                 <div class="message" id="resultMessage"></div>
                 
-                <!-- إضافة إشعار طلب الاعتراض هنا -->
-                <div class="appeal-notice" id="appealNotice" style="display: none;">
-                    ملاحظة: تم تقديم طلب اعتراض بتاريخ 14/8/2025<br>
-                    لم يتم قبول الطلب لأنه لا يوجد تعديل على النتيجة
-                </div>
-                
                 <table id="resultsTable">
                     <thead>
                         <tr>
@@ -233,13 +218,130 @@
         <!-- صفحة إدخال النتائج -->
         <div id="entry" class="tab-content">
             <form id="entryForm">
-                <!-- ... (نفس محتوى صفحة الإدخال السابق) ... -->
+                <div class="form-group">
+                    <label for="entryYear">السنة الدراسية</label>
+                    <select id="entryYear" required>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryCertificate">نوع الشهادة</label>
+                    <select id="entryCertificate" required>
+                        <option value="basic">التعليم الأساسي - عام - منهاج دمشق</option>
+                        <option value="secondary">التعليم الثانوي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryEnrollment">رقم الاكتتاب</label>
+                    <input type="number" id="entryEnrollment" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryName">الاسم الثلاثي</label>
+                    <input type="text" id="entryName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryLanguage">اللغة</label>
+                    <input type="text" id="entryLanguage" value="لغة فرنسية">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryReligion">الديانة</label>
+                    <input type="text" id="entryReligion" value="مسلم">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryCenter">المركز</label>
+                    <input type="text" id="entryCenter" value="ش جان حجار">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryHall">القاعة</label>
+                    <input type="text" id="entryHall" value="A001 - رقم الجلوس 11">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryStatus">حالة النتيجة</label>
+                    <select id="entryStatus">
+                        <option value="ناجح">ناجح</option>
+                        <option value="راسب">راسب</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryMessage">رسالة النتيجة</label>
+                    <input type="text" id="entryMessage" value="لا تياس أمامك فرصة أخرى">
+                </div>
+                
+                <h3>الدرجات:</h3>
+                
+                <div class="form-group">
+                    <label for="entryFrench">اللغة الفرنسية</label>
+                    <input type="number" id="entryFrench" placeholder="الدرجة">
+                    <input type="text" id="entryFrenchMax" placeholder="الدرجة العظمى/الدنيا" value="300">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryArabic">اللغة العربية</label>
+                    <input type="number" id="entryArabic" placeholder="الدرجة">
+                    <input type="text" id="entryArabicMax" placeholder="الدرجة العظمى/الدنيا" value="120">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryEnglish">اللغة الإنجليزية</label>
+                    <input type="number" id="entryEnglish" placeholder="الدرجة">
+                    <input type="text" id="entryEnglishMax" placeholder="الدرجة العظمى/الدنيا" value="600">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryMath">الرياضيات</label>
+                    <input type="number" id="entryMath" placeholder="الدرجة">
+                    <input type="text" id="entryMathMax" placeholder="الدرجة العظمى/الدنيا" value="300">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryReligionSub">التربية الدينية</label>
+                    <input type="number" id="entryReligionSub" placeholder="الدرجة">
+                    <input type="text" id="entryReligionSubMax" placeholder="الدرجة العظمى/الدنيا" value="400">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entrySocial">الاجتماعيات</label>
+                    <input type="number" id="entrySocial" placeholder="الدرجة">
+                    <input type="text" id="entrySocialMax" placeholder="الدرجة العظمى/الدنيا" value="160">
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryScience">العلوم العامة والصحة</label>
+                    <input type="number" id="entryScience" placeholder="الدرجة">
+                    <input type="text" id="entryScienceMax" placeholder="الدرجة العظمى/الدنيا" value="200">
+                </div>
+                
+                <button type="submit">حفظ النتيجة</button>
             </form>
         </div>
     </div>
 
     <script>
-        // ... (نفس الدوال السابقة مع التعديلات التالية) ...
+        // تبديل بين التبويبات
+        function openTab(tabName) {
+            const tabs = document.getElementsByClassName('tab-content');
+            for (let tab of tabs) {
+                tab.classList.remove('active');
+            }
+            
+            const buttons = document.getElementsByClassName('tab-btn');
+            for (let btn of buttons) {
+                btn.classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
 
         // معالجة إرسال نموذج البحث
         document.getElementById('searchForm').addEventListener('submit', function(e) {
@@ -247,11 +349,9 @@
             
             const enrollment = document.getElementById('searchEnrollment').value;
             const results = document.getElementById('searchResults');
-            const appealNotice = document.getElementById('appealNotice');
             const student = getStudent(enrollment);
             
             if (student) {
-                // تعبئة بيانات الطالب
                 document.getElementById('resultName').textContent = student.name;
                 document.getElementById('resultEnrollment').textContent = student.enrollment;
                 document.getElementById('resultCertificate').textContent = getCertificateName(student.certificate);
@@ -262,7 +362,6 @@
                 document.getElementById('resultStatus').textContent = student.status;
                 document.getElementById('resultMessage').textContent = student.message;
                 
-                // تعبئة جدول المواد
                 const tbody = document.querySelector('#resultsTable tbody');
                 tbody.innerHTML = '';
                 
@@ -276,20 +375,60 @@
                     tbody.appendChild(row);
                 });
                 
-                // إظهار إشعار الاعتراض إذا كان الطالب راسب
-                if (student.status === 'راسب') {
-                    appealNotice.style.display = 'block';
-                } else {
-                    appealNotice.style.display = 'none';
-                }
-                
                 results.style.display = 'block';
             } else {
                 alert('لا توجد نتائج مسجلة لهذا الرقم');
             }
         });
 
-        // ... (بقية الدوال كما هي) ...
+        // معالجة إرسال نموذج الإدخال
+        document.getElementById('entryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const student = {
+                enrollment: document.getElementById('entryEnrollment').value,
+                name: document.getElementById('entryName').value,
+                year: document.getElementById('entryYear').value,
+                certificate: document.getElementById('entryCertificate').value,
+                language: document.getElementById('entryLanguage').value,
+                religion: document.getElementById('entryReligion').value,
+                center: document.getElementById('entryCenter').value,
+                hall: document.getElementById('entryHall').value,
+                status: document.getElementById('entryStatus').value,
+                message: document.getElementById('entryMessage').value,
+                subjects: [
+                    { name: 'اللغة الفرنسية', grade: document.getElementById('entryFrench').value, maxMin: document.getElementById('entryFrenchMax').value },
+                    { name: 'اللغة العربية', grade: document.getElementById('entryArabic').value, maxMin: document.getElementById('entryArabicMax').value },
+                    { name: 'اللغة الإنجليزية', grade: document.getElementById('entryEnglish').value, maxMin: document.getElementById('entryEnglishMax').value },
+                    { name: 'الرياضيات', grade: document.getElementById('entryMath').value, maxMin: document.getElementById('entryMathMax').value },
+                    { name: 'التربية الدينية', grade: document.getElementById('entryReligionSub').value, maxMin: document.getElementById('entryReligionSubMax').value },
+                    { name: 'الاجتماعيات', grade: document.getElementById('entrySocial').value, maxMin: document.getElementById('entrySocialMax').value },
+                    { name: 'العلوم العامة والصحة', grade: document.getElementById('entryScience').value, maxMin: document.getElementById('entryScienceMax').value }
+                ]
+            };
+            
+            saveStudent(student);
+            alert('تم حفظ النتيجة بنجاح');
+            this.reset();
+        });
+
+        // دالة للحصول على اسم الشهادة
+        function getCertificateName(certCode) {
+            return certCode === 'basic' ? 'التعليم الأساسي - عام - منهاج دمشق' : 'التعليم الثانوي';
+        }
+
+        // دالة لحفظ بيانات الطالب في localStorage
+        function saveStudent(student) {
+            const students = JSON.parse(localStorage.getItem('students')) || {};
+            students[student.enrollment] = student;
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+
+        // دالة لجلب بيانات الطالب من localStorage
+        function getStudent(enrollment) {
+            const students = JSON.parse(localStorage.getItem('students')) || {};
+            return students[enrollment];
+        }
     </script>
 </body>
 </html>
