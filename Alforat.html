@@ -2,106 +2,170 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>مركز الفرات الرقمي والتقني</title>
+  <title>نظام تسجيل العملاء الذكي</title>
   <style>
     body {
-      font-family: 'Tahoma', sans-serif;
-      background: #111;
-      color: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #0d6efd;
-      color: white;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 0 10px #0d6efd;
-    }
-    section {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Cairo', sans-serif;
       padding: 20px;
-    }
-    .card {
-      background: #222;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 0 10px rgba(0,255,255,0.2);
-    }
-    .card h2 {
-      color: #00ffff;
-    }
-    .card ul {
-      list-style: none;
-      padding: 0;
-    }
-    .card ul li {
-      padding: 5px 0;
-      border-bottom: 1px solid #444;
-    }
-    .btn {
-      display: inline-block;
-      background: #00ffff;
-      color: #111;
-      padding: 10px 15px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    .btn:hover {
-      background: #0d6efd;
-      color: white;
-    }
-    footer {
-      background: #000;
-      color: #aaa;
       text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    input, select, textarea, button {
+      margin: 10px;
       padding: 10px;
-      font-size: 14px;
+      width: 90%;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      background-color: #fff;
+      color: #000;
+    }
+    button {
+      background-color: #ff0055;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff3366;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background-color: #222;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #444;
+      color: #fff;
+    }
+    input[type="search"] {
+      width: 50%;
+      margin-bottom: 10px;
+      background-color: #fff;
+      color: #000;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2>📲 نظام تسجيل وتفعيل الحسابات</h2>
+        <h2> مكــتب الفــرات معكم اينما تكونو</h2>
+    <form id="clientForm">
+      <input type="text" name="name" placeholder="اسم العميل" required><br>
+      <select name="service" required>
+        <option value="">اختر نوع الحساب</option>
+        <option value="واتساب">واتساب</option>
+        <option value="شام كاش">شام كاش</option>
+        <option value="فيسبوك">فيسبوك</option>
+        <option value="انستغرام">انستغرام</option>
+        <option value="تيليجرام">تيليجرام</option>
+      </select><br>
+      <select name="status" required>
+        <option value="">حالة التفعيل</option>
+        <option value="✅ واصل">✅ واصل</option>
+        <option value="❌ غير واصل">❌ غير واصل</option>
+      </select><br>
+      <input type="text" name="phone" placeholder="رقم الهاتف" required><br>
+      <textarea name="notes" placeholder="ملاحظات إضافية"></textarea><br>
+      <button type="submit">💾 تسجيل</button>
+    </form>
 
-<header>
-  <h1>مركز الفرات الرقمي والتقني</h1>
-  <p>يوجد كادر مختص لخدمتكم</p>
-  <p>المركز الأول في الحسكة في الخدمات الرقمية والتقنية</p>
-</header>
+    <input type="search" id="searchInput" placeholder="🔍 ابحث عن عميل...">
 
-<section>
-  <div class="card">
-    <h2>📱 خدماتنا</h2>
-    <ul>
-      <li>تفعيل واتساب، تيليجرام، شام كاش</li>
-      <li>استرجاع الحسابات المخترقة</li>
-      <li>تصميم منشورات وصور احترافية</li>
-      <li>طباعة وتعبئة نماذج رسمية</li>
-    </ul>
+    <table id="clientTable">
+      <thead>
+        <tr>
+          <th>الاسم</th>
+          <th>عدد التكرار</th>
+          <th>الخدمة</th>
+          <th>الحالة</th>
+          <th>الهاتف</th>
+          <th>ملاحظات</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-  <div class="card">
-    <h2>🎓 دورات تدريبية</h2>
-    <ul>
-      <li>أساسيات الحاسوب والإنترنت</li>
-      <li>أمن رقمي وحماية الحسابات</li>
-      <li>إدارة صفحات التواصل الاجتماعي</li>
-      <li>تصميم على الهاتف باستخدام Canva وCapCut</li>
-    </ul>
-    <a class="btn" href="https://wa.me/963943820819" target="_blank">احجز مكانك عبر واتساب</a>
-  </div>
+  <script>
+    const form = document.getElementById("clientForm");
+    const tableBody = document.querySelector("#clientTable tbody");
+    const searchInput = document.getElementById("searchInput");
 
-  <div class="card">
-    <h2>📞 للتواصل معنا</h2>
-    <p>اضغط على الزر أدناه للتواصل المباشر عبر واتساب:</p>
-    <a class="btn" href="https://wa.me/963943820819" target="_blank">📲 واتساب مباشر</a>
-  </div>
-</section>
+    const TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
+    const CHAT_ID = "7493001551";
 
-<footer>
-  <p>جميع الحقوق محفوظة © مركز الفرات الرقمي والتقني - 2025</p>
-</footer>
+    let clients = JSON.parse(localStorage.getItem("clients")) || [];
 
+    function saveClients() {
+      localStorage.setItem("clients", JSON.stringify(clients));
+    }
+
+    function sendToTelegram(data) {
+      const message = `📥 تسجيل جديد:\n👤 الاسم: ${data.name}\n📱 الخدمة: ${data.service}\n📶 الحالة: ${data.status}\n📞 الهاتف: ${data.phone}\n📝 ملاحظات: ${data.notes || "لا يوجد"}`;
+      fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+      });
+    }
+
+    function updateTable() {
+      tableBody.innerHTML = "";
+      const grouped = {};
+
+      clients.forEach(c => {
+        const key = c.name + "_" + c.phone;
+        if (!grouped[key]) {
+          grouped[key] = { ...c, count: 1 };
+        } else {
+          grouped[key].count++;
+        }
+      });
+
+      Object.values(grouped).forEach(data => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${data.name}</td>
+          <td>${data.count}</td>
+          <td>${data.service}</td>
+          <td>${data.status}</td>
+          <td>${data.phone}</td>
+          <td>${data.notes || "—"}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      clients.push(data);
+      saveClients();
+      updateTable();
+      sendToTelegram(data);
+      form.reset();
+    });
+
+    searchInput.addEventListener("input", function() {
+      const term = this.value.toLowerCase();
+      tableBody.querySelectorAll("tr").forEach(row => {
+        const match = Array.from(row.children).some(td => td.textContent.toLowerCase().includes(term));
+        row.style.display = match ? "" : "none";
+      });
+    });
+
+    // تحميل البيانات عند فتح الصفحة
+    updateTable();
+  </script>
 </body>
 </html>
