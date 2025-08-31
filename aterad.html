@@ -102,7 +102,7 @@
             font-size: 16px;
         }
         
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 15px;
             border: 1px solid #d4e6d4;
@@ -113,43 +113,28 @@
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
         }
         
-        input:focus, select:focus {
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: #4c9141;
             box-shadow: 0 0 0 3px rgba(76, 145, 65, 0.2);
             background-color: #fff;
         }
         
-        .materials-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .materials-input {
+            display: flex;
+            flex-direction: column;
             gap: 15px;
             margin-top: 15px;
         }
         
         .material-item {
             display: flex;
-            align-items: center;
-            background: #f7fbf7;
-            padding: 12px 15px;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        
-        .material-item:hover {
-            background: #eef7ee;
-            transform: translateY(-2px);
-        }
-        
-        .material-item input {
-            width: auto;
-            margin-left: 10px;
-        }
-        
-        .material-item label {
-            margin-bottom: 0;
-            font-weight: 400;
-            cursor: pointer;
+            flex-direction: column;
         }
         
         .note {
@@ -301,11 +286,14 @@
             color: #555;
         }
         
+        .material-counter {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            text-align: left;
+        }
+        
         @media (max-width: 768px) {
-            .materials-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .header h1 {
                 font-size: 22px;
             }
@@ -399,10 +387,19 @@
                 
                 <div class="form-section">
                     <h3 class="form-title">المواد المعترض عليها</h3>
-                    <p class="note">ملاحظة: يمكن تقديم اعتراض على مادتين فقط كحد أقصى</p>
+                    <p class="note">ملاحظة: يمكن تقديم اعتراض على مادتين فقط كحد أقصى. يرجى كتابة اسم كل مادة في حقل منفصل.</p>
                     
-                    <div class="materials-grid" id="materialsContainer">
-                        <!-- سيتم ملؤها بالمواد بناءً على الفرع المختار -->
+                    <div class="materials-input">
+                        <div class="material-item">
+                            <label for="material1">المادة الأولى</label>
+                            <input type="text" id="material1" name="materials" placeholder="أدخل اسم المادة الأولى">
+                        </div>
+                        
+                        <div class="material-item">
+                            <label for="material2">المادة الثانية (اختياري)</label>
+                            <input type="text" id="material2" name="materials" placeholder="أدخل اسم المادة الثانية (إن وجد)">
+                            <div class="material-counter">يمكنك ترك هذا الحقل فارغاً إذا كان الاعتراض على مادة واحدة فقط</div>
+                        </div>
                     </div>
                 </div>
                 
@@ -449,19 +446,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // المواد لكل فرع
-            const scientificMaterials = [
-                "الرياضيات", "الفيزياء", "الكيمياء", "علوم الحياة", "العلوم العامة",
-                "اللغة العربية", "اللغة الإنجليزية", "اللغة الفرنسية", "التاريخ", "الجغرافيا"
-            ];
-            
-            const literaryMaterials = [
-                "اللغة العربية", "اللغة الإنجليزية", "اللغة الفرنسية", "التاريخ", "الجغرافيا",
-                "الفلسفة", "علم النفس", "التربية الوطنية", "التربية الدينية", "الاجتماعيات"
-            ];
-            
-            const branchSelect = document.getElementById('branch');
-            const materialsContainer = document.getElementById('materialsContainer');
             const shamCashCodeInput = document.getElementById('shamCashCode');
             const validationMessage = document.getElementById('validationMessage');
             const objectionForm = document.getElementById('objectionForm');
@@ -469,31 +453,8 @@
             const successMessage = document.getElementById('successMessage');
             const fileUploadArea = document.getElementById('fileUploadArea');
             const fileInput = document.getElementById('examCard');
-            
-            // إعداد اختيار المواد بناءً على الفرع
-            branchSelect.addEventListener('change', function() {
-                const branch = this.value;
-                materialsContainer.innerHTML = '';
-                
-                let materials = [];
-                if (branch === 'scientific') {
-                    materials = scientificMaterials;
-                } else if (branch === 'literary') {
-                    materials = literaryMaterials;
-                } else {
-                    return;
-                }
-                
-                materials.forEach(material => {
-                    const materialItem = document.createElement('div');
-                    materialItem.className = 'material-item';
-                    materialItem.innerHTML = `
-                        <input type="checkbox" id="material-${material}" name="materials" value="${material}">
-                        <label for="material-${material}">${material}</label>
-                    `;
-                    materialsContainer.appendChild(materialItem);
-                });
-            });
+            const material1Input = document.getElementById('material1');
+            const material2Input = document.getElementById('material2');
             
             // التحقق من صحة كود شام كاش
             shamCashCodeInput.addEventListener('input', function() {
@@ -514,17 +475,6 @@
                 }, 800);
             });
             
-            // تحقق من عدد المواد المختارة
-            materialsContainer.addEventListener('change', function(e) {
-                if (e.target.type === 'checkbox') {
-                    const checkedBoxes = document.querySelectorAll('input[name="materials"]:checked');
-                    if (checkedBoxes.length > 2) {
-                        e.target.checked = false;
-                        alert('يمكنك اختيار مادتين فقط كحد أقصى');
-                    }
-                }
-            });
-            
             // رفع الملفات
             fileUploadArea.addEventListener('click', function() {
                 fileInput.click();
@@ -543,22 +493,17 @@
             objectionForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 
+                // التحقق من إدخال المادة الأولى
+                if (!material1Input.value.trim()) {
+                    alert('الرجاء إدخال المادة الأولى على الأقل');
+                    material1Input.focus();
+                    return;
+                }
+                
                 // التحقق من كود شام كاش
                 if (shamCashCodeInput.value !== '1836472027281') {
                     alert('الرجاء إدخال رقم حساب صالح');
                     shamCashCodeInput.focus();
-                    return;
-                }
-                
-                // التحقق من عدد المواد المختارة
-                const selectedMaterials = document.querySelectorAll('input[name="materials"]:checked');
-                if (selectedMaterials.length === 0) {
-                    alert('الرجاء اختيار مادة واحدة على الأقل');
-                    return;
-                }
-                
-                if (selectedMaterials.length > 2) {
-                    alert('يمكنك اختيار مادتين فقط كحد أقصى');
                     return;
                 }
                 
@@ -575,7 +520,7 @@
                     اسم_المدرسة: document.getElementById('school').value,
                     رقم_القاعة: document.getElementById('hallNumber').value,
                     الفرع: document.getElementById('branch').options[document.getElementById('branch').selectedIndex].text,
-                    المواد: Array.from(selectedMaterials).map(m => m.value).join('، '),
+                    المواد: `${material1Input.value}${material2Input.value ? ', ' + material2Input.value : ''}`,
                     كود_شام_كاش: shamCashCodeInput.value,
                     وقت_التقديم: new Date().toLocaleString('ar-SA')
                 };
