@@ -1,303 +1,211 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جميلة بغداد الزمني</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 900px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-            padding: 30px;
-            margin: 20px 0;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        h1 {
-            font-size: 3rem;
-            color: #fdbb2d;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #eee;
-            margin-bottom: 20px;
-        }
-        
-        .datetime-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
-            flex-wrap: wrap;
-        }
-        
-        .time-box, .date-box {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            min-width: 220px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .time-box:hover, .date-box:hover {
-            transform: translateY(-5px);
-        }
-        
-        .time-title, .date-title {
-            font-size: 1.5rem;
-            color: #fdbb2d;
-            margin-bottom: 15px;
-        }
-        
-        #time {
-            font-size: 3.5rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            direction: ltr;
-        }
-        
-        #date {
-            font-size: 2rem;
-            font-weight: 600;
-        }
-        
-        .city-info {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .info-card {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .info-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .info-card i {
-            font-size: 2.5rem;
-            color: #fdbb2d;
-            margin-bottom: 15px;
-        }
-        
-        .info-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #fdbb2d;
-        }
-        
-        .info-card p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-        
-        .server-status {
-            background: rgba(179, 0, 0, 0.3);
-            border: 2px solid #b21f1f;
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            margin: 30px 0;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(178, 31, 31, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(178, 31, 31, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(178, 31, 31, 0); }
-        }
-        
-        .server-status i {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: #ff4d4d;
-        }
-        
-        .server-status h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: #ff4d4d;
-        }
-        
-        .server-status p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-        
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 30px 0;
-        }
-        
-        .gallery-item {
-            height: 150px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(255, 255, 255, 0.2);
-            color: #eee;
-            font-size: 1.1rem;
-        }
-        
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            #time { font-size: 2.8rem; }
-            #date { font-size: 1.8rem; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>توقف مؤقت - طلبات الاعتراض</title>
+  <meta name="description" content="نعتذر من الطلاب الذين يحاولون تقديم اعتراض. تم إيقاف استقبال الطلبات مؤقتاً بسبب أعمال صيانة." />
+  <style>
+    :root{
+      --bg:#0f172a;          /* خلفية */
+      --card:#0b1224;        /* بطاقة */
+      --accent:#22d3ee;      /* لون مميز */
+      --text:#e5e7eb;        /* نص أساسي */
+      --muted:#9ca3af;       /* نص ثانوي */
+      --danger:#f59e0b;      /* تحذير/تنبيه */
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Naskh Arabic","Droid Arabic Naskh","Tahoma",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, #1f2937 0%, transparent 60%),
+        radial-gradient(1200px 600px at -10% 110%, #1e3a8a 0%, transparent 60%),
+        var(--bg);
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .card{
+      width:min(680px, 100%);
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    header{
+      display:flex; align-items:center; gap:12px;
+      padding:20px 22px; border-bottom:1px solid rgba(255,255,255,.08);
+      background: linear-gradient(90deg, rgba(34,211,238,.1), transparent);
+    }
+    .logo{
+      width:40px;height:40px; display:grid; place-items:center;
+      border-radius:10px; background:rgba(34,211,238,.15); border:1px solid rgba(34,211,238,.35);
+    }
+    .logo svg{width:22px;height:22px}
+    .brand h1{margin:0;font-size:18px}
+    .brand p{margin:0;color:var(--muted);font-size:13px}
+    .content{padding:26px 22px 10px}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(245,158,11,.12); color:#fde68a;
+      border:1px solid rgba(245,158,11,.35);
+      padding:8px 12px; border-radius:999px; font-size:13px; margin-bottom:16px;
+    }
+    h2{margin:0 0 10px 0; font-size:22px}
+    p{margin:0 0 12px 0; color:var(--muted); line-height:1.8}
+    .countdown{
+      margin:16px 0; padding:14px; border-radius:12px;
+      background:rgba(34,211,238,.08); border:1px dashed rgba(34,211,238,.45);
+      display:none;
+    }
+    .time{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;
+    }
+    .chip{
+      flex:0 1 auto; min-width:88px; text-align:center;
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+      border-radius:10px; padding:10px 12px;
+    }
+    .chip b{display:block; font-size:18px; color:#fff}
+    .actions{
+      display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 6px 0;
+    }
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      color:#00151a; background:var(--accent);
+      padding:10px 14px; border-radius:10px; font-weight:600;
+      box-shadow:0 6px 18px rgba(34,211,238,.25);
+      text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    }
+    .btn.secondary{
+      background:transparent; color:var(--text);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    footer{
+      padding:14px 22px 20px; color:var(--muted);
+      display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    a{color:#7dd3fc}
+    .sr-only{
+      position:absolute; width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>جميلة بغداد الزمني</h1>
-            <p class="subtitle">عاصمة الرشيد وحاضرة التاريخ العريق</p>
-        </header>
-        
-        <div class="datetime-container">
-            <div class="time-box">
-                <div class="time-title">الوقت الحالي</div>
-                <div id="time">00:00:00</div>
-            </div>
-            
-            <div class="date-box">
-                <div class="date-title">التاريخ اليوم</div>
-                <div id="date">السبت، ١ يناير ٢٠٢٣</div>
-            </div>
-        </div>
-        
-        <div class="server-status">
-            <i class="fas fa-exclamation-triangle"></i>
-            <h3>توقف مؤقت</h3>
-            <p>نواجه حاليًا ضغطًا غير عادي على الخادم. جاري استعادة الخدمة بأسرع وقت ممكن.</p>
-            <p>نعتذر للإزعاج ونشكركم على صبركم.</p>
-        </div>
-        
-        <div class="city-info">
-            <div class="info-card">
-                <i class="fas fa-landmark"></i>
-                <h3>تاريخ عريق</h3>
-                <p>بغداد عاصمة العباسيين ومركز حضاري شهد ازدهار العلوم والفنون لقرون طويلة.</p>
-            </div>
-            
-            <div class="info-card">
-                <i class="fas fa-book"></i>
-                <h3>تراث ثقافي</h3>
-                <p>أرض ألف ليلة وليلة وبيت الحكمة، منارة العلم والمعرفة في العصر الذهبي للإسلام.</p>
-            </div>
-            
-            <div class="info-card">
-                <i class="fas fa-mosque"></i>
-                <h3>معالم دينية</h3>
-                <p>تضم بغداد العديد من المساجد والمراقد التاريخية التي تعود لعصور مختلفة.</p>
-            </div>
-        </div>
-        
-        <h2 style="text-align: center; margin: 30px 0; color: #fdbb2d;">معالم بغدادية</h2>
-        <div class="gallery">
-            <div class="gallery-item" style="background: linear-gradient(45deg, #1a2a6c, #fdbb2d);"></div>
-            <div class="gallery-item" style="background: linear-gradient(45deg, #b21f1f, #1a2a6c);"></div>
-            <div class="gallery-item" style="background: linear-gradient(45deg, #fdbb2d, #b21f1f);"></div>
-            <div class="gallery-item" style="background: linear-gradient(45deg, #1a2a6c, #b21f1f);"></div>
-        </div>
-        
-        <footer>
-            <p>بغداد - حاضرة الدنيا وقلب العراق النابض</p>
-            <p>© 2023 جميلة بغداد الزمني</p>
-        </footer>
-    </div>
+  <main class="card" role="main" aria-labelledby="title">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <!-- أيقونة ساعة رملية -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2h12M6 22h12M6 2v4a6 6 0 0 0 6 6 6 6 0 0 1 6 6v4M18 2v4a6 6 0 0 1-6 6 6 6 0 0 0-6 6v4"/>
+        </svg>
+      </div>
+      <div class="brand">
+        <h1 id="title">توقف مؤقت — طلبات الاعتراض</h1>
+        <p>خدمة الطلاب — سوريا</p>
+      </div>
+    </header>
 
-    <script>
-        function updateDateTime() {
-            const now = new Date();
-            
-            // تحديث الوقت
-            const timeElement = document.getElementById('time');
-            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            timeElement.textContent = now.toLocaleTimeString('ar-IQ', timeOptions);
-            
-            // تحديث التاريخ
-            const dateElement = document.getElementById('date');
-            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            dateElement.textContent = now.toLocaleDateString('ar-IQ', dateOptions);
+    <section class="content" aria-live="polite">
+      <div class="badge" role="status" aria-label="تنبيه">
+        ⚠️ توقف مؤقت للصيانة
+      </div>
+
+      <h2>نعتذر من الطلاب الذين يحاولون تقديم اعتراض</h2>
+      <p>
+        تم إيقاف استقبال طلبات الاعتراض مؤقتاً بسبب أعمال صيانة لتحسين استقرار المنصة وسرعتها.
+        نقدّر صبركم وتفهّمكم — الهدف أن نعود لكم بخدمة أهدأ وأسرع.
+      </p>
+
+      <div id="countdown" class="countdown" aria-live="polite" aria-atomic="true">
+        <span>سيُعاد فتح الخدمة في:</span>
+        <div class="time" aria-hidden="false">
+          <div class="chip"><b id="d">--</b>أيام</div>
+          <div class="chip"><b id="h">--</b>ساعات</div>
+          <div class="chip"><b id="m">--</b>دقائق</div>
+          <div class="chip"><b id="s">--</b>ثوانٍ</div>
+        </div>
+        <p id="etaText" style="margin-top:8px"></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="refreshBtn">تحديث الصفحة ↻</button>
+        <a class="btn secondary" href="/" id="homeLink" rel="nofollow">العودة للصفحة الرئيسية</a>
+        <a class="btn secondary" href="mailto:support@example.com" id="mailLink">مراسلة الدعم</a>
+      </div>
+
+      <p style="margin-top:6px">
+        في حال الضرورة العاجلة، يمكنكم التواصل عبر البريد الإلكتروني المذكور أو عبر واتساب على
+        <a href="https://wa.me/0000000000" rel="nofollow noopener">+000-000-0000</a>.
+      </p>
+    </section>
+
+    <footer>
+      <span>© 2025 خدمة الاعتراض — جميع الحقوق محفوظة</span>
+      <span>إصدار الصفحة: v1.0</span>
+    </footer>
+  </main>
+
+  <script>
+    // ——— تخصيص موعد إعادة التفعيل ———
+    // ضع التاريخ/الوقت بالتوقيت المحلي لـ(+03:00) أو بصيغة ISO مع المنطقة الزمنية.
+    const reopenAt = '2025-09-03T09:00:00+03:00'; // مثال: 3 سبتمبر 2025، الساعة 09:00 صباحاً
+
+    const el = {
+      box: document.getElementById('countdown'),
+      d: document.getElementById('d'),
+      h: document.getElementById('h'),
+      m: document.getElementById('m'),
+      s: document.getElementById('s'),
+      etaText: document.getElementById('etaText'),
+      refreshBtn: document.getElementById('refreshBtn')
+    };
+
+    el.refreshBtn.addEventListener('click', () => location.reload());
+
+    function fmt(n){ return String(n).padStart(2,'0'); }
+
+    function startCountdown(targetISO){
+      if(!targetISO){ return; }
+      const target = new Date(targetISO);
+      if(isNaN(target.getTime())){ return; }
+      el.box.style.display = 'block';
+      const f = new Intl.DateTimeFormat('ar-EG', {
+        dateStyle:'full', timeStyle:'short'
+      });
+      el.etaText.textContent = 'التاريخ المتوقع: ' + f.format(target);
+
+      function tick(){
+        const now = new Date();
+        let diff = Math.max(0, target - now);
+        const sec = Math.floor(diff/1000)%60;
+        const min = Math.floor(diff/1000/60)%60;
+        const hr  = Math.floor(diff/1000/60/60)%24;
+        const day = Math.floor(diff/1000/60/60/24);
+
+        el.d.textContent = day;
+        el.h.textContent = fmt(hr);
+        el.m.textContent = fmt(min);
+        el.s.textContent = fmt(sec);
+
+        if(diff <= 0){
+          el.etaText.textContent = 'قريباً سيتم فتح الخدمة — الرجاء تحديث الصفحة.';
+          clearInterval(timer);
         }
-        
-        // تحديث الوقت فوراً ثم كل ثانية
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-        
-        // تأثيرات عند التمرير
-        window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY;
-            document.body.style.backgroundPosition = `0% ${scrollPosition / 10}%`;
-        });
-    </script>
+      }
+      tick();
+      const timer = setInterval(tick, 1000);
+    }
+
+    startCountdown(reopenAt);
+  </script>
 </body>
 </html>
