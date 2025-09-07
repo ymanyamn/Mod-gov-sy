@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج الاعتراضات الالكترونيه واعادة الجمع- الاستعلام للطلاب</title>
+    <title>نتائج الاعتراضات الالكترونيه الخاصة لطلاب المنطقة الشرقية- الاستعلام للطلاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -559,16 +559,16 @@
                 <i class="fas fa-user-graduate"></i>
             </div>
             <div class="header-title">مديرية الامتحانات</div>
-            <div class="header-subtitle">الاستعلام عن نتيجة الاعتراضات الالكترونيه واعادة الجمع- للطلاب</div>
+            <div class="header-subtitle">الاستعلام عن نتيجة الاعتراض - للطلاب</div>
         </header>
         
         <nav>
             <a href="#"><i class="fas fa-newspaper"></i> أخر الأحداث</a>
-            <a href="#"><i class="fas fa-graduation-cap"></i> النتائج الخاصة بطلبات الاعتراض والجمع الالكتروني لطلاب المناطق الشرقية</a>
+            <a href="#"><i class="fas fa-graduation-cap"></i> النتائج الخاصة بطلبات الاعتراض الالكتروني </a>
         </nav>
         
         <div class="main-content">
-            <h2 class="section-title">نتائج طلبات الاعتراض الالكتروني<br>لشهادة التعليم الثانوي بفروعها </h2>
+            <h2 class="section-title">نتائج الاعتراضات<br>لشهادة التعليم الثانوي بفروعها</h2>
             
             <div class="search-form">
                 <div class="form-group full-width">
@@ -601,7 +601,7 @@
         </div>
         
         <div class="footer">
-            © 2025 مديرية الامتحانات والتنسيق الالكتروني - جميع الحقوق محفوظة
+            © 2025 مديرية الامتحانات - جميع الحقوق محفوظة
         </div>
     </div>
     
@@ -837,3 +837,300 @@
                     validationText.style.color = 'red';
                 }
             });
+            
+            // تقديم الطلب
+            submitRequest.addEventListener('click', function() {
+                if (accountNumber.value !== '183647202728') {
+                    alert('يرجى إدخال رقم حساب صحيح');
+                    return;
+                }
+                
+                const phoneNumber = document.getElementById('phone-number').value;
+                if (!phoneNumber) {
+                    alert('يرجى إدخال رقم هاتف صحيح');
+                    return;
+                }
+                
+                alert('تم تقديم طلبك بنجاح. سيتم المراجعة خلال 24 ساعة.');
+                paymentForm.style.display = 'none';
+                surveyNo.checked = true;
+            });
+            
+            // البحث عن النتائج
+            searchButton.addEventListener('click', function() {
+                const year = document.getElementById('search-year').value;
+                const branch = document.getElementById('search-branch').value;
+                const enrollment = document.getElementById('search-enrollment').value;
+                
+                if (!branch || !enrollment) {
+                    showMessage(studentMessage, 'يرجى اختيار الفرع وإدخال رقم الاكتتاب', 'error');
+                    return;
+                }
+                
+                // جلب البيانات من localStorage
+                const studentsData = JSON.parse(localStorage.getItem('studentsData')) || {};
+                
+                // البحث عن بيانات الطالب
+                const student = studentsData[enrollment];
+                
+                if (!student) {
+                    showMessage(studentMessage, 'لا توجد نتائج لهذا رقم الاكتتاب', 'error');
+                    return;
+                }
+                
+                if (student.branch !== branch) {
+                    showMessage(studentMessage, 'الفرع المدخل لا يتطابق مع بيانات الطالب', 'error');
+                    return;
+                }
+                
+                // عرض نتائج الطالب
+                showStudentResult(student);
+            });
+            
+            // إغلاق نافذة النتائج
+            closeModal.addEventListener('click', function() {
+                resultModal.style.display = 'none';
+            });
+            
+            // إغلاق النافذة عند النقر خارجها
+            window.addEventListener('click', function(event) {
+                if (event.target === resultModal) {
+                    resultModal.style.display = 'none';
+                }
+            });
+            
+            // دالة لعرض رسائل للمستخدم
+            function showMessage(element, message, type) {
+                element.textContent = message;
+                element.classList.remove('error-message');
+                element.classList.add('error-message');
+                element.style.display = 'block';
+                
+                // إخفاء الرسالة بعد 5 ثوانٍ
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+            
+            // دالة لعرض نتائج الطالب
+            function showStudentResult(student) {
+                // تحديث العنوان
+                document.getElementById('result-header').textContent = 
+                    `الثانوي - ${student.branch === 'scientific' ? 'علمي' : 'أدبي'} - منهاج دمشق | ${student.year}`;
+                
+                // تحديث معلومات الطالب
+                const resultInfo = document.getElementById('result-info');
+                resultInfo.innerHTML = `
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-user"></i> الاسم الثلاثي:</div>
+                        <div class="info-value">${student.name}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-id-card"></i> رقم الاكتتاب:</div>
+                        <div class="info-value">${student.enrollment}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-graduation-cap"></i> الشهادة:</div>
+                        <div class="info-value">الثانوي - ${student.branch === 'scientific' ? 'علمي' : 'أدبي'} - منهاج دمشق</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-language"></i> اللغة:</div>
+                        <div class="info-value">${student.language}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-place-of-worship"></i> الدين:</div>
+                        <div class="info-value">${student.religion}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-school"></i> المركز:</div>
+                        <div class="info-value">${student.center}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-door-open"></i> القاعة ورقم الجلوس:</div>
+                        <div class="info-value">${student.hall} - رقم الجلوس ${student.seat}</div>
+                    </div>
+                `;
+                
+                // تحديث حالة النجاح والدرجات
+                document.getElementById('result-status').textContent = student.status;
+                document.getElementById('total-score').textContent = student.maxTotal;
+                document.getElementById('obtained-score').textContent = student.totalScore;
+                
+                // تحديث جدول المواد
+                const subjectsTable = document.querySelector('#subjects-table tbody');
+                subjectsTable.innerHTML = '';
+                
+                for (const [subject, data] of Object.entries(student.subjects)) {
+                    const subjectName = getSubjectName(subject);
+                    const status = data.score >= data.min ? 
+                        '<span style="color: green;">ناجح</span>' : 
+                        '<span style="color: red;">راسب</span>';
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${subjectName}</td>
+                        <td>${data.score}</td>
+                        <td>${data.max}/${data.min}</td>
+                        <td>${status}</td>
+                    `;
+                    subjectsTable.appendChild(row);
+                }
+                
+                // عرض نتيجة الاعتراضات إذا وجدت
+                if (student.appealSubjects && Object.keys(student.appealSubjects).length > 0) {
+                    const appealResultInfo = document.getElementById('appeal-result-info');
+                    appealResultInfo.innerHTML = `
+                        <div class="info-item">
+                            <div class="info-label"><i class="fas fa-user"></i> الاسم الثلاثي:</div>
+                            <div class="info-value">${student.name}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label"><i class="fas fa-id-card"></i> رقم الاكتتاب:</div>
+                            <div class="info-value">${student.enrollment}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label"><i class="fas fa-gavel"></i> حالة الاعتراض:</div>
+                            <div class="info-value">تمت معالجة الاعتراض</div>
+                        </div>
+                    `;
+                    
+                    // حساب المجموع بعد الاعتراض
+                    let appealTotalScore = 0;
+                    const appealSubjectsTable = document.querySelector('#appeal-subjects-table tbody');
+                    appealSubjectsTable.innerHTML = '';
+                    
+                    for (const [subject, appealScore] of Object.entries(student.appealSubjects)) {
+                        const originalScore = student.subjects[subject].score;
+                        const subjectName = getSubjectName(subject);
+                        const minScore = student.subjects[subject].min;
+                        
+                        const status = appealScore >= minScore ? 
+                            '<span style="color: green;">ناجح</span>' : 
+                            '<span style="color: red;">راسب</span>';
+                        
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${subjectName} <span class="appeal-badge">اعتراض</span></td>
+                            <td>${originalScore}</td>
+                            <td><strong>${appealScore}</strong></td>
+                            <td>${status}</td>
+                        `;
+                        appealSubjectsTable.appendChild(row);
+                        
+                        appealTotalScore += appealScore;
+                    }
+                    
+                    // إضافة المواد التي لم يتم الاعتراض عليها
+                    for (const [subject, data] of Object.entries(student.subjects)) {
+                        if (!student.appealSubjects[subject]) {
+                            const subjectName = getSubjectName(subject);
+                            const status = data.score >= data.min ? 
+                                '<span style="color: green;">ناجح</span>' : 
+                                '<span style="color: red;">راسب</span>';
+                            
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${subjectName}</td>
+                                <td>${data.score}</td>
+                                <td>${data.score}</td>
+                                <td>${status}</td>
+                            `;
+                            appealSubjectsTable.appendChild(row);
+                            
+                            appealTotalScore += data.score;
+                        }
+                    }
+                    
+                    // تحديث النتيجة بعد الاعتراض
+                    document.getElementById('appeal-total-score').textContent = student.maxTotal;
+                    document.getElementById('appeal-obtained-score').textContent = appealTotalScore;
+                    
+                    // تحديد الحالة النهائية بعد الاعتراض
+                    const appealStatus = appealTotalScore >= student.maxTotal * 0.5 ? 
+                        "ناجح بعد الاعتراض" : "راسب بعد الاعتراض";
+                    document.getElementById('appeal-result-status').textContent = appealStatus;
+                } else {
+                    // إخفاء تبويب الاعتراضات إذا لم توجد اعتراضات
+                    document.querySelector('.tab[data-tab="appeal-result"]').style.display = 'none';
+                }
+                
+                // إظهار تبويب إعادة الجمع والتدقيق (محاكاة)
+                const recalculationInfo = document.getElementById('recalculation-info');
+                recalculationInfo.innerHTML = `
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-user"></i> الاسم الثلاثي:</div>
+                        <div class="info-value">${student.name}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-id-card"></i> رقم الاكتتاب:</div>
+                        <div class="info-value">${student.enrollment}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fas fa-calculator"></i> حالة التدقيق:</div>
+                        <div class="info-value">تمت إعادة الجمع والتدقيق</div>
+                    </div>
+                `;
+                
+                // محاكاة إعادة الجمع والتدقيق
+                let recalculationTotalScore = student.totalScore;
+                const recalculationSubjectsTable = document.querySelector('#recalculation-subjects-table tbody');
+                recalculationSubjectsTable.innerHTML = '';
+                
+                for (const [subject, data] of Object.entries(student.subjects)) {
+                    const subjectName = getSubjectName(subject);
+                    const status = data.score >= data.min ? 
+                        '<span style="color: green;">ناجح</span>' : 
+                        '<span style="color: red;">راسب</span>';
+                    
+                    // محاكاة تغيير طفيف في بعض الدرجات
+                    let newScore = data.score;
+                    if (Math.random() > 0.7) {
+                        newScore = Math.min(data.max, newScore + Math.floor(Math.random() * 10));
+                        recalculationTotalScore += (newScore - data.score);
+                    }
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${subjectName}</td>
+                        <td>${data.score}</td>
+                        <td>${newScore}</td>
+                        <td>${status}</td>
+                    `;
+                    recalculationSubjectsTable.appendChild(row);
+                }
+                
+                // تحديث النتيجة بعد إعادة التدقيق
+                document.getElementById('recalculation-total-score').textContent = student.maxTotal;
+                document.getElementById('recalculation-obtained-score').textContent = recalculationTotalScore;
+                
+                // تحديد الحالة النهائية بعد إعادة التدقيق
+                const recalculationStatus = recalculationTotalScore >= student.maxTotal * 0.5 ? 
+                    "ناجح بعد إعادة التدقيق" : "راسب بعد إعادة التدقيق";
+                document.getElementById('recalculation-status').textContent = recalculationStatus;
+                
+                // إظهار النافذة
+                resultModal.style.display = 'flex';
+            }
+            
+            // دالة للحصول على اسم المادة بالعربية
+            function getSubjectName(key) {
+                const subjects = {
+                    'arabic': 'اللغة العربية',
+                    'biology': 'علم الأحياء',
+                    'physics': 'الفيزياء',
+                    'chemistry': 'الكيمياء',
+                    'english': 'اللغة الإنجليزية',
+                    'french': 'اللغة الفرنسية',
+                    'math': 'الرياضيات',
+                    'religion': 'التربية الدينية',
+                    'history': 'التاريخ',
+                    'geography': 'الجغرافيا',
+                    'philosophy': 'الفلسفة والعلوم الإنسانية'
+                };
+                
+                return subjects[key] || key;
+            }
+        });
+    </script>
+</body>
+</html>
