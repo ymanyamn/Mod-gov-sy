@@ -3,62 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نتائج الاعتراضات الالكترونيه الخاصة لطلاب المنطقة الشرقية- الاستعلام للطلاب</title>
+    <title>نتائج الاعتراض الالكتروني - الاستعلام للطلاب</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #1a237e;
-            --primary-dark: #283593;
-            --secondary: #3949ab;
-            --accent: #4caf50;
-            --danger: #c62828;
-            --warning: #ff9800;
-            --light: #f5f5f5;
-            --dark: #333;
-            --gray: #ddd;
-            --success: #2e7d32;
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --accent: #4cc9f0;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --gray: #dfe6e9;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--dark);
             line-height: 1.6;
-            padding: 20px;
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
         
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: containerAppear 0.5s ease-out;
+        }
+        
+        @keyframes containerAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            opacity: 0.8;
+            border-radius: 50%;
+            animation: fall linear forwards;
+            z-index: -1;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
         
         header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             padding: 25px 0;
             text-align: center;
             position: relative;
+            overflow: hidden;
         }
         
         .header-title {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .header-subtitle {
-            font-size: 20px;
+            font-size: 18px;
             opacity: 0.9;
         }
         
@@ -74,27 +110,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        nav {
-            background-color: var(--secondary);
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        
-        nav a:hover {
-            background-color: var(--primary-dark);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
         
         .main-content {
@@ -125,7 +141,7 @@
         .search-form {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            gap: 20px;
             margin-bottom: 40px;
         }
         
@@ -137,26 +153,27 @@
             display: block;
             margin-bottom: 10px;
             font-weight: bold;
-            color: #555;
+            color: var(--dark);
             font-size: 16px;
         }
         
         .form-group select, 
         .form-group input {
             width: 100%;
-            padding: 14px;
+            padding: 15px;
             border: 2px solid var(--gray);
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
-            background-color: #f9f9f9;
+            background-color: white;
             transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
         
         .form-group select:focus, 
         .form-group input:focus {
-            border-color: var(--secondary);
+            border-color: var(--primary);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.2);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
         }
         
         .full-width {
@@ -165,24 +182,24 @@
         
         .search-button {
             grid-column: span 2;
-            background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             border: none;
-            padding: 16px;
+            padding: 18px;
             font-size: 18px;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
         }
         
         .search-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.5);
         }
         
         .search-button:active {
@@ -205,25 +222,26 @@
         }
         
         .modal-content {
-            background-color: white;
+            background: white;
             padding: 30px;
-            border-radius: 15px;
+            border-radius: 20px;
             width: 100%;
-            max-width: 700px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            animation: modalFadeIn 0.3s;
+            max-width: 800px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            animation: modalAppear 0.4s ease-out;
             max-height: 90vh;
             overflow-y: auto;
+            position: relative;
         }
         
-        @keyframes modalFadeIn {
+        @keyframes modalAppear {
             from {
                 opacity: 0;
-                transform: translateY(-50px);
+                transform: scale(0.9) translateY(20px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1) translateY(0);
             }
         }
         
@@ -266,9 +284,10 @@
             margin-bottom: 20px;
             color: var(--primary);
             font-size: 22px;
-            padding: 10px;
+            padding: 15px;
             background: #f0f4f8;
-            border-radius: 8px;
+            border-radius: 12px;
+            font-weight: bold;
         }
         
         .student-info {
@@ -280,15 +299,21 @@
         
         .info-item {
             margin-bottom: 15px;
-            padding: 12px;
+            padding: 15px;
             background: #f9f9f9;
-            border-radius: 8px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+        
+        .info-item:hover {
+            transform: translateY(-3px);
         }
         
         .info-label {
             font-weight: bold;
             color: #555;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -301,17 +326,40 @@
         
         .result-status {
             text-align: center;
-            padding: 20px;
-            background-color: #e8f5e9;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid var(--accent);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #f0f4f8 0%, #e3f2fd 100%);
+            border: 2px solid;
+            transition: all 0.3s;
+        }
+        
+        .result-status.pass {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+        
+        .result-status.fail {
+            border-color: var(--danger);
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
         }
         
         .result-status h3 {
-            color: var(--success);
-            font-size: 28px;
+            font-size: 32px;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .pass-status {
+            color: var(--success);
+        }
+        
+        .fail-status {
+            color: var(--danger);
         }
         
         .score-box {
@@ -338,42 +386,56 @@
             font-weight: bold;
             background-color: #f5f5f5;
             font-size: 20px;
+            border-radius: 8px;
         }
         
         .score-obtained {
             font-size: 24px;
             font-weight: bold;
-            color: var(--success);
+            color: var(--primary);
         }
         
-        .congrats-message {
+        .message {
             text-align: center;
             font-style: italic;
-            color: #555;
-            margin: 15px 0;
+            margin: 20px 0;
             font-size: 18px;
-            padding: 10px;
-            background: #fff9c4;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pass-message {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+        
+        .fail-message {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            color: #e65100;
+            border: 2px solid #ff9800;
         }
         
         .subjects-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 25px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
         }
         
         .subjects-table th, 
         .subjects-table td {
-            padding: 14px;
+            padding: 16px;
             text-align: center;
             border: 1px solid var(--gray);
         }
         
         .subjects-table th {
-            background-color: #e8eaf6;
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
             font-weight: bold;
             font-size: 16px;
         }
@@ -386,38 +448,36 @@
             background-color: #f0f0f0;
         }
         
-        .appeal-badge {
-            background: var(--warning);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-right: 5px;
+        .status-pass {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .status-fail {
+            color: var(--danger);
+            font-weight: bold;
         }
         
         .footer {
             text-align: center;
             padding: 25px;
-            background-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             margin-top: 30px;
         }
         
-        .message {
+        .error-message {
             padding: 15px;
             margin: 20px 0;
             border-radius: 8px;
             text-align: center;
             display: none;
             font-weight: bold;
-        }
-        
-        .error-message {
-            background-color: #ffebee;
+            background: #ffebee;
             color: var(--danger);
             border: 1px solid #ffcdd2;
         }
-        
+
         .tabs {
             display: flex;
             margin-bottom: 20px;
@@ -445,7 +505,7 @@
         .tab-content.active {
             display: block;
         }
-        
+
         .appeal-section {
             margin-top: 30px;
             padding: 20px;
@@ -519,17 +579,20 @@
                 padding: 20px;
             }
             
-            nav {
-                flex-direction: column;
-                gap: 10px;
-                align-items: center;
-            }
-            
             .header-icon {
                 position: relative;
                 top: 0;
                 left: 0;
                 margin: 0 auto 15px;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                margin-bottom: 5px;
+                border-radius: 5px;
             }
         }
         
@@ -543,12 +606,12 @@
         }
         
         ::-webkit-scrollbar-thumb {
-            background: var(--secondary);
+            background: var(--primary);
             border-radius: 4px;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary);
+            background: var(--secondary);
         }
     </style>
 </head>
@@ -559,16 +622,11 @@
                 <i class="fas fa-user-graduate"></i>
             </div>
             <div class="header-title">مديرية الامتحانات</div>
-            <div class="header-subtitle">الاستعلام عن نتيجة الاعتراض - للطلاب</div>
+            <div class="header-subtitle">الاستعلام عن النتائج - للطلاب</div>
         </header>
         
-        <nav>
-            <a href="#"><i class="fas fa-newspaper"></i> أخر الأحداث</a>
-            <a href="#"><i class="fas fa-graduation-cap"></i> النتائج الخاصة بطلبات الاعتراض الالكتروني </a>
-        </nav>
-        
         <div class="main-content">
-            <h2 class="section-title">نتائج الاعتراضات<br>لشهادة التعليم الثانوي بفروعها</h2>
+            <h2 class="section-title">نتائج الامتحانات<br>لشهادتي التعليم الثانوي و الأساسي</h2>
             
             <div class="search-form">
                 <div class="form-group full-width">
@@ -597,7 +655,7 @@
                 </button>
             </div>
             
-            <div id="student-message" class="message"></div>
+            <div id="student-message" class="error-message"></div>
         </div>
         
         <div class="footer">
@@ -628,8 +686,8 @@
                     <!-- سيتم ملؤها بواسطة JavaScript -->
                 </div>
                 
-                <div class="result-status">
-                    <h3 id="result-status">ناجح</h3>
+                <div class="result-status" id="result-status-container">
+                    <h3 id="result-status-text">ناجح <span id="status-icon">✔️</span></h3>
                     <div class="score-box">
                         <div class="score-total" id="total-score">2700</div>
                         <div class="score-square">⬜</div>
@@ -637,7 +695,7 @@
                     </div>
                 </div>
                 
-                <div class="congrats-message">
+                <div class="message" id="result-message">
                     مبارك ونحو مزيد من التألق والنجاح
                 </div>
                 
@@ -670,7 +728,7 @@
                     </div>
                 </div>
                 
-                <div class="congrats-message">
+                <div class="message">
                     تم تعديل النتيجة بعد الاعتراض
                 </div>
                 
@@ -708,7 +766,7 @@
                     </div>
                 </div>
                 
-                <div class="congrats-message">
+                <div class="message">
                     تمت إعادة جمع وتدقيق الدرجات بنجاح
                 </div>
                 
@@ -780,6 +838,59 @@
     </div>
 
     <script>
+        // بيانات تجريبية للطلاب (ستتم استعادتها من localStorage في الوضع الطبيعي)
+        const demoStudentsData = {
+            "123456": {
+                year: "2025",
+                branch: "scientific",
+                name: "محمد أحمد علي",
+                enrollment: "123456",
+                language: "عربية",
+                religion: "مسلم",
+                center: "ثانوية ابن خلدون",
+                hall: "B203",
+                seat: "12",
+                subjects: {
+                    arabic: { score: 380, max: 400, min: 160 },
+                    physics: { score: 350, max: 400, min: 160 },
+                    english: { score: 280, max: 300, min: 120 },
+                    biology: { score: 270, max: 300, min: 120 },
+                    math: { score: 550, max: 600, min: 240 },
+                    chemistry: { score: 180, max: 200, min: 80 },
+                    religion: { score: 190, max: 200, min: 80 },
+                    french: { score: 250, max: 300, min: 120 }
+                },
+                totalScore: 2450,
+                maxTotal: 2700,
+                status: "ناجح",
+                average: "90.74"
+            },
+            "654321": {
+                year: "2025",
+                branch: "literary",
+                name: "سارة عبد الله",
+                enrollment: "654321",
+                language: "عربية",
+                religion: "مسلمة",
+                center: "ثانوية الفارابي",
+                hall: "A105",
+                seat: "7",
+                subjects: {
+                    french: { score: 300, max: 400, min: 160 },
+                    english: { score: 320, max: 400, min: 160 },
+                    history: { score: 200, max: 300, min: 120 },
+                    geography: { score: 180, max: 300, min: 120 },
+                    arabic: { score: 450, max: 600, min: 300 },
+                    philosophy: { score: 300, max: 400, min: 160 },
+                    religion: { score: 150, max: 200, min: 80 }
+                },
+                totalScore: 1900,
+                maxTotal: 2600,
+                status: "راسب",
+                average: "73.08"
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             const searchButton = document.getElementById('search-button');
             const resultModal = document.getElementById('result-modal');
@@ -794,6 +905,11 @@
             const validationIcon = document.getElementById('validation-icon');
             const validationText = document.getElementById('validation-text');
             const submitRequest = document.getElementById('submit-request');
+            
+            // تهيئة البيانات إذا لم تكن موجودة
+            if (!localStorage.getItem('studentsData')) {
+                localStorage.setItem('studentsData', JSON.stringify(demoStudentsData));
+            }
             
             // إدارة التبويبات
             tabs.forEach(tab => {
@@ -902,8 +1018,6 @@
             // دالة لعرض رسائل للمستخدم
             function showMessage(element, message, type) {
                 element.textContent = message;
-                element.classList.remove('error-message');
-                element.classList.add('error-message');
                 element.style.display = 'block';
                 
                 // إخفاء الرسالة بعد 5 ثوانٍ
@@ -952,9 +1066,30 @@
                 `;
                 
                 // تحديث حالة النجاح والدرجات
-                document.getElementById('result-status').textContent = student.status;
+                const isPass = !student.status.includes('راسب');
+                document.getElementById('result-status-text').innerHTML = 
+                    isPass ? 
+                    `<span class="pass-status">ناجح</span> <span id="status-icon">✔️</span>` : 
+                    `<span class="fail-status">راسب</span> <span id="status-icon">❌</span>`;
+                
                 document.getElementById('total-score').textContent = student.maxTotal;
                 document.getElementById('obtained-score').textContent = student.totalScore;
+                
+                // تحديث فئة النتيجة
+                const statusContainer = document.getElementById('result-status-container');
+                statusContainer.className = isPass ? 'result-status pass' : 'result-status fail';
+                
+                // تحديث الرسالة
+                const messageElement = document.getElementById('result-message');
+                messageElement.textContent = isPass ? 
+                    'مبارك ونحو مزيد من التألق والنجاح' : 
+                    'لا تيأس، الطريق أمامك طويل واستمر في المحاولة';
+                messageElement.className = isPass ? 'message pass-message' : 'message fail-message';
+                
+                // إنشاء تأثير الأوراق الملونة عند النجاح
+                if (isPass) {
+                    createConfetti();
+                }
                 
                 // تحديث جدول المواد
                 const subjectsTable = document.querySelector('#subjects-table tbody');
@@ -962,9 +1097,10 @@
                 
                 for (const [subject, data] of Object.entries(student.subjects)) {
                     const subjectName = getSubjectName(subject);
-                    const status = data.score >= data.min ? 
-                        '<span style="color: green;">ناجح</span>' : 
-                        '<span style="color: red;">راسب</span>';
+                    const isSubjectPass = data.score >= data.min;
+                    const status = isSubjectPass ? 
+                        '<span class="status-pass">ناجح</span>' : 
+                        '<span class="status-fail">راسب</span>';
                     
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -976,140 +1112,30 @@
                     subjectsTable.appendChild(row);
                 }
                 
-                // عرض نتيجة الاعتراضات إذا وجدت
-                if (student.appealSubjects && Object.keys(student.appealSubjects).length > 0) {
-                    const appealResultInfo = document.getElementById('appeal-result-info');
-                    appealResultInfo.innerHTML = `
-                        <div class="info-item">
-                            <div class="info-label"><i class="fas fa-user"></i> الاسم الثلاثي:</div>
-                            <div class="info-value">${student.name}</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label"><i class="fas fa-id-card"></i> رقم الاكتتاب:</div>
-                            <div class="info-value">${student.enrollment}</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label"><i class="fas fa-gavel"></i> حالة الاعتراض:</div>
-                            <div class="info-value">تمت معالجة الاعتراض</div>
-                        </div>
-                    `;
-                    
-                    // حساب المجموع بعد الاعتراض
-                    let appealTotalScore = 0;
-                    const appealSubjectsTable = document.querySelector('#appeal-subjects-table tbody');
-                    appealSubjectsTable.innerHTML = '';
-                    
-                    for (const [subject, appealScore] of Object.entries(student.appealSubjects)) {
-                        const originalScore = student.subjects[subject].score;
-                        const subjectName = getSubjectName(subject);
-                        const minScore = student.subjects[subject].min;
-                        
-                        const status = appealScore >= minScore ? 
-                            '<span style="color: green;">ناجح</span>' : 
-                            '<span style="color: red;">راسب</span>';
-                        
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${subjectName} <span class="appeal-badge">اعتراض</span></td>
-                            <td>${originalScore}</td>
-                            <td><strong>${appealScore}</strong></td>
-                            <td>${status}</td>
-                        `;
-                        appealSubjectsTable.appendChild(row);
-                        
-                        appealTotalScore += appealScore;
-                    }
-                    
-                    // إضافة المواد التي لم يتم الاعتراض عليها
-                    for (const [subject, data] of Object.entries(student.subjects)) {
-                        if (!student.appealSubjects[subject]) {
-                            const subjectName = getSubjectName(subject);
-                            const status = data.score >= data.min ? 
-                                '<span style="color: green;">ناجح</span>' : 
-                                '<span style="color: red;">راسب</span>';
-                            
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${subjectName}</td>
-                                <td>${data.score}</td>
-                                <td>${data.score}</td>
-                                <td>${status}</td>
-                            `;
-                            appealSubjectsTable.appendChild(row);
-                            
-                            appealTotalScore += data.score;
-                        }
-                    }
-                    
-                    // تحديث النتيجة بعد الاعتراض
-                    document.getElementById('appeal-total-score').textContent = student.maxTotal;
-                    document.getElementById('appeal-obtained-score').textContent = appealTotalScore;
-                    
-                    // تحديد الحالة النهائية بعد الاعتراض
-                    const appealStatus = appealTotalScore >= student.maxTotal * 0.5 ? 
-                        "ناجح بعد الاعتراض" : "راسب بعد الاعتراض";
-                    document.getElementById('appeal-result-status').textContent = appealStatus;
-                } else {
-                    // إخفاء تبويب الاعتراضات إذا لم توجد اعتراضات
-                    document.querySelector('.tab[data-tab="appeal-result"]').style.display = 'none';
-                }
-                
-                // إظهار تبويب إعادة الجمع والتدقيق (محاكاة)
-                const recalculationInfo = document.getElementById('recalculation-info');
-                recalculationInfo.innerHTML = `
-                    <div class="info-item">
-                        <div class="info-label"><i class="fas fa-user"></i> الاسم الثلاثي:</div>
-                        <div class="info-value">${student.name}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label"><i class="fas fa-id-card"></i> رقم الاكتتاب:</div>
-                        <div class="info-value">${student.enrollment}</div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label"><i class="fas fa-calculator"></i> حالة التدقيق:</div>
-                        <div class="info-value">تمت إعادة الجمع والتدقيق</div>
-                    </div>
-                `;
-                
-                // محاكاة إعادة الجمع والتدقيق
-                let recalculationTotalScore = student.totalScore;
-                const recalculationSubjectsTable = document.querySelector('#recalculation-subjects-table tbody');
-                recalculationSubjectsTable.innerHTML = '';
-                
-                for (const [subject, data] of Object.entries(student.subjects)) {
-                    const subjectName = getSubjectName(subject);
-                    const status = data.score >= data.min ? 
-                        '<span style="color: green;">ناجح</span>' : 
-                        '<span style="color: red;">راسب</span>';
-                    
-                    // محاكاة تغيير طفيف في بعض الدرجات
-                    let newScore = data.score;
-                    if (Math.random() > 0.7) {
-                        newScore = Math.min(data.max, newScore + Math.floor(Math.random() * 10));
-                        recalculationTotalScore += (newScore - data.score);
-                    }
-                    
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${subjectName}</td>
-                        <td>${data.score}</td>
-                        <td>${newScore}</td>
-                        <td>${status}</td>
-                    `;
-                    recalculationSubjectsTable.appendChild(row);
-                }
-                
-                // تحديث النتيجة بعد إعادة التدقيق
-                document.getElementById('recalculation-total-score').textContent = student.maxTotal;
-                document.getElementById('recalculation-obtained-score').textContent = recalculationTotalScore;
-                
-                // تحديد الحالة النهائية بعد إعادة التدقيق
-                const recalculationStatus = recalculationTotalScore >= student.maxTotal * 0.5 ? 
-                    "ناجح بعد إعادة التدقيق" : "راسب بعد إعادة التدقيق";
-                document.getElementById('recalculation-status').textContent = recalculationStatus;
-                
                 // إظهار النافذة
                 resultModal.style.display = 'flex';
+            }
+            
+            // دالة لإنشاء تأثير الأوراق الملونة
+            function createConfetti() {
+                const colors = ['#4361ee', '#7209b7', '#4cc9f0', '#2ecc71', '#e74c3c', '#f39c12'];
+                const container = document.querySelector('body');
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    container.appendChild(confetti);
+                    
+                    // إزالة العنصر بعد انتهاء animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
             }
             
             // دالة للحصول على اسم المادة بالعربية
