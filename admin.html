@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام إدخال نتائج الاعتراض الالكتروني - خاص لمدخلي البيانات</title>
+    <title>نظام نتائج والاعتراض الالكتروني - المعلمين</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #1a237e;
+            --primary-dark: #283593;
+            --secondary: #3949ab;
+            --accent: #4caf50;
+            --danger: #c62828;
+            --warning: #ff9800;
+            --light: #f5f5f5;
+            --dark: #333;
+            --gray: #ddd;
+            --success: #2e7d32;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -14,37 +27,53 @@
         }
         
         body {
-            background-color: #f0f2f5;
-            color: #333;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            color: var(--dark);
             line-height: 1.6;
             padding: 20px;
+            min-height: 100vh;
         }
         
         .admin-container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             overflow: hidden;
         }
         
         header {
-            background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 20px 0;
+            padding: 25px 0;
             text-align: center;
+            position: relative;
         }
         
         .header-title {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             margin-bottom: 10px;
         }
         
         .header-subtitle {
-            font-size: 18px;
+            font-size: 20px;
             opacity: 0.9;
+        }
+        
+        .header-icon {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .main-content {
@@ -53,17 +82,29 @@
         
         .section-title {
             text-align: center;
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 30px;
-            color: #1a237e;
+            color: var(--primary);
             padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: 2px solid var(--gray);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary);
         }
         
         .form-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
             margin-bottom: 40px;
         }
         
@@ -73,35 +114,53 @@
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: bold;
             color: #555;
+            font-size: 16px;
         }
         
         .form-group select, 
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 14px;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
             font-size: 16px;
             background-color: #f9f9f9;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
         
         .form-group select:focus, 
         .form-group input:focus {
-            border-color: #3949ab;
+            border-color: var(--secondary);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(57, 73, 171, 0.2);
         }
         
         .full-width {
             grid-column: span 2;
         }
         
+        .subject-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .subject-container h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
         .subject-row {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 15px;
             margin-bottom: 15px;
             align-items: center;
@@ -110,6 +169,14 @@
         .subject-name {
             font-weight: bold;
             color: #555;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .subject-limit {
+            color: #777;
+            font-size: 14px;
         }
         
         .action-buttons {
@@ -122,43 +189,54 @@
             flex: 1;
             color: white;
             border: none;
-            padding: 15px;
+            padding: 16px;
             font-size: 18px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .save-button {
-            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            background: linear-gradient(135deg, var(--success) 0%, var(--accent) 100%);
         }
         
         .update-button {
-            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            background: linear-gradient(135deg, var(--warning) 0%, #ff5722 100%);
         }
         
         .delete-button {
-            background: linear-gradient(135deg, #c62828 0%, #d32f2f 100%);
+            background: linear-gradient(135deg, var(--danger) 0%, #d32f2f 100%);
         }
         
         .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-button:active {
+            transform: translateY(-1px);
         }
         
         .students-list {
             margin-top: 40px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         
         .students-list h3 {
             text-align: center;
             margin-bottom: 20px;
-            color: #1a237e;
-            font-size: 22px;
+            color: var(--primary);
+            font-size: 24px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--gray);
         }
         
         .students-table {
@@ -169,18 +247,23 @@
         
         .students-table th, 
         .students-table td {
-            padding: 12px;
+            padding: 14px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid var(--gray);
         }
         
         .students-table th {
             background-color: #e8eaf6;
-            color: #1a237e;
+            color: var(--primary);
+            font-weight: bold;
         }
         
         .students-table tr:nth-child(even) {
             background-color: #f9f9f9;
+        }
+        
+        .students-table tr:hover {
+            background-color: #f0f0f0;
         }
         
         .students-table .action-cell {
@@ -195,22 +278,32 @@
             border: none;
             cursor: pointer;
             font-size: 18px;
-            color: #3949ab;
+            color: var(--secondary);
             transition: color 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .icon-button:hover {
+            background: #f0f0f0;
         }
         
         .edit-button:hover {
-            color: #ff9800;
+            color: var(--warning);
         }
         
         .delete-list-button:hover {
-            color: #c62828;
+            color: var(--danger);
         }
         
         .footer {
             text-align: center;
-            padding: 20px;
-            background-color: #1a237e;
+            padding: 25px;
+            background-color: var(--primary);
             color: white;
             margin-top: 30px;
         }
@@ -218,39 +311,66 @@
         .message {
             padding: 15px;
             margin: 20px 0;
-            border-radius: 5px;
+            border-radius: 8px;
             text-align: center;
             display: none;
+            font-weight: bold;
         }
         
         .success-message {
             background-color: #e8f5e9;
-            color: #2e7d32;
+            color: var(--success);
             border: 1px solid #c8e6c9;
         }
         
         .error-message {
             background-color: #ffebee;
-            color: #c62828;
+            color: var(--danger);
             border: 1px solid #ffcdd2;
         }
         
-        .login-section {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .login-form {
-            display: flex;
-            flex-direction: column;
+        .result-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f4f8;
+            border-radius: 10px;
         }
         
-        @media (max-width: 768px) {
+        .appeal-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff8e1;
+            border-radius: 10px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .appeal-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .appeal-checkbox input {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .percentage-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .percentage-input input {
+            width: 80px;
+            text-align: center;
+        }
+        
+        @media (max-width: 992px) {
             .form-container {
                 grid-template-columns: 1fr;
             }
@@ -265,17 +385,46 @@
             
             .subject-row {
                 grid-template-columns: 1fr;
+                gap: 10px;
             }
             
             .students-table .action-cell {
                 flex-direction: column;
             }
+            
+            .header-icon {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin: 0 auto 15px;
+            }
+        }
+        
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
     </style>
 </head>
 <body>
     <div class="admin-container">
         <header>
+            <div class="header-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
             <div class="header-title">مديرية الامتحانات</div>
             <div class="header-subtitle">نظام إدخال النتائج - للمعلمين</div>
         </header>
@@ -285,14 +434,14 @@
             
             <div class="form-container">
                 <div class="form-group">
-                    <label for="admin-year">السنة</label>
+                    <label for="admin-year"><i class="fas fa-calendar-alt"></i> السنة</label>
                     <select id="admin-year">
                         <option value="2025">2025</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-branch">الفرع</label>
+                    <label for="admin-branch"><i class="fas fa-code-branch"></i> الفرع</label>
                     <select id="admin-branch">
                         <option value="">اختر الفرع</option>
                         <option value="scientific">علمي</option>
@@ -301,17 +450,17 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-name">الاسم الثلاثي</label>
+                    <label for="admin-name"><i class="fas fa-user"></i> الاسم الثلاثي</label>
                     <input type="text" id="admin-name" placeholder="الاسم الثلاثي">
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-enrollment">رقم الاكتتاب</label>
+                    <label for="admin-enrollment"><i class="fas fa-id-card"></i> رقم الاكتتاب</label>
                     <input type="text" id="admin-enrollment" placeholder="رقم الاكتتاب">
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-language">اللغة</label>
+                    <label for="admin-language"><i class="fas fa-language"></i> اللغة</label>
                     <select id="admin-language">
                         <option value="عربية">عربية</option>
                         <option value="فرنسية">فرنسية</option>
@@ -320,7 +469,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-religion">الديانة</label>
+                    <label for="admin-religion"><i class="fas fa-place-of-worship"></i> الديانة</label>
                     <select id="admin-religion">
                         <option value="مسلم">مسلم</option>
                         <option value="مسيحي">مسيحي</option>
@@ -329,102 +478,191 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-center">المركز</label>
+                    <label for="admin-center"><i class="fas fa-school"></i> المركز</label>
                     <input type="text" id="admin-center" placeholder="اسم المركز">
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-hall">القاعة</label>
+                    <label for="admin-hall"><i class="fas fa-door-open"></i> القاعة</label>
                     <input type="text" id="admin-hall" placeholder="رقم القاعة">
                 </div>
                 
                 <div class="form-group">
-                    <label for="admin-seat">رقم الجلوس</label>
+                    <label for="admin-seat"><i class="fas fa-chair"></i> رقم الجلوس</label>
                     <input type="text" id="admin-seat" placeholder="رقم الجلوس">
                 </div>
                 
                 <!-- المواد العلمية -->
-                <div id="scientific-subjects" class="full-width" style="display: none;">
-                    <h3>المواد العلمية</h3>
+                <div id="scientific-subjects" class="full-width subject-container" style="display: none;">
+                    <h3><i class="fas fa-flask"></i> المواد العلمية</h3>
                     <div class="subject-row">
-                        <div class="subject-name">اللغة العربية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="arabic" max="160" min="0">
-                        <input type="text" class="subject-max" placeholder="160/0" disabled>
+                        <div class="subject-name">اللغة العربية <span class="subject-limit">(160-400)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="arabic" max="400" min="0">
+                        <input type="text" class="subject-max" value="400/160" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="arabic">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">علم الأحياء</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="biology" max="120" min="0">
-                        <input type="text" class="subject-max" placeholder="120/0" disabled>
-                    </div>
-                    <div class="subject-row">
-                        <div class="subject-name">الفيزياء</div>
+                        <div class="subject-name">الفيزياء <span class="subject-limit">(160-400)</span></div>
                         <input type="number" class="subject-score" placeholder="الدرجة" data-subject="physics" max="400" min="0">
-                        <input type="text" class="subject-max" placeholder="400/0" disabled>
+                        <input type="text" class="subject-max" value="400/160" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="physics">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">الكيمياء</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="chemistry" max="200" min="0">
-                        <input type="text" class="subject-max" placeholder="200/0" disabled>
-                    </div>
-                    <div class="subject-row">
-                        <div class="subject-name">اللغة الإنجليزية</div>
+                        <div class="subject-name">اللغة الإنجليزية <span class="subject-limit">(120-300)</span></div>
                         <input type="number" class="subject-score" placeholder="الدرجة" data-subject="english" max="300" min="0">
-                        <input type="text" class="subject-max" placeholder="300/0" disabled>
+                        <input type="text" class="subject-max" value="300/120" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="english">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">اللغة الفرنسية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="french" max="100" min="0">
-                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                        <div class="subject-name">علم الأحياء <span class="subject-limit">(120-300)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="biology" max="300" min="0">
+                        <input type="text" class="subject-max" value="300/120" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="biology">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">الرياضيات</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="math" max="240" min="0">
-                        <input type="text" class="subject-max" placeholder="240/0" disabled>
+                        <div class="subject-name">الرياضيات <span class="subject-limit">(240-600)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="math" max="600" min="0">
+                        <input type="text" class="subject-max" value="600/240" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="math">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">التربية الدينية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="religion" max="100" min="0">
-                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                        <div class="subject-name">الكيمياء <span class="subject-limit">(80-200)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="chemistry" max="200" min="0">
+                        <input type="text" class="subject-max" value="200/80" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="chemistry">
+                            <span>اعتراض</span>
+                        </div>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">الديانة <span class="subject-limit">(80-200)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="religion" max="200" min="0">
+                        <input type="text" class="subject-max" value="200/80" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="religion">
+                            <span>اعتراض</span>
+                        </div>
+                    </div>
+                    <div class="subject-row">
+                        <div class="subject-name">اللغة الفرنسية <span class="subject-limit">(120-300)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="french" max="300" min="0">
+                        <input type="text" class="subject-max" value="300/120" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="french">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- المواد الأدبية -->
-                <div id="literary-subjects" class="full-width" style="display: none;">
-                    <h3>المواد الأدبية</h3>
+                <div id="literary-subjects" class="full-width subject-container" style="display: none;">
+                    <h3><i class="fas fa-book"></i> المواد الأدبية</h3>
                     <div class="subject-row">
-                        <div class="subject-name">اللغة العربية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="arabic" max="200" min="0">
-                        <input type="text" class="subject-max" placeholder="200/0" disabled>
+                        <div class="subject-name">اللغة الفرنسية <span class="subject-limit">(160-400)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="french" max="400" min="0">
+                        <input type="text" class="subject-max" value="400/160" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="french">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">اللغة الإنجليزية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="english" max="200" min="0">
-                        <input type="text" class="subject-max" placeholder="200/0" disabled>
+                        <div class="subject-name">اللغة الإنجليزية <span class="subject-limit">(160-400)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="english" max="400" min="0">
+                        <input type="text" class="subject-max" value="400/160" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="english">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">اللغة الفرنسية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="french" max="100" min="0">
-                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                        <div class="subject-name">التاريخ <span class="subject-limit">(120-300)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="history" max="300" min="0">
+                        <input type="text" class="subject-max" value="300/120" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="history">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">التاريخ</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="history" max="150" min="0">
-                        <input type="text" class="subject-max" placeholder="150/0" disabled>
+                        <div class="subject-name">الجغرافيا <span class="subject-limit">(120-300)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="geography" max="300" min="0">
+                        <input type="text" class="subject-max" value="300/120" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="geography">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">الجغرافيا</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="geography" max="150" min="0">
-                        <input type="text" class="subject-max" placeholder="150/0" disabled>
+                        <div class="subject-name">اللغة العربية <span class="subject-limit">(300-600)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="arabic" max="600" min="0">
+                        <input type="text" class="subject-max" value="600/300" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="arabic">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">الفلسفة والعلوم الإنسانية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="philosophy" max="150" min="0">
-                        <input type="text" class="subject-max" placeholder="150/0" disabled>
+                        <div class="subject-name">الفلسفة <span class="subject-limit">(160-400)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="philosophy" max="400" min="0">
+                        <input type="text" class="subject-max" value="400/160" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="philosophy">
+                            <span>اعتراض</span>
+                        </div>
                     </div>
                     <div class="subject-row">
-                        <div class="subject-name">التربية الدينية</div>
-                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="religion" max="100" min="0">
-                        <input type="text" class="subject-max" placeholder="100/0" disabled>
+                        <div class="subject-name">الديانة <span class="subject-limit">(80-200)</span></div>
+                        <input type="number" class="subject-score" placeholder="الدرجة" data-subject="religion" max="200" min="0">
+                        <input type="text" class="subject-max" value="200/80" disabled>
+                        <div class="appeal-checkbox">
+                            <input type="checkbox" class="appeal-subject" data-subject="religion">
+                            <span>اعتراض</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- نتيجة الطالب -->
+                <div class="full-width result-controls">
+                    <div class="form-group">
+                        <label for="student-status"><i class="fas fa-graduation-cap"></i> نتيجة الطالب</label>
+                        <select id="student-status">
+                            <option value="pass">ناجح</option>
+                            <option value="fail">راسب</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pass-percentage"><i class="fas fa-percent"></i> نسبة النجاح (%)</label>
+                        <div class="percentage-input">
+                            <input type="number" id="pass-percentage" value="50" min="0" max="100">
+                            <span>%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قسم الاعتراضات -->
+                <div class="full-width appeal-section">
+                    <h3><i class="fas fa-gavel"></i> المواد المعترض عليها</h3>
+                    <p>يرجى تحديد المواد المعترض عليها وإدخال الدرجات الجديدة بعد الاعتراض</p>
+                    
+                    <div id="appeal-subjects">
+                        <!-- سيتم ملؤها ديناميكيًا -->
                     </div>
                 </div>
                 
@@ -444,7 +682,7 @@
             <div id="admin-message" class="message"></div>
             
             <div class="students-list">
-                <h3>الطلاب المسجلين</h3>
+                <h3><i class="fas fa-list"></i> الطلاب المسجلين</h3>
                 <table class="students-table">
                     <thead>
                         <tr>
@@ -452,6 +690,7 @@
                             <th>الاسم</th>
                             <th>الفرع</th>
                             <th>المعدل</th>
+                            <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
@@ -482,6 +721,9 @@
             const deleteButton = document.getElementById('delete-button');
             const adminMessage = document.getElementById('admin-message');
             const studentsTableBody = document.getElementById('students-table-body');
+            const studentStatus = document.getElementById('student-status');
+            const passPercentage = document.getElementById('pass-percentage');
+            const appealSubjectsContainer = document.getElementById('appeal-subjects');
             
             // تحميل قائمة الطلاب
             loadStudentsList();
@@ -498,6 +740,16 @@
                     scientificSubjects.style.display = 'none';
                     literarySubjects.style.display = 'none';
                 }
+                
+                // إعادة تعيين الاعتراضات
+                appealSubjectsContainer.innerHTML = '';
+            });
+            
+            // مستمع حدث للاعتراضات على المواد
+            document.querySelectorAll('.appeal-subject').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateAppealSubjects();
+                });
             });
             
             // حفظ البيانات
@@ -589,6 +841,8 @@
                 const center = document.getElementById('admin-center').value;
                 const hall = document.getElementById('admin-hall').value;
                 const seat = document.getElementById('admin-seat').value;
+                const status = document.getElementById('student-status').value;
+                const percentage = parseInt(document.getElementById('pass-percentage').value);
                 
                 // التحقق من الحقول المطلوبة
                 if (!branch || !name || !enrollment) {
@@ -598,21 +852,47 @@
                 
                 // جمع درجات المواد
                 const subjects = {};
+                const appealSubjects = {};
                 let totalScore = 0;
                 let maxTotal = 0;
+                let failedSubjects = 0;
+                let arabicFailed = false;
                 
                 const subjectInputs = document.querySelectorAll('.subject-score');
                 subjectInputs.forEach(input => {
                     if (input.value) {
+                        const subjectName = input.getAttribute('data-subject');
                         const score = parseInt(input.value);
                         const max = parseInt(input.getAttribute('max'));
-                        subjects[input.getAttribute('data-subject')] = {
+                        const min = getSubjectMinScore(subjectName, branch);
+                        
+                        subjects[subjectName] = {
                             score: score,
                             max: max,
-                            min: 0
+                            min: min
                         };
+                        
                         totalScore += score;
                         maxTotal += max;
+                        
+                        // التحقق إذا كانت المادة راسبة
+                        if (score < min) {
+                            failedSubjects++;
+                            if (subjectName === 'arabic') arabicFailed = true;
+                        }
+                    }
+                });
+                
+                // تطبيق نسبة النجاح/الرسوب
+                const finalStatus = calculateFinalStatus(status, percentage, failedSubjects, arabicFailed, totalScore, maxTotal);
+                
+                // جمع بيانات الاعتراضات
+                const appealCheckboxes = document.querySelectorAll('.appeal-subject:checked');
+                appealCheckboxes.forEach(checkbox => {
+                    const subject = checkbox.getAttribute('data-subject');
+                    const appealScoreInput = document.getElementById(`appeal-${subject}`);
+                    if (appealScoreInput) {
+                        appealSubjects[subject] = parseInt(appealScoreInput.value);
                     }
                 });
                 
@@ -627,11 +907,99 @@
                     hall: hall,
                     seat: seat,
                     subjects: subjects,
+                    appealSubjects: appealSubjects,
                     totalScore: totalScore,
                     maxTotal: maxTotal,
-                    status: totalScore >= maxTotal * 0.5 ? 'ناجح' : 'راسب',
-                    average: maxTotal > 0 ? ((totalScore / maxTotal) * 100).toFixed(2) : 0
+                    status: finalStatus,
+                    average: maxTotal > 0 ? ((totalScore / maxTotal) * 100).toFixed(2) : 0,
+                    percentage: percentage
                 };
+            }
+            
+            // دالة للحصول على الحد الأدنى للمادة
+            function getSubjectMinScore(subject, branch) {
+                const minScores = {
+                    'scientific': {
+                        'arabic': 160,
+                        'physics': 160,
+                        'english': 120,
+                        'biology': 120,
+                        'math': 240,
+                        'chemistry': 80,
+                        'religion': 80,
+                        'french': 120
+                    },
+                    'literary': {
+                        'french': 160,
+                        'english': 160,
+                        'history': 120,
+                        'geography': 120,
+                        'arabic': 300,
+                        'philosophy': 160,
+                        'religion': 80
+                    }
+                };
+                
+                return minScores[branch][subject] || 0;
+            }
+            
+            // دالة لحساب النتيجة النهائية
+            function calculateFinalStatus(status, percentage, failedSubjects, arabicFailed, totalScore, maxTotal) {
+                // إذا تم اختيار راسب من قبل المعلم
+                if (status === 'fail') {
+                    // تطبيق نسبة الرسوب
+                    const failPercentage = percentage / 100;
+                    const targetScore = maxTotal * failPercentage;
+                    
+                    if (totalScore > targetScore) {
+                        return 'ناجح (تم التعديل)';
+                    }
+                    
+                    return 'راسب';
+                }
+                
+                // قواعد النجاح والرسوب حسب النظام السوري
+                if (arabicFailed) return 'راسب';
+                if (failedSubjects >= 2) return 'راسب';
+                
+                // تطبيق نسبة النجاح
+                const passPercentage = percentage / 100;
+                const targetScore = maxTotal * passPercentage;
+                
+                if (totalScore >= targetScore) {
+                    return 'ناجح';
+                } else {
+                    return 'راسب';
+                }
+            }
+            
+            // دالة لتحديث قسم الاعتراضات
+            function updateAppealSubjects() {
+                appealSubjectsContainer.innerHTML = '';
+                
+                const appealCheckboxes = document.querySelectorAll('.appeal-subject:checked');
+                
+                if (appealCheckboxes.length === 0) {
+                    appealSubjectsContainer.innerHTML = '<p>لم يتم اختيار أي مواد للاعتراض</p>';
+                    return;
+                }
+                
+                appealCheckboxes.forEach(checkbox => {
+                    const subject = checkbox.getAttribute('data-subject');
+                    const subjectName = getSubjectName(subject);
+                    const currentScore = document.querySelector(`.subject-score[data-subject="${subject}"]`).value;
+                    
+                    const appealDiv = document.createElement('div');
+                    appealDiv.className = 'subject-row';
+                    appealDiv.innerHTML = `
+                        <div class="subject-name">${subjectName} (اعتراض)</div>
+                        <input type="number" id="appeal-${subject}" placeholder="الدرجة بعد الاعتراض" value="${currentScore}" min="0">
+                        <div></div>
+                        <div></div>
+                    `;
+                    
+                    appealSubjectsContainer.appendChild(appealDiv);
+                });
             }
             
             // دالة لتحميل قائمة الطلاب
@@ -645,6 +1013,7 @@
                         <td>${student.name}</td>
                         <td>${student.branch === 'scientific' ? 'علمي' : 'أدبي'}</td>
                         <td>${student.average}%</td>
+                        <td>${student.status}</td>
                         <td class="action-cell">
                             <button class="icon-button edit-button" data-id="${enrollment}">
                                 <i class="fas fa-edit"></i>
@@ -693,6 +1062,8 @@
                 document.getElementById('admin-center').value = student.center;
                 document.getElementById('admin-hall').value = student.hall;
                 document.getElementById('admin-seat').value = student.seat;
+                document.getElementById('student-status').value = student.status.includes('راسب') ? 'fail' : 'pass';
+                document.getElementById('pass-percentage').value = student.percentage || 50;
                 
                 // إظهار المواد المناسبة
                 if (student.branch === 'scientific') {
@@ -714,6 +1085,19 @@
                     }
                 });
                 
+                // تعبئة الاعتراضات
+                setTimeout(() => {
+                    updateAppealSubjects();
+                    if (student.appealSubjects) {
+                        for (const [subject, score] of Object.entries(student.appealSubjects)) {
+                            const appealInput = document.getElementById(`appeal-${subject}`);
+                            if (appealInput) {
+                                appealInput.value = score;
+                            }
+                        }
+                    }
+                }, 100);
+                
                 currentEditId = enrollment;
             }
             
@@ -725,12 +1109,19 @@
                 document.getElementById('admin-center').value = '';
                 document.getElementById('admin-hall').value = '';
                 document.getElementById('admin-seat').value = '';
+                document.getElementById('student-status').value = 'pass';
+                document.getElementById('pass-percentage').value = 50;
                 
                 scientificSubjects.style.display = 'none';
                 literarySubjects.style.display = 'none';
                 
                 const subjectInputs = document.querySelectorAll('.subject-score');
                 subjectInputs.forEach(input => input.value = '');
+                
+                const appealCheckboxes = document.querySelectorAll('.appeal-subject');
+                appealCheckboxes.forEach(checkbox => checkbox.checked = false);
+                
+                appealSubjectsContainer.innerHTML = '';
             }
             
             // دالة لعرض رسائل للمستخدم
@@ -744,6 +1135,25 @@
                 setTimeout(() => {
                     element.style.display = 'none';
                 }, 5000);
+            }
+            
+            // دالة للحصول على اسم المادة بالعربية
+            function getSubjectName(key) {
+                const subjects = {
+                    'arabic': 'اللغة العربية',
+                    'biology': 'علم الأحياء',
+                    'physics': 'الفيزياء',
+                    'chemistry': 'الكيمياء',
+                    'english': 'اللغة الإنجليزية',
+                    'french': 'اللغة الفرنسية',
+                    'math': 'الرياضيات',
+                    'religion': 'التربية الدينية',
+                    'history': 'التاريخ',
+                    'geography': 'الجغرافيا',
+                    'philosophy': 'الفلسفة والعلوم الإنسانية'
+                };
+                
+                return subjects[key] || key;
             }
         });
     </script>
