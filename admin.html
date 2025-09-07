@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام نتائج الامتحانات - المعلمين</title>
+    <title>نظام إدخال نتائج الامتحانات - للمعلمين</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -211,6 +211,10 @@
         
         .delete-button {
             background: linear-gradient(135deg, var(--danger) 0%, #d32f2f 100%);
+        }
+        
+        .generate-button {
+            background: linear-gradient(135deg, #9c27b0 0%, #6a1b9a 100%);
         }
         
         .action-button:hover {
@@ -648,7 +652,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="pass-percentage"><i class="fas fa-percent"></i> نسبة النجاح (%)</label>
+                        <label for="pass-percentage"><i class="fas fa-percent"></i> نسبة النجاح/الرسوب (%)</label>
                         <div class="percentage-input">
                             <input type="number" id="pass-percentage" value="50" min="0" max="100">
                             <span>%</span>
@@ -667,6 +671,9 @@
                 </div>
                 
                 <div class="action-buttons full-width">
+                    <button type="button" class="action-button generate-button" id="generate-button">
+                        <i class="fas fa-cogs"></i> توليد النتائج تلقائياً
+                    </button>
                     <button type="button" class="action-button save-button" id="save-button">
                         <i class="fas fa-save"></i> حفظ البيانات
                     </button>
@@ -719,6 +726,7 @@
             const saveButton = document.getElementById('save-button');
             const updateButton = document.getElementById('update-button');
             const deleteButton = document.getElementById('delete-button');
+            const generateButton = document.getElementById('generate-button');
             const adminMessage = document.getElementById('admin-message');
             const studentsTableBody = document.getElementById('students-table-body');
             const studentStatus = document.getElementById('student-status');
@@ -750,6 +758,21 @@
                 checkbox.addEventListener('change', function() {
                     updateAppealSubjects();
                 });
+            });
+            
+            // زر توليد النتائج تلقائياً
+            generateButton.addEventListener('click', function() {
+                const branch = document.getElementById('admin-branch').value;
+                const status = document.getElementById('student-status').value;
+                const percentage = parseInt(document.getElementById('pass-percentage').value);
+                
+                if (!branch) {
+                    showMessage(adminMessage, 'يرجى اختيار الفرع أولاً', 'error');
+                    return;
+                }
+                
+                generateScores(branch, status, percentage);
+                showMessage(adminMessage, 'تم توليد النتائج تلقائياً بنجاح', 'success');
             });
             
             // حفظ البيانات
@@ -829,6 +852,48 @@
                 clearForm();
                 currentEditId = null;
             });
+            
+            // دالة لتوليد النتائج تلقائياً
+            function generateScores(branch, status, percentage) {
+                const subjectInputs = document.querySelectorAll('.subject-score');
+                
+                subjectInputs.forEach(input => {
+                    const subject = input.getAttribute('data-subject');
+                    const maxScore = parseInt(input.getAttribute('max'));
+                    const minScore = getSubjectMinScore(subject, branch);
+                    
+                    let score;
+                    
+                    if (status === 'pass') {
+                        // توليد درجات للناجحين حسب النسبة المحددة
+                        const targetPercentage = percentage / 100;
+                        const targetScore = Math.floor(maxScore * targetPercentage);
+                        
+                        // التأكد من أن الدرجة فوق الحد الأدنى
+                        score = Math.max(minScore, targetScore);
+                        
+                        // إضافة تغيير طفيف لجعل النتائج طبيعية
+                        const variation = Math.floor(Math.random() * 20) - 10;
+                        score = Math.min(maxScore, Math.max(minScore, score + variation));
+                    } else {
+                        // توليد درجات للراسبين
+                        if (Math.random() < 0.3) {
+                            // 30% chance أن تكون المادة راسبة
+                            score = Math.floor(Math.random() * minScore);
+                        } else {
+                            // درجات عشوائية ولكن تحت النسبة المحددة
+                            const failPercentage = percentage / 100;
+                            const maxFailScore = Math.floor(maxScore * failPercentage);
+                            score = Math.floor(Math.random() * maxFailScore);
+                        }
+                    }
+                    
+                    input.value = score;
+                });
+                
+                // تحديث الاعتراضات بعد توليد النتائج
+                updateAppealSubjects();
+            }
             
             // دالة لجلب البيانات من النموذج
             function getFormData() {
