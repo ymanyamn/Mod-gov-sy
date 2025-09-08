@@ -3,499 +3,318 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام نتائج الامتحانات</title>
+    <title>نتيجة الطالب - الثانوي العلمي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #4cc9f0;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --light: #f8f9fa;
-            --dark: #2d3436;
-            --gray: #dfe6e9;
-        }
-        
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Cairo', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--dark);
+            background-color: #f5f7fa;
+            color: #333;
             line-height: 1.6;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
+            max-width: 100%;
+            overflow-x: hidden;
         }
         
         .container {
-            width: 100%;
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
         }
         
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        .header {
+            background: linear-gradient(135deg, #1a5f7a 0%, #159895 100%);
             color: white;
-            padding: 25px 0;
-            text-align: center;
-            position: relative;
-        }
-        
-        .header-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .header-subtitle {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-        
-        .main-content {
-            padding: 30px;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 30px;
-            color: var(--primary);
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--gray);
-        }
-        
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            background: #f0f4f8;
-            border-radius: 12px;
-            padding: 5px;
-        }
-        
-        .tab {
-            padding: 12px 25px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        
-        .tab.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .search-form, .admin-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: var(--dark);
-            font-size: 16px;
-        }
-        
-        .form-group select, 
-        .form-group input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid var(--gray);
-            border-radius: 12px;
-            font-size: 16px;
-            background-color: white;
-            transition: all 0.3s;
-        }
-        
-        .form-group select:focus, 
-        .form-group input:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-        
-        .full-width {
-            grid-column: span 2;
-        }
-        
-        .action-button {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
-            padding: 18px;
-            font-size: 18px;
-            border-radius: 12px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            transition: all 0.3s;
-            margin-top: 20px;
-        }
-        
-        .action-button:hover {
-            transform: translateY(-3px);
-        }
-        
-        .password-prompt {
-            text-align: center;
             padding: 20px;
-            background: #fff3e0;
-            border-radius: 12px;
-            margin: 20px 0;
-            border: 2px solid #ff9800;
-        }
-        
-        .password-input {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        
-        .password-input input {
-            padding: 12px;
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            font-size: 16px;
-            width: 250px;
-        }
-        
-        .password-button {
-            padding: 12px 20px;
-            background: #ff9800;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .error-message {
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 8px;
             text-align: center;
-            display: none;
-            background: #ffebee;
-            color: var(--danger);
-            border: 1px solid #ffcdd2;
+            border-bottom: 5px solid #ffc107;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .student-info {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #1a5f7a;
+            min-width: 120px;
+        }
+        
+        .result-status {
+            padding: 20px;
+            text-align: center;
+            background: #fff8e1;
+            border-bottom: 1px solid #ffecb3;
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        
+        .fail {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .encouragement {
+            color: #388e3c;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .grades-table th, .grades-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .grades-table th {
+            background-color: #1a5f7a;
+            color: white;
+        }
+        
+        .grades-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .teacher-section {
+            padding: 20px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px dashed #4caf50;
+        }
+        
+        .teacher-section h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #a5d6a7;
+        }
+        
+        .teacher-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .signature-area {
+            margin-top: 30px;
+            text-align: left;
+            padding: 15px;
+            border-top: 1px solid #ccc;
         }
         
         .footer {
             text-align: center;
-            padding: 25px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
         }
         
         @media (max-width: 768px) {
-            .search-form, .admin-form {
+            .info-grid {
                 grid-template-columns: 1fr;
             }
             
-            .action-button {
-                grid-column: span 1;
+            .grades-table {
+                font-size: 0.85rem;
+            }
+            
+            .grades-table th, .grades-table td {
+                padding: 8px 5px;
+            }
+            
+            .header h1 {
+                font-size: 1.3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 15px;
+            }
+            
+            .student-info, .result-status, .teacher-section {
+                padding: 15px;
+            }
+            
+            .grades-table {
+                font-size: 0.8rem;
+            }
+            
+            .info-item {
+                flex-direction: column;
+            }
+            
+            .info-label {
+                margin-bottom: 5px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="header-title">مديرية الامتحانات</div>
-            <div class="header-subtitle">نظام إدخال والاستعلام عن النتائج</div>
-        </header>
+        <div class="header">
+            <h1><i class="fas fa-graduation-cap"></i> شهادة التعليم الثانوي - الفرع العلمي</h1>
+            <p>منهاج دمشق - دورة 2025</p>
+        </div>
         
-        <div class="main-content">
-            <div class="tabs">
-                <div class="tab active" data-tab="student-tab">استعلام الطلاب</div>
-                <div class="tab" data-tab="admin-tab">بيانات المعلمين</div>
+        <div class="student-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">الاسم الثلاثي:</span>
+                    <span>مریم محمد شمدین</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">رقم الاكتتاب:</span>
+                    <span>1744078</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الشهادة:</span>
+                    <span>الثانوي - علمي - منهاج دمشق</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">اللغة:</span>
+                    <span>لغة فرنسية</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الدين:</span>
+                    <span>مسلم</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">المركز:</span>
+                    <span>ابي ذر الشمالي</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">القاعة:</span>
+                    <span>A206 - رقم الجلوس 7</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-status">
+            <div class="fail">
+                <i class="fas fa-times-circle"></i> راسب
+            </div>
+            <div class="encouragement">
+                <i class="fas fa-heart"></i> لا تبأس أمامك فرصة أخرى
+            </div>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table class="grades-table">
+                <thead>
+                    <tr>
+                        <th>المادة</th>
+                        <th>الدرجة</th>
+                        <th>الدرجة العظمى والدنيا</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>الفيزياء</td>
+                        <td>180</td>
+                        <td>400</td>
+                    </tr>
+                    <tr>
+                        <td>اللغة الإنجليزية</td>
+                        <td>145</td>
+                        <td>160</td>
+                    </tr>
+                    <tr>
+                        <td>علم الأحياء</td>
+                        <td>132</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>اللغة العربية</td>
+                        <td>98</td>
+                        <td>120</td>
+                    </tr>
+                    <tr>
+                        <td>الرياضيات</td>
+                        <td>240</td>
+                        <td>200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="teacher-section">
+            <h3><i class="fas fa-chalkboard-teacher"></i> قسم المعلم</h3>
+            <div class="teacher-info">
+                <div class="info-item">
+                    <span class="info-label">اسم المعلم:</span>
+                    <span>أ. أحمد السعدي</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">المادة:</span>
+                    <span>الفيزياء</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">التقييم:</span>
+                    <span>جيد</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">الحضور:</span>
+                    <span>90%</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">ملاحظات:</span>
+                    <span>يحتاج لتحسين في حل المسائل</span>
+                </div>
             </div>
             
-            <!-- قسم استعلام الطلاب -->
-            <div id="student-tab" class="tab-content active">
-                <h2 class="section-title">نتائج الامتحانات</h2>
-                
-                <div class="search-form">
-                    <div class="form-group full-width">
-                        <label for="search-year"><i class="fas fa-calendar-alt"></i> السنة</label>
-                        <select id="search-year">
-                            <option value="2025">2025</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="search-branch"><i class="fas fa-code-branch"></i> الفرع</label>
-                        <select id="search-branch">
-                            <option value="">اختر الفرع</option>
-                            <option value="scientific">علمي</option>
-                            <option value="literary">أدبي</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="search-enrollment"><i class="fas fa-id-card"></i> رقم الاكتتاب</label>
-                        <input type="text" id="search-enrollment" placeholder="أدخل رقم الاكتتاب">
-                    </div>
-                    
-                    <button type="button" class="action-button" id="search-button">
-                        <i class="fas fa-search"></i> بحث عن النتائج
-                    </button>
-                </div>
-                
-                <div id="student-message" class="error-message"></div>
-            </div>
-            
-            <!-- قسم المعلمين (محمي بكلمة مرور) -->
-            <div id="admin-tab" class="tab-content">
-                <div id="password-section" class="password-prompt">
-                    <h3><i class="fas fa-lock"></i> الدخول إلى بيانات المعلمين</h3>
-                    <p>يجب إدخال كلمة المرور للوصول إلى هذه الصفحة</p>
-                    <div class="password-input">
-                        <input type="password" id="admin-password" placeholder="كلمة المرور">
-                        <button class="password-button" id="password-button">دخول</button>
-                    </div>
-                    <div id="password-message" class="error-message"></div>
-                </div>
-                
-                <div id="admin-section" style="display: none;">
-                    <h2 class="section-title">إدخال نتائج الطلاب</h2>
-                    
-                    <div class="admin-form">
-                        <div class="form-group">
-                            <label for="admin-year"><i class="fas fa-calendar-alt"></i> السنة</label>
-                            <select id="admin-year">
-                                <option value="2025">2025</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-branch"><i class="fas fa-code-branch"></i> الفرع</label>
-                            <select id="admin-branch">
-                                <option value="">اختر الفرع</option>
-                                <option value="scientific">علمي</option>
-                                <option value="literary">أدبي</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-name"><i class="fas fa-user"></i> الاسم الثلاثي</label>
-                            <input type="text" id="admin-name" placeholder="الاسم الثلاثي">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-enrollment"><i class="fas fa-id-card"></i> رقم الاكتتاب</label>
-                            <input type="text" id="admin-enrollment" placeholder="رقم الاكتتاب">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-language"><i class="fas fa-language"></i> اللغة</label>
-                            <select id="admin-language">
-                                <option value="عربية">عربية</option>
-                                <option value="فرنسية">فرنسية</option>
-                                <option value="إنكليزية">إنكليزية</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-religion"><i class="fas fa-place-of-worship"></i> الديانة</label>
-                            <select id="admin-religion">
-                                <option value="مسلم">مسلم</option>
-                                <option value="مسيحي">مسيحي</option>
-                                <option value="其他">其他</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-center"><i class="fas fa-school"></i> المركز</label>
-                            <input type="text" id="admin-center" placeholder="اسم المركز">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-hall"><i class="fas fa-door-open"></i> القاعة</label>
-                            <input type="text" id="admin-hall" placeholder="رقم القاعة">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="admin-seat"><i class="fas fa-chair"></i> رقم الجلوس</label>
-                            <input type="text" id="admin-seat" placeholder="رقم الجلوس">
-                        </div>
-                        
-                        <button type="button" class="action-button" id="save-button">
-                            <i class="fas fa-save"></i> حفظ البيانات
-                        </button>
-                    </div>
-                    
-                    <div id="admin-message" class="error-message"></div>
-                </div>
+            <div class="signature-area">
+                <p>توقيع المعلم: ________________</p>
+                <p>التاريخ: 2025/06/20</p>
             </div>
         </div>
         
         <div class="footer">
-            © 2025 مديرية الامتحانات - جميع الحقوق محفوظة
+            <p>© 2025 وزارة التربية والتعليم - جمهورية سوريا</p>
+            <p>هذه الوثيقة رسمية ويمكن التحقق من صحتها عبر الموقع الرسمي للوزارة</p>
         </div>
     </div>
-
-    <script>
-        // كلمة المرور للمعلمين
-        const ADMIN_PASSWORD = "mhmd0935989398";
-        
-        // بيانات الطلاب (سيتم حفظها في localStorage)
-        let studentsData = JSON.parse(localStorage.getItem('studentsData')) || {};
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // إدارة التبويبات
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            tabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // إزالة النشاط من جميع الألسنة والمحتويات
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
-                    
-                    // إضافة النشاط للسان والمحتوى المحدد
-                    this.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-            
-            // التحقق من كلمة المرور للمعلمين
-            document.getElementById('password-button').addEventListener('click', function() {
-                const passwordInput = document.getElementById('admin-password').value;
-                const passwordMessage = document.getElementById('password-message');
-                
-                if (passwordInput === ADMIN_PASSWORD) {
-                    document.getElementById('password-section').style.display = 'none';
-                    document.getElementById('admin-section').style.display = 'block';
-                } else {
-                    passwordMessage.textContent = 'كلمة المرور غير صحيحة';
-                    passwordMessage.style.display = 'block';
-                }
-            });
-            
-            // حفظ بيانات الطالب
-            document.getElementById('save-button').addEventListener('click', function() {
-                const year = document.getElementById('admin-year').value;
-                const branch = document.getElementById('admin-branch').value;
-                const name = document.getElementById('admin-name').value;
-                const enrollment = document.getElementById('admin-enrollment').value;
-                const language = document.getElementById('admin-language').value;
-                const religion = document.getElementById('admin-religion').value;
-                const center = document.getElementById('admin-center').value;
-                const hall = document.getElementById('admin-hall').value;
-                const seat = document.getElementById('admin-seat').value;
-                
-                if (!branch || !name || !enrollment) {
-                    showMessage('admin-message', 'يرجى ملء جميع الحقول المطلوبة');
-                    return;
-                }
-                
-                // حفظ بيانات الطالب
-                studentsData[enrollment] = {
-                    year: year,
-                    branch: branch,
-                    name: name,
-                    enrollment: enrollment,
-                    language: language,
-                    religion: religion,
-                    center: center,
-                    hall: hall,
-                    seat: seat,
-                    status: "ناجح" // يمكن تعديل هذا لاحقاً
-                };
-                
-                // حفظ في localStorage
-                localStorage.setItem('studentsData', JSON.stringify(studentsData));
-                
-                showMessage('admin-message', 'تم حفظ بيانات الطالب بنجاح', 'success');
-                
-                // مسح الحقول
-                document.getElementById('admin-name').value = '';
-                document.getElementById('admin-enrollment').value = '';
-                document.getElementById('admin-center').value = '';
-                document.getElementById('admin-hall').value = '';
-                document.getElementById('admin-seat').value = '';
-            });
-            
-            // البحث عن نتائج الطلاب
-            document.getElementById('search-button').addEventListener('click', function() {
-                const year = document.getElementById('search-year').value;
-                const branch = document.getElementById('search-branch').value;
-                const enrollment = document.getElementById('search-enrollment').value;
-                
-                if (!branch || !enrollment) {
-                    showMessage('student-message', 'يرجى اختيار الفرع وإدخال رقم الاكتتاب');
-                    return;
-                }
-                
-                // البحث عن بيانات الطالب
-                const student = studentsData[enrollment];
-                
-                if (!student) {
-                    showMessage('student-message', 'لا توجد نتائج لهذا رقم الاكتتاب');
-                    return;
-                }
-                
-                if (student.branch !== branch) {
-                    showMessage('student-message', 'الفرع المدخل لا يتطابق مع بيانات الطالب');
-                    return;
-                }
-                
-                // عرض نتائج الطالب (هنا يمكنك تطويرها لعرض النتائج بشكل جميل)
-                alert(`تم العثور على الطالب: ${student.name}\nالفرع: ${student.branch === 'scientific' ? 'علمي' : 'أدبي'}\nالمركز: ${student.center}`);
-            });
-            
-            // دالة لعرض الرسائل
-            function showMessage(elementId, message, type = 'error') {
-                const element = document.getElementById(elementId);
-                element.textContent = message;
-                element.style.display = 'block';
-                
-                if (type === 'success') {
-                    element.style.background = '#e8f5e9';
-                    element.style.color = '#2e7d32';
-                    element.style.border = '1px solid #c8e6c9';
-                }
-                
-                // إخفاء الرسالة بعد 5 ثوانٍ
-                setTimeout(() => {
-                    element.style.display = 'none';
-                }, 5000);
-            }
-        });
-    </script>
 </body>
 </html>
