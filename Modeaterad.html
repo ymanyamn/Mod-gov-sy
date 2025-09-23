@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام نتائج الاعتراضات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: #f0f0f0;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        
+        .btn-remove {
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .result-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .result-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .fail {
+            background: #f44336;
+            color: white;
+        }
+        
+        .result-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .subject-item {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f9f9f9;
+        }
+        
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .subject-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 16px;
+        }
+        
+        .result-card {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+            display: none;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .subject-result {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .subject-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .success-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .fail-badge {
+            background: #f44336;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .overall-result {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .overall-success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .overall-fail {
+            background: #f44336;
+            color: white;
+        }
+        
+        /* زر الإدارة المخفي */
+        .admin-access {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+        
+        .admin-access:hover {
+            background: rgba(0,0,0,0.5);
+            transform: scale(1.1);
+        }
+        
+        /* نافذة كلمة السر */
+        .password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .password-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        .password-input {
+            margin: 20px 0;
+            padding: 12px;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        .password-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        .password-error {
+            color: #f44336;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- زر الدخول للإدارة (مخفي) -->
+    <button class="admin-access" onclick="showPasswordModal()">⚙️</button>
+    
+    <!-- نافذة كلمة السر -->
+    <div id="passwordModal" class="password-modal">
+        <div class="password-box">
+            <h3>الدخول لوحة الإدارة</h3>
+            <input type="password" id="adminPassword" class="password-input" placeholder="أدخل كلمة السر">
+            <div id="passwordError" class="password-error">كلمة السر غير صحيحة</div>
+            <div>
+                <button class="password-btn" onclick="checkPassword()">دخول</button>
+                <button class="password-btn" onclick="hidePasswordModal()" style="background: #666;">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🔍 نظام نتائج الاعتراضات</h1>
+            <p>استعلام عن نتيجة الاعتراض</p>
+        </div>
+        
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('search')">الاستعلام</button>
+            <button class="tab-btn" id="adminTabBtn" onclick="switchTab('admin')" style="display: none;">الإدارة</button>
+        </div>
+        
+        <!-- تبويب الاستعلام -->
+        <div id="searchTab" class="tab-content active">
+            <form id="searchForm">
+                <div class="form-group">
+                    <label for="searchName">الاسم الثلاثي:</label>
+                    <input type="text" id="searchName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchBranch">الفرع:</label>
+                    <select id="searchBranch" required>
+                        <option value="">اختر الفرع</option>
+                        <option value="علمي">علمي</option>
+                        <option value="أدبي">أدبي</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="searchSubscription">رقم الاكتتاب:</label>
+                    <input type="text" id="searchSubscription" required>
+                </div>
+                
+                <button type="submit" class="btn">بحث عن النتيجة</button>
+            </form>
+            
+            <div id="resultCard" class="result-card">
+                <div class="result-item">
+                    <span class="result-label">الاسم:</span>
+                    <span class="result-value" id="resultName">-</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">رقم الاكتتاب:</span>
+                    <span class="result-value" id="resultSubscription">-</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">الفرع:</span>
+                    <span class="result-value" id="resultBranch">-</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">تاريخ الإدخال:</span>
+                    <span class="result-value" id="resultDate">-</span>
+                </div>
+                
+                <div id="subjectsResults" style="margin-top: 20px;"></div>
+                <div id="overallResult"></div>
+            </div>
+        </div>
+        
+        <!-- تبويب الإدارة -->
+        <div id="adminTab" class="tab-content">
+            <form id="adminForm">
+                <div class="form-group">
+                    <label for="studentName">الاسم الثلاثي للطالب:</label>
+                    <input type="text" id="studentName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subscriptionNumber">رقم الاكتتاب:</label>
+                    <input type="text" id="subscriptionNumber" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>الفرع:</label>
+                    <div class="radio-group">
+                        <label style="display: flex; align-items: center;">
+                            <input type="radio" name="branch" value="علمي" required style="width: auto; margin-left: 5px;"> علمي
+                        </label>
+                        <label style="display: flex; align-items: center;">
+                            <input type="radio" name="branch" value="أدبي" style="width: auto; margin-left: 5px;"> أدبي
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="subjects-container">
+                    <div class="subject-item" id="subject-1">
+                        <div class="subject-header">
+                            <span class="subject-number">المادة 1</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject-1-name">اسم المادة المعترض عليها:</label>
+                            <input type="text" id="subject-1-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>النتيجة:</label>
+                            <div class="result-buttons">
+                                <button type="button" class="result-btn success" onclick="setResult(1, 'ناجح')">ناجح ✅</button>
+                                <button type="button" class="result-btn fail" onclick="setResult(1, 'راسب')">راسب ❌</button>
+                            </div>
+                            <input type="hidden" id="subject-1-result" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-add" onclick="addSubject()">➕ إضافة مادة أخرى</button>
+                <button type="submit" class="btn">حفظ النتائج</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // كلمة السر الافتراضية (يمكن تغييرها)
+        const ADMIN_PASSWORD = "123456";
+        let isAdmin = false;
+        let subjectCount = 1;
+        let subjectResults = {};
+        
+        // وظائف التحكم بين التبويبات
+        function switchTab(tabName) {
+            if (tabName === 'admin' && !isAdmin) {
+                showPasswordModal();
+                return;
+            }
+            
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            document.querySelector(`.tab-btn[onclick="switchTab('${tabName}')"]`).classList.add('active');
+        }
+        
+        // وظائف كلمة السر
+        function showPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+        }
+        
+        function hidePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+            document.getElementById('passwordError').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        }
+        
+        function checkPassword() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                document.getElementById('adminTabBtn').style.display = 'block';
+                hidePasswordModal();
+                switchTab('admin');
+            } else {
+                document.getElementById('passwordError').style.display = 'block';
+            }
+        }
+        
+        // وظائف إدارة المواد
+        function setResult(subjectId, result) {
+            subjectResults[subjectId] = result;
+            document.getElementById(`subject-${subjectId}-result`).value = result;
+            
+            const subjectElement = document.getElementById(`subject-${subjectId}`);
+            subjectElement.querySelectorAll('.result-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        function addSubject() {
+            subjectCount++;
+            const subjectsContainer = document.querySelector('.subjects-container');
+            
+            const newSubject = document.createElement('div');
+            newSubject.className = 'subject-item';
+            newSubject.id = `subject-${subjectCount}`;
+            
+            newSubject.innerHTML = `
+                <div class="subject-header">
+                    <span class="subject-number">المادة ${subjectCount}</span>
+                    <button type="button" class="btn-remove" onclick="removeSubject(${subjectCount})">✖ حذف</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject-${subjectCount}-name">اسم المادة المعترض عليها:</label>
+                    <input type="text" id="subject-${subjectCount}-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>النتيجة:</label>
+                    <div class="result-buttons">
+                        <button type="button" class="result-btn success" onclick="setResult(${subjectCount}, 'ناجح')">ناجح ✅</button>
+                        <button type="button" class="result-btn fail" onclick="setResult(${subjectCount}, 'راسب')">راسب ❌</button>
+                    </div>
+                    <input type="hidden" id="subject-${subjectCount}-result" required>
+                </div>
+            `;
+            
+            subjectsContainer.appendChild(newSubject);
+        }
+        
+        function removeSubject(subjectId) {
+            if (subjectCount > 1) {
+                const subjectElement = document.getElementById(`subject-${subjectId}`);
+                subjectElement.remove();
+                delete subjectResults[subjectId];
+                
+                const subjects = document.querySelectorAll('.subject-item');
+                subjectCount = 0;
+                subjects.forEach((subject, index) => {
+                    subjectCount++;
+                    const newId = subjectCount;
+                    subject.id = `subject-${newId}`;
+                    
+                    const subjectNumber = subject.querySelector('.subject-number');
+                    subjectNumber.textContent = `المادة ${newId}`;
+                    
+                    const nameInput = subject.querySelector('input[type="text"]');
+                    nameInput.id = `subject-${newId}-name`;
+                    
+                    const resultInput = subject.querySelector('input[type="hidden"]');
+                    resultInput.id = `subject-${newId}-result`;
+                    
+                    const successBtn = subject.querySelector('.success');
+                    successBtn.setAttribute('onclick', `setResult(${newId}, 'ناجح')`);
+                    
+                    const failBtn = subject.querySelector('.fail');
+                    failBtn.setAttribute('onclick', `setResult(${newId}, 'راسب')`);
+                    
+                    if (subjectResults[subjectId]) {
+                        subjectResults[newId] = subjectResults[subjectId];
+                        delete subjectResults[subjectId];
+                    }
+                });
+            } else {
+                alert('يجب أن يكون هناك مادة واحدة على الأقل');
+            }
+        }
+        
+        // حفظ النتائج
+        document.getElementById('adminForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let allSubjectsHaveResults = true;
+            for (let i = 1; i <= subjectCount; i++) {
+                if (!subjectResults[i]) {
+                    allSubjectsHaveResults = false;
+                    alert(`يرجى تحديد نتيجة للمادة ${i}`);
+                    return;
+                }
+            }
+            
+            const formData = {
+                name: document.getElementById('studentName').value,
+                subscription: document.getElementById('subscriptionNumber').value,
+                branch: document.querySelector('input[name="branch"]:checked').value,
+                subjects: [],
+                date: new Date().toLocaleString('ar-EG')
+            };
+            
+            for (let i = 1; i <= subjectCount; i++) {
+                const subjectElement = document.getElementById(`subject-${i}`);
+                if (subjectElement) {
+                    const subjectName = document.getElementById(`subject-${i}-name`).value;
+                    const subjectResult = subjectResults[i];
+                    
+                    formData.subjects.push({
+                        name: subjectName,
+                        result: subjectResult
+                    });
+                }
+            }
+            
+            // الحفظ في localStorage
+            const key = `result_${formData.subscription}`;
+            localStorage.setItem(key, JSON.stringify(formData));
+            
+            alert('✅ تم حفظ النتائج بنجاح!');
+            this.reset();
+            subjectResults = {};
+            
+            document.querySelectorAll('.result-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const subjectsContainer = document.querySelector('.subjects-container');
+            subjectsContainer.innerHTML = '';
+            subjectCount = 0;
+            addSubject();
+        });
+        
+        // البحث عن النتائج
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('searchName').value;
+            const branch = document.getElementById('searchBranch').value;
+            const subscription = document.getElementById('searchSubscription').value;
+            
+            const key = `result_${subscription}`;
+            const storedData = localStorage.getItem(key);
+            
+            const resultCard = document.getElementById('resultCard');
+            
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                
+                if (data.name === name && data.branch === branch) {
+                    document.getElementById('resultName').textContent = data.name;
+                    document.getElementById('resultSubscription').textContent = data.subscription;
+                    document.getElementById('resultBranch').textContent = data.branch;
+                    document.getElementById('resultDate').textContent = data.date;
+                    
+                    const subjectsContainer = document.getElementById('subjectsResults');
+                    subjectsContainer.innerHTML = '<div style="font-weight: bold; margin-bottom: 10px; color: #333;">المواد المعترض عليها:</div>';
+                    
+                    let allPassed = true;
+                    
+                    data.subjects.forEach((subject, index) => {
+                        const subjectElement = document.createElement('div');
+                        subjectElement.className = 'subject-result';
+                        
+                        subjectElement.innerHTML = `
+                            <div class="subject-header">
+                                <span class="subject-name">${subject.name}</span>
+                                <span class="${subject.result === 'ناجح' ? 'success-badge' : 'fail-badge'}">
+                                    ${subject.result === 'ناجح' ? 'ناجح ✅' : 'راسب ❌'}
+                                </span>
+                            </div>
+                        `;
+                        
+                        subjectsContainer.appendChild(subjectElement);
+                        
+                        if (subject.result === 'راسب') {
+                            allPassed = false;
+                        }
+                    });
+                    
+                    const overallResult = document.getElementById('overallResult');
+                    if (allPassed) {
+                        overallResult.innerHTML = `<div class="overall-result overall-success">🎉 جميع المواد ناجحة - مبروك!</div>`;
+                    } else {
+                        overallResult.innerHTML = `<div class="overall-result overall-fail">⚠️ بعض المواد راسبة - نتمنى لك التوفيق</div>`;
+                    }
+                    
+                    resultCard.style.display = 'block';
+                } else {
+                    alert('⚠️ لا توجد نتيجة مطابقة للبيانات المدخلة');
+                    resultCard.style.display = 'none';
+                }
+            } else {
+                alert('⚠️ لا توجد نتيجة مسجلة لهذا الرقم');
+                resultCard.style.display = 'none';
+            }
+        });
+        
+        // إضافة أول مادة تلقائياً
+        addSubject();
+    </script>
+</body>
+</html>
