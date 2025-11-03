@@ -182,6 +182,9 @@
             padding: 15px;
             transition: all 0.3s ease;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .product-card:hover {
@@ -199,6 +202,7 @@
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--text-color);
+            flex-grow: 1;
         }
 
         .product-controls {
@@ -236,6 +240,8 @@
             font-weight: bold;
             min-width: 30px;
             text-align: center;
+            font-size: 1.1rem;
+            color: var(--secondary-color);
         }
 
         .order-summary {
@@ -280,22 +286,7 @@
         .item-quantity {
             margin: 0 10px;
             color: var(--secondary-color);
-        }
-
-        .item-price {
             font-weight: bold;
-            min-width: 60px;
-            text-align: left;
-        }
-
-        .summary-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 15px 0;
-            border-top: 2px solid var(--border-color);
-            margin-top: 10px;
         }
 
         .submit-btn {
@@ -476,10 +467,6 @@
                 <div class="summary-items" id="summary-items">
                     <div class="empty-cart">لم يتم اختيار أي منتجات بعد</div>
                 </div>
-                <div class="summary-total">
-                    <span>المجموع:</span>
-                    <span id="total-price">0</span> <span>ل.س</span>
-                </div>
                 <button id="submit-btn" class="submit-btn" disabled>
                     <i class="fab fa-telegram"></i> إرسال الطلب إلى التلجرام
                 </button>
@@ -505,54 +492,53 @@
         const appetizersGrid = document.getElementById('appetizers-grid');
         const mealsGrid = document.getElementById('meals-grid');
         const summaryItems = document.getElementById('summary-items');
-        const totalPriceElement = document.getElementById('total-price');
         const submitBtn = document.getElementById('submit-btn');
         const statusMessage = document.getElementById('status-message');
 
         // بيانات المنتجات
         const products = {
             drinks: [
-                { id: 1, name: 'شاي', price: 1000 },
-                { id: 2, name: 'قهوة', price: 2000 },
-                { id: 3, name: 'نسكافيه 3-1', price: 1500 },
-                { id: 4, name: 'زهورات', price: 1500 },
-                { id: 5, name: 'مياه بقين', price: 1000 },
-                { id: 6, name: 'عصير عادي', price: 2000 },
-                { id: 7, name: 'عصير طبيعي', price: 3000 },
-                { id: 8, name: 'بيبسي', price: 1500 },
-                { id: 9, name: 'سفن اب', price: 1500 },
-                { id: 10, name: 'بيرا', price: 3000 },
-                { id: 11, name: 'بيرا مكسيكي', price: 3500 },
-                { id: 12, name: 'عرق', price: 4000 },
-                { id: 13, name: 'مشروب طاقة', price: 2500 }
+                { id: 1, name: 'شاي' },
+                { id: 2, name: 'قهوة' },
+                { id: 3, name: 'نسكافيه 3-1' },
+                { id: 4, name: 'زهورات' },
+                { id: 5, name: 'مياه بقين' },
+                { id: 6, name: 'عصير عادي' },
+                { id: 7, name: 'عصير طبيعي' },
+                { id: 8, name: 'بيبسي' },
+                { id: 9, name: 'سفن اب' },
+                { id: 10, name: 'بيرا' },
+                { id: 11, name: 'بيرا مكسيكي' },
+                { id: 12, name: 'عرق' },
+                { id: 13, name: 'مشروب طاقة' }
             ],
             services: [
-                { id: 14, name: 'موالح', price: 5000 },
-                { id: 15, name: 'اركيلة', price: 7000 },
-                { id: 16, name: 'تبديل راس اركيله', price: 2000 },
-                { id: 17, name: 'برنامج فني', price: 15000 },
-                { id: 18, name: 'خدمة مشروب', price: 3000 },
-                { id: 19, name: 'مقبلات', price: 5000 }
+                { id: 14, name: 'موالح' },
+                { id: 15, name: 'اركيلة' },
+                { id: 16, name: 'تبديل راس اركيله' },
+                { id: 17, name: 'برنامج فني' },
+                { id: 18, name: 'خدمة مشروب' },
+                { id: 19, name: 'مقبلات' }
             ],
             appetizers: [
-                { id: 20, name: 'مسبحة', price: 3000 },
-                { id: 21, name: 'متبل', price: 2500 },
-                { id: 22, name: 'محمرة', price: 3000 },
-                { id: 23, name: 'لبنة', price: 2000 },
-                { id: 24, name: 'بطاطا', price: 2500 },
-                { id: 25, name: 'جاط خضرة', price: 3000 },
-                { id: 26, name: 'زيتون', price: 1500 },
-                { id: 27, name: 'جرجير', price: 2000 },
-                { id: 28, name: 'فتوش', price: 3500 },
-                { id: 29, name: 'ارمنية', price: 4000 },
-                { id: 30, name: 'لوزية بائجان', price: 3500 }
+                { id: 20, name: 'مسبحة' },
+                { id: 21, name: 'متبل' },
+                { id: 22, name: 'محمرة' },
+                { id: 23, name: 'لبنة' },
+                { id: 24, name: 'بطاطا' },
+                { id: 25, name: 'جاط خضرة' },
+                { id: 26, name: 'زيتون' },
+                { id: 27, name: 'جرجير' },
+                { id: 28, name: 'فتوش' },
+                { id: 29, name: 'ارمنية' },
+                { id: 30, name: 'لوزية بائجان' }
             ],
             meals: [
-                { id: 31, name: 'جوانح بانيه', price: 8000 },
-                { id: 32, name: 'سمك', price: 12000 },
-                { id: 33, name: 'كريسبي', price: 7000 },
-                { id: 34, name: 'نقانق', price: 6000 },
-                { id: 35, name: 'سوده', price: 9000 }
+                { id: 31, name: 'جوانح بانيه' },
+                { id: 32, name: 'سمك' },
+                { id: 33, name: 'كريسبي' },
+                { id: 34, name: 'نقانق' },
+                { id: 35, name: 'سوده' }
             ]
         };
 
@@ -626,7 +612,6 @@
             
             card.innerHTML = `
                 <div class="product-name">${product.name}</div>
-                <div class="product-price">${product.price} ل.س</div>
                 <div class="product-controls">
                     <div class="quantity-controls">
                         <button class="quantity-btn minus-btn">-</button>
@@ -655,7 +640,7 @@
                 if (quantity > 0) {
                     quantity--;
                     quantityElement.textContent = quantity;
-                    updateOrderItem(product.id, quantity, product.name, product.price);
+                    updateOrderItem(product.id, quantity, product.name);
                 }
             });
             
@@ -663,14 +648,14 @@
                 e.stopPropagation();
                 quantity++;
                 quantityElement.textContent = quantity;
-                updateOrderItem(product.id, quantity, product.name, product.price);
+                updateOrderItem(product.id, quantity, product.name);
             });
             
             return card;
         }
 
         // تحديث عنصر الطلب
-        function updateOrderItem(productId, quantity, productName, productPrice) {
+        function updateOrderItem(productId, quantity, productName) {
             // البحث عن العنصر في الطلب الحالي
             const existingItemIndex = currentOrder.items.findIndex(item => item.id === productId);
             
@@ -687,7 +672,6 @@
                     currentOrder.items.push({
                         id: productId,
                         name: productName,
-                        price: productPrice,
                         quantity: quantity
                     });
                 }
@@ -707,30 +691,20 @@
             
             if (currentOrder.items.length === 0) {
                 summaryItems.innerHTML = '<div class="empty-cart">لم يتم اختيار أي منتجات بعد</div>';
-                totalPriceElement.textContent = '0';
                 return;
             }
             
-            let totalPrice = 0;
-            
             // إضافة العناصر إلى الملخص
             currentOrder.items.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                totalPrice += itemTotal;
-                
                 const itemElement = document.createElement('div');
                 itemElement.className = 'summary-item';
                 itemElement.innerHTML = `
                     <span class="item-name">${item.name}</span>
-                    <span class="item-quantity">${item.quantity} x</span>
-                    <span class="item-price">${itemTotal} ل.س</span>
+                    <span class="item-quantity">العدد: ${item.quantity}</span>
                 `;
                 
                 summaryItems.appendChild(itemElement);
             });
-            
-            // تحديث السعر الإجمالي
-            totalPriceElement.textContent = totalPrice.toLocaleString();
         }
 
         // التحقق من اكتمال النموذج
@@ -755,15 +729,11 @@
                 let orderText = `🛎️ طلب جديد من الطاولة رقم ${currentOrder.tableNumber}\n\n`;
                 orderText += `📋 تفاصيل الطلب:\n`;
                 
-                let totalPrice = 0;
                 currentOrder.items.forEach(item => {
-                    const itemTotal = item.price * item.quantity;
-                    totalPrice += itemTotal;
-                    orderText += `- ${item.name} (${item.quantity}) - ${itemTotal} ل.س\n`;
+                    orderText += `- ${item.name} - العدد: ${item.quantity}\n`;
                 });
                 
-                orderText += `\n💰 المجموع: ${totalPrice.toLocaleString()} ل.س`;
-                orderText += `\n\n📍 العنوان: جرمانا - دوار البلدية`;
+                orderText += `\n📍 العنوان: جرمانا - دوار البلدية`;
                 orderText += `\n⏰ الوقت: ${new Date().toLocaleString('ar-SA')}`;
                 
                 // إرسال الرسالة إلى التلجرام
