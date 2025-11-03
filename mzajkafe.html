@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كافيه مزاج - طلبات الطاولات</title>
+    <title>مطعم وكافيه مزاج - جرمانا</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -20,51 +21,73 @@
             --light-color: #f5f5f5;
             --text-color: #e0e0e0;
             --border-color: #444;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
         }
 
         body {
             background-color: var(--dark-color);
             color: var(--text-color);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a1a"/><path d="M0 0L100 100M100 0L0 100" stroke="%23333" stroke-width="1"/></svg>');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a1a"/><path d="M0 0L100 100M100 0L0 100" stroke="%23333" stroke-width="1"/></svg>');
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
 
         header {
             text-align: center;
             padding: 20px 0;
-            border-bottom: 1px solid var(--border-color);
             margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
         }
 
         .logo {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: var(--secondary-color);
             margin-bottom: 10px;
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         .tagline {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--text-color);
-            opacity: 0.8;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .address {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .services {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .service-tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
         }
 
         .main-content {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
             gap: 30px;
-            flex: 1;
+            margin-bottom: 30px;
         }
 
         .form-section {
@@ -81,6 +104,13 @@
             font-size: 1.5rem;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 1.3rem;
         }
 
         .form-group {
@@ -122,32 +152,150 @@
             font-weight: bold;
         }
 
-        .image-upload {
-            border: 2px dashed var(--border-color);
+        .products-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .category {
+            margin-bottom: 25px;
+        }
+
+        .category-title {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .product-card {
+            background-color: rgba(40, 40, 40, 0.7);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 30px;
-            text-align: center;
-            cursor: pointer;
+            padding: 15px;
             transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-card.selected {
+            border-color: var(--secondary-color);
+            background-color: rgba(139, 69, 19, 0.2);
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .product-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin-top: 10px;
         }
 
-        .image-upload:hover {
-            border-color: var(--secondary-color);
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .image-upload i {
-            font-size: 2.5rem;
+        .quantity-btn {
+            background-color: var(--dark-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .quantity {
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .order-summary {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-title {
             color: var(--secondary-color);
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .image-preview {
-            max-width: 100%;
-            max-height: 300px;
-            margin-top: 15px;
-            border-radius: 5px;
-            display: none;
+        .summary-items {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .item-name {
+            flex: 1;
+        }
+
+        .item-quantity {
+            margin: 0 10px;
+            color: var(--secondary-color);
+        }
+
+        .item-price {
+            font-weight: bold;
+            min-width: 60px;
+            text-align: left;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px 0;
+            border-top: 2px solid var(--border-color);
+            margin-top: 10px;
         }
 
         .submit-btn {
@@ -162,6 +310,10 @@
             width: 100%;
             margin-top: 20px;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .submit-btn:hover {
@@ -187,8 +339,8 @@
 
         .success {
             background-color: rgba(76, 175, 80, 0.2);
-            border: 1px solid #4CAF50;
-            color: #4CAF50;
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
         }
 
         .error {
@@ -206,27 +358,76 @@
             opacity: 0.7;
         }
 
-        @media (min-width: 768px) {
+        .empty-cart {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+        }
+
+        @media (max-width: 1100px) {
             .main-content {
-                flex-direction: row;
+                grid-template-columns: 1fr;
             }
             
-            .form-section {
-                flex: 1;
+            .order-summary {
+                position: static;
             }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .table-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* تخصيص شريط التمرير */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(40, 40, 40, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">كافيه مزاج</div>
-            <div class="tagline">مكانك المفضل للاسترخاء والاستمتاع بأجمل الأوقات</div>
+            <div class="logo">مطعم وكافيه مزاج</div>
+            <div class="address">جرمانا - دوار البلدية</div>
+            <div class="tagline">كافة الخدمات - حفلات - سهرات - مشروبات - وجبات</div>
+            <div class="services">
+                <div class="service-tag">حفلات</div>
+                <div class="service-tag">سهرات</div>
+                <div class="service-tag">مشروبات</div>
+                <div class="service-tag">وجبات</div>
+                <div class="service-tag">موالح</div>
+                <div class="service-tag">أركيلة</div>
+                <div class="service-tag">برنامج فني</div>
+            </div>
         </header>
 
         <div class="main-content">
             <div class="form-section">
-                <h2 class="section-title">طلب جديد</h2>
+                <h2 class="section-title"><i class="fas fa-utensils"></i> الطلبات</h2>
                 
                 <div class="form-group">
                     <label for="table-number">رقم الطاولة</label>
@@ -235,25 +436,60 @@
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label>اختيار صورة للطلب</label>
-                    <div class="image-upload" id="image-upload">
-                        <i>📷</i>
-                        <p>انقر لاختيار صورة الطلب</p>
-                        <input type="file" id="image-input" accept="image/*" style="display: none;">
+                <div class="products-container" id="products-container">
+                    <!-- المشروبات -->
+                    <div class="category">
+                        <h3 class="category-title">المشروبات</h3>
+                        <div class="products-grid" id="drinks-grid">
+                            <!-- سيتم إنشاء المنتجات ديناميكيًا -->
+                        </div>
                     </div>
-                    <img id="image-preview" class="image-preview" alt="معاينة الصورة">
+                    
+                    <!-- الخدمات -->
+                    <div class="category">
+                        <h3 class="category-title">الخدمات</h3>
+                        <div class="products-grid" id="services-grid">
+                            <!-- سيتم إنشاء المنتجات ديناميكيًا -->
+                        </div>
+                    </div>
+                    
+                    <!-- المقبلات -->
+                    <div class="category">
+                        <h3 class="category-title">المقبلات</h3>
+                        <div class="products-grid" id="appetizers-grid">
+                            <!-- سيتم إنشاء المنتجات ديناميكيًا -->
+                        </div>
+                    </div>
+                    
+                    <!-- الوجبات -->
+                    <div class="category">
+                        <h3 class="category-title">الوجبات</h3>
+                        <div class="products-grid" id="meals-grid">
+                            <!-- سيتم إنشاء المنتجات ديناميكيًا -->
+                        </div>
+                    </div>
                 </div>
-                
-                <button id="submit-btn" class="submit-btn" disabled>إرسال الطلب إلى التلجرام</button>
-                
+            </div>
+
+            <div class="order-summary">
+                <h2 class="summary-title"><i class="fas fa-receipt"></i> ملخص الطلب</h2>
+                <div class="summary-items" id="summary-items">
+                    <div class="empty-cart">لم يتم اختيار أي منتجات بعد</div>
+                </div>
+                <div class="summary-total">
+                    <span>المجموع:</span>
+                    <span id="total-price">0</span> <span>ل.س</span>
+                </div>
+                <button id="submit-btn" class="submit-btn" disabled>
+                    <i class="fab fa-telegram"></i> إرسال الطلب إلى التلجرام
+                </button>
                 <div id="status-message" class="status-message"></div>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>كافيه مزاج &copy; 2023 - جميع الحقوق محفوظة</p>
+        <p>مطعم وكافيه مزاج - جرمانا، دوار البلدية &copy; 2023 - جميع الحقوق محفوظة</p>
     </footer>
 
     <script>
@@ -263,11 +499,68 @@
 
         // العناصر الرئيسية في الصفحة
         const tableGrid = document.getElementById('table-grid');
-        const imageUpload = document.getElementById('image-upload');
-        const imageInput = document.getElementById('image-input');
-        const imagePreview = document.getElementById('image-preview');
+        const productsContainer = document.getElementById('products-container');
+        const drinksGrid = document.getElementById('drinks-grid');
+        const servicesGrid = document.getElementById('services-grid');
+        const appetizersGrid = document.getElementById('appetizers-grid');
+        const mealsGrid = document.getElementById('meals-grid');
+        const summaryItems = document.getElementById('summary-items');
+        const totalPriceElement = document.getElementById('total-price');
         const submitBtn = document.getElementById('submit-btn');
         const statusMessage = document.getElementById('status-message');
+
+        // بيانات المنتجات
+        const products = {
+            drinks: [
+                { id: 1, name: 'شاي', price: 1000 },
+                { id: 2, name: 'قهوة', price: 2000 },
+                { id: 3, name: 'نسكافيه 3-1', price: 1500 },
+                { id: 4, name: 'زهورات', price: 1500 },
+                { id: 5, name: 'مياه بقين', price: 1000 },
+                { id: 6, name: 'عصير عادي', price: 2000 },
+                { id: 7, name: 'عصير طبيعي', price: 3000 },
+                { id: 8, name: 'بيبسي', price: 1500 },
+                { id: 9, name: 'سفن اب', price: 1500 },
+                { id: 10, name: 'بيرا', price: 3000 },
+                { id: 11, name: 'بيرا مكسيكي', price: 3500 },
+                { id: 12, name: 'عرق', price: 4000 },
+                { id: 13, name: 'مشروب طاقة', price: 2500 }
+            ],
+            services: [
+                { id: 14, name: 'موالح', price: 5000 },
+                { id: 15, name: 'اركيلة', price: 7000 },
+                { id: 16, name: 'تبديل راس اركيله', price: 2000 },
+                { id: 17, name: 'برنامج فني', price: 15000 },
+                { id: 18, name: 'خدمة مشروب', price: 3000 },
+                { id: 19, name: 'مقبلات', price: 5000 }
+            ],
+            appetizers: [
+                { id: 20, name: 'مسبحة', price: 3000 },
+                { id: 21, name: 'متبل', price: 2500 },
+                { id: 22, name: 'محمرة', price: 3000 },
+                { id: 23, name: 'لبنة', price: 2000 },
+                { id: 24, name: 'بطاطا', price: 2500 },
+                { id: 25, name: 'جاط خضرة', price: 3000 },
+                { id: 26, name: 'زيتون', price: 1500 },
+                { id: 27, name: 'جرجير', price: 2000 },
+                { id: 28, name: 'فتوش', price: 3500 },
+                { id: 29, name: 'ارمنية', price: 4000 },
+                { id: 30, name: 'لوزية بائجان', price: 3500 }
+            ],
+            meals: [
+                { id: 31, name: 'جوانح بانيه', price: 8000 },
+                { id: 32, name: 'سمك', price: 12000 },
+                { id: 33, name: 'كريسبي', price: 7000 },
+                { id: 34, name: 'نقانق', price: 6000 },
+                { id: 35, name: 'سوده', price: 9000 }
+            ]
+        };
+
+        // الطلب الحالي
+        let currentOrder = {
+            tableNumber: null,
+            items: []
+        };
 
         // إنشاء أزرار الطاولات
         for (let i = 1; i <= 20; i++) {
@@ -285,66 +578,205 @@
                 // تحديد الزر المختار
                 this.classList.add('selected');
                 
-                // تفعيل زر الإرسال إذا كانت هناك صورة
+                // تعيين رقم الطاولة
+                currentOrder.tableNumber = i;
+                
+                // إظهار المنتجات
+                productsContainer.style.display = 'block';
+                
+                // تفعيل زر الإرسال إذا كانت هناك منتجات
                 checkFormCompletion();
             });
             
             tableGrid.appendChild(tableBtn);
         }
 
-        // التعامل مع رفع الصورة
-        imageUpload.addEventListener('click', function() {
-            imageInput.click();
-        });
+        // إنشاء بطاقات المنتجات
+        function createProductCards() {
+            // المشروبات
+            products.drinks.forEach(product => {
+                const card = createProductCard(product);
+                drinksGrid.appendChild(card);
+            });
+            
+            // الخدمات
+            products.services.forEach(product => {
+                const card = createProductCard(product);
+                servicesGrid.appendChild(card);
+            });
+            
+            // المقبلات
+            products.appetizers.forEach(product => {
+                const card = createProductCard(product);
+                appetizersGrid.appendChild(card);
+            });
+            
+            // الوجبات
+            products.meals.forEach(product => {
+                const card = createProductCard(product);
+                mealsGrid.appendChild(card);
+            });
+        }
 
-        imageInput.addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    imagePreview.src = event.target.result;
-                    imagePreview.style.display = 'block';
-                    
-                    // تفعيل زر الإرسال إذا تم اختيار طاولة
-                    checkFormCompletion();
-                };
-                
-                reader.readAsDataURL(e.target.files[0]);
+        // إنشاء بطاقة منتج
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.dataset.productId = product.id;
+            
+            card.innerHTML = `
+                <div class="product-name">${product.name}</div>
+                <div class="product-price">${product.price} ل.س</div>
+                <div class="product-controls">
+                    <div class="quantity-controls">
+                        <button class="quantity-btn minus-btn">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus-btn">+</button>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة حدث النقر على البطاقة
+            card.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('quantity-btn')) {
+                    card.classList.toggle('selected');
+                }
+            });
+            
+            // أحداث أزرار الكمية
+            const minusBtn = card.querySelector('.minus-btn');
+            const plusBtn = card.querySelector('.plus-btn');
+            const quantityElement = card.querySelector('.quantity');
+            
+            let quantity = 0;
+            
+            minusBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (quantity > 0) {
+                    quantity--;
+                    quantityElement.textContent = quantity;
+                    updateOrderItem(product.id, quantity, product.name, product.price);
+                }
+            });
+            
+            plusBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                quantity++;
+                quantityElement.textContent = quantity;
+                updateOrderItem(product.id, quantity, product.name, product.price);
+            });
+            
+            return card;
+        }
+
+        // تحديث عنصر الطلب
+        function updateOrderItem(productId, quantity, productName, productPrice) {
+            // البحث عن العنصر في الطلب الحالي
+            const existingItemIndex = currentOrder.items.findIndex(item => item.id === productId);
+            
+            if (quantity === 0) {
+                // إزالة العنصر إذا كانت الكمية صفر
+                if (existingItemIndex !== -1) {
+                    currentOrder.items.splice(existingItemIndex, 1);
+                }
+            } else {
+                // تحديث أو إضافة العنصر
+                if (existingItemIndex !== -1) {
+                    currentOrder.items[existingItemIndex].quantity = quantity;
+                } else {
+                    currentOrder.items.push({
+                        id: productId,
+                        name: productName,
+                        price: productPrice,
+                        quantity: quantity
+                    });
+                }
             }
-        });
+            
+            // تحديث ملخص الطلب
+            updateOrderSummary();
+            
+            // تفعيل زر الإرسال إذا كان هناك طلب
+            checkFormCompletion();
+        }
+
+        // تحديث ملخص الطلب
+        function updateOrderSummary() {
+            // مسح المحتوى الحالي
+            summaryItems.innerHTML = '';
+            
+            if (currentOrder.items.length === 0) {
+                summaryItems.innerHTML = '<div class="empty-cart">لم يتم اختيار أي منتجات بعد</div>';
+                totalPriceElement.textContent = '0';
+                return;
+            }
+            
+            let totalPrice = 0;
+            
+            // إضافة العناصر إلى الملخص
+            currentOrder.items.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                totalPrice += itemTotal;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'summary-item';
+                itemElement.innerHTML = `
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-quantity">${item.quantity} x</span>
+                    <span class="item-price">${itemTotal} ل.س</span>
+                `;
+                
+                summaryItems.appendChild(itemElement);
+            });
+            
+            // تحديث السعر الإجمالي
+            totalPriceElement.textContent = totalPrice.toLocaleString();
+        }
 
         // التحقق من اكتمال النموذج
         function checkFormCompletion() {
-            const tableSelected = document.querySelector('.table-btn.selected');
-            const imageSelected = imageInput.files.length > 0;
+            const tableSelected = currentOrder.tableNumber !== null;
+            const hasItems = currentOrder.items.length > 0;
             
-            submitBtn.disabled = !(tableSelected && imageSelected);
+            submitBtn.disabled = !(tableSelected && hasItems);
         }
 
         // إرسال الطلب إلى التلجرام
         submitBtn.addEventListener('click', async function() {
-            const tableSelected = document.querySelector('.table-btn.selected');
-            if (!tableSelected || !imageInput.files[0]) return;
-            
-            const tableNumber = tableSelected.dataset.tableNumber;
-            const imageFile = imageInput.files[0];
+            if (!currentOrder.tableNumber || currentOrder.items.length === 0) return;
             
             // عرض رسالة التحميل
             submitBtn.disabled = true;
-            submitBtn.textContent = 'جاري الإرسال...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
             hideStatusMessage();
             
             try {
-                // تحويل الصورة إلى Blob
-                const formData = new FormData();
-                formData.append('chat_id', TELEGRAM_CHAT_ID);
-                formData.append('photo', imageFile);
-                formData.append('caption', `طلب جديد من الطاولة رقم ${tableNumber}`);
+                // إنشاء نص الطلب
+                let orderText = `🛎️ طلب جديد من الطاولة رقم ${currentOrder.tableNumber}\n\n`;
+                orderText += `📋 تفاصيل الطلب:\n`;
                 
-                // إرسال الصورة إلى التلجرام
-                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                let totalPrice = 0;
+                currentOrder.items.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    totalPrice += itemTotal;
+                    orderText += `- ${item.name} (${item.quantity}) - ${itemTotal} ل.س\n`;
+                });
+                
+                orderText += `\n💰 المجموع: ${totalPrice.toLocaleString()} ل.س`;
+                orderText += `\n\n📍 العنوان: جرمانا - دوار البلدية`;
+                orderText += `\n⏰ الوقت: ${new Date().toLocaleString('ar-SA')}`;
+                
+                // إرسال الرسالة إلى التلجرام
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: orderText,
+                        parse_mode: 'HTML'
+                    })
                 });
                 
                 const result = await response.json();
@@ -353,12 +785,7 @@
                     showStatusMessage('تم إرسال الطلب بنجاح!', 'success');
                     
                     // إعادة تعيين النموذج
-                    document.querySelectorAll('.table-btn').forEach(btn => {
-                        btn.classList.remove('selected');
-                    });
-                    imageInput.value = '';
-                    imagePreview.style.display = 'none';
-                    submitBtn.disabled = true;
+                    resetForm();
                 } else {
                     throw new Error(result.description || 'حدث خطأ أثناء الإرسال');
                 }
@@ -366,10 +793,37 @@
                 console.error('Error sending to Telegram:', error);
                 showStatusMessage(`خطأ في الإرسال: ${error.message}`, 'error');
             } finally {
-                submitBtn.textContent = 'إرسال الطلب إلى التلجرام';
+                submitBtn.innerHTML = '<i class="fab fa-telegram"></i> إرسال الطلب إلى التلجرام';
                 submitBtn.disabled = false;
             }
         });
+
+        // إعادة تعيين النموذج
+        function resetForm() {
+            // إعادة تعيين الطاولة
+            document.querySelectorAll('.table-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            currentOrder.tableNumber = null;
+            
+            // إعادة تعيين المنتجات
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.remove('selected');
+                card.querySelector('.quantity').textContent = '0';
+            });
+            
+            // إعادة تعيين الطلب
+            currentOrder.items = [];
+            
+            // تحديث الملخص
+            updateOrderSummary();
+            
+            // إخفاء المنتجات
+            productsContainer.style.display = 'none';
+            
+            // تعطيل زر الإرسال
+            submitBtn.disabled = true;
+        }
 
         // وظائف عرض وإخفاء رسائل الحالة
         function showStatusMessage(message, type) {
@@ -384,6 +838,11 @@
         function hideStatusMessage() {
             statusMessage.style.display = 'none';
         }
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            createProductCards();
+        });
     </script>
 </body>
 </html>
