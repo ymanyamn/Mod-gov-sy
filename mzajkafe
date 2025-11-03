@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كافيه مزاج - طلبات الطاولات</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #8B4513;
+            --secondary-color: #D2691E;
+            --accent-color: #A0522D;
+            --dark-color: #1a1a1a;
+            --light-color: #f5f5f5;
+            --text-color: #e0e0e0;
+            --border-color: #444;
+        }
+
+        body {
+            background-color: var(--dark-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a1a"/><path d="M0 0L100 100M100 0L0 100" stroke="%23333" stroke-width="1"/></svg>');
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .form-section {
+            background-color: rgba(30, 30, 30, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .table-btn {
+            background-color: var(--dark-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 12px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .table-btn:hover {
+            background-color: var(--primary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .table-btn.selected {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            font-weight: bold;
+        }
+
+        .image-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .image-upload:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .image-upload i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background-color: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+        }
+
+        .error {
+            background-color: rgba(244, 67, 54, 0.2);
+            border: 1px solid #F44336;
+            color: #F44336;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                flex-direction: row;
+            }
+            
+            .form-section {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">كافيه مزاج</div>
+            <div class="tagline">مكانك المفضل للاسترخاء والاستمتاع بأجمل الأوقات</div>
+        </header>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2 class="section-title">طلب جديد</h2>
+                
+                <div class="form-group">
+                    <label for="table-number">رقم الطاولة</label>
+                    <div class="table-grid" id="table-grid">
+                        <!-- سيتم إنشاء أزرار الطاولات ديناميكيًا -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>اختيار صورة للطلب</label>
+                    <div class="image-upload" id="image-upload">
+                        <i>📷</i>
+                        <p>انقر لاختيار صورة الطلب</p>
+                        <input type="file" id="image-input" accept="image/*" style="display: none;">
+                    </div>
+                    <img id="image-preview" class="image-preview" alt="معاينة الصورة">
+                </div>
+                
+                <button id="submit-btn" class="submit-btn" disabled>إرسال الطلب إلى التلجرام</button>
+                
+                <div id="status-message" class="status-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>كافيه مزاج &copy; 2023 - جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // بيانات التلجرام
+        const TELEGRAM_BOT_TOKEN = '7054208207:AAHVwwMlay45aLFyQn4FCJyfWM_-AoQXpMM';
+        const TELEGRAM_CHAT_ID = '7493001551';
+
+        // العناصر الرئيسية في الصفحة
+        const tableGrid = document.getElementById('table-grid');
+        const imageUpload = document.getElementById('image-upload');
+        const imageInput = document.getElementById('image-input');
+        const imagePreview = document.getElementById('image-preview');
+        const submitBtn = document.getElementById('submit-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        // إنشاء أزرار الطاولات
+        for (let i = 1; i <= 20; i++) {
+            const tableBtn = document.createElement('button');
+            tableBtn.className = 'table-btn';
+            tableBtn.textContent = i;
+            tableBtn.dataset.tableNumber = i;
+            
+            tableBtn.addEventListener('click', function() {
+                // إزالة التحديد من جميع الأزرار
+                document.querySelectorAll('.table-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // تحديد الزر المختار
+                this.classList.add('selected');
+                
+                // تفعيل زر الإرسال إذا كانت هناك صورة
+                checkFormCompletion();
+            });
+            
+            tableGrid.appendChild(tableBtn);
+        }
+
+        // التعامل مع رفع الصورة
+        imageUpload.addEventListener('click', function() {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                    
+                    // تفعيل زر الإرسال إذا تم اختيار طاولة
+                    checkFormCompletion();
+                };
+                
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // التحقق من اكتمال النموذج
+        function checkFormCompletion() {
+            const tableSelected = document.querySelector('.table-btn.selected');
+            const imageSelected = imageInput.files.length > 0;
+            
+            submitBtn.disabled = !(tableSelected && imageSelected);
+        }
+
+        // إرسال الطلب إلى التلجرام
+        submitBtn.addEventListener('click', async function() {
+            const tableSelected = document.querySelector('.table-btn.selected');
+            if (!tableSelected || !imageInput.files[0]) return;
+            
+            const tableNumber = tableSelected.dataset.tableNumber;
+            const imageFile = imageInput.files[0];
+            
+            // عرض رسالة التحميل
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال...';
+            hideStatusMessage();
+            
+            try {
+                // تحويل الصورة إلى Blob
+                const formData = new FormData();
+                formData.append('chat_id', TELEGRAM_CHAT_ID);
+                formData.append('photo', imageFile);
+                formData.append('caption', `طلب جديد من الطاولة رقم ${tableNumber}`);
+                
+                // إرسال الصورة إلى التلجرام
+                const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.ok) {
+                    showStatusMessage('تم إرسال الطلب بنجاح!', 'success');
+                    
+                    // إعادة تعيين النموذج
+                    document.querySelectorAll('.table-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    imageInput.value = '';
+                    imagePreview.style.display = 'none';
+                    submitBtn.disabled = true;
+                } else {
+                    throw new Error(result.description || 'حدث خطأ أثناء الإرسال');
+                }
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+                showStatusMessage(`خطأ في الإرسال: ${error.message}`, 'error');
+            } finally {
+                submitBtn.textContent = 'إرسال الطلب إلى التلجرام';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // وظائف عرض وإخفاء رسائل الحالة
+        function showStatusMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            // إخفاء الرسالة بعد 5 ثوانٍ
+            setTimeout(hideStatusMessage, 5000);
+        }
+
+        function hideStatusMessage() {
+            statusMessage.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
